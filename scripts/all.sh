@@ -1,8 +1,30 @@
-#CONFIGURE HERE
-export INSTALL_PREFIX=$HOME/apps/qgis-mobile/libs
-export SRC_DIR=$HOME/dev/qgis-mobile
+#!/bin/sh
+#
+set -e
+#############################
+#######CONFIGURE HERE########
+#############################
+export INSTALL_DIR=$HOME/apps/qgis-mobile/libs
+export SRC_DIR=$HOME/dev/qgis-mobile/libs
 export NDK=$HOME/necessitas/android-ndk-r5b
-#END CONFIGURE HERE
+#############################
+#######END CONFIGURE#########
+#############################
+#
+echo "Downloading src to: " $SRC_DIR
+echo "Installing to: " $INSTALL_DIR
+echo "NDK location: " $NDK
+#
+CONTINUE=n
+echo "OK? [y, n*]:"
+read CONTINUE
+CONTINUE=$(echo $CONTINUE | tr "[:lower:]" "[:upper:]")
+if [ "$CONTINUE" = "Y" ]; then
+continue
+else
+echo "Abort"
+exit
+fi
 
 export NDK_PLATFORM=$NDK/platforms/android-4/arch-arm
 cd $SRC_DIR
