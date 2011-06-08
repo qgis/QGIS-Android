@@ -1,9 +1,9 @@
 #PROJ4
 wget http://download.osgeo.org/proj/proj-4.7.0.tar.gz
 tar xf proj-4.7.0.tar.gz
-rm proj-4.7.0.tar.gz
+#rm proj-4.7.0.tar.gz
 cd proj-4.7.0/
-cp -f ../tmp/config.sub ./config.sub
+cp -f $TMP_DIR/config.sub ./config.sub
 
 CXX=$NDK/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/arm-linux-androideabi-g++ \
 CXXFLAGS="-nostdlib -I$NDK_PLATFORM/usr/include -I$NDK/sources/cxx-stl/gnu-libstdc++/include -I$NDK/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -DHAVE_ISNAN" \

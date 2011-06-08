@@ -1,9 +1,9 @@
 #GEOS3.2.2
 wget http://download.osgeo.org/geos/geos-3.2.2.tar.bz2
 tar xjf geos-3.2.2.tar.bz2 
-rm geos-3.2.2.tar.bz2
+#rm geos-3.2.2.tar.bz2
 cd geos-3.2.2/
-cp -f ../tmp/config.sub ./config.sub
+cp -f $TMP_DIR/config.sub ./config.sub
 
 #Patch for http://trac.osgeo.org/geos/ticket/222
 wget http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
