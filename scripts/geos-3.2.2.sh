@@ -7,7 +7,7 @@ cp -f $TMP_DIR/config.sub ./config.sub
 
 #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
 wget http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
-patch -i ../geos-3.2.0-ARM.bug222.patch -p0  
+patch -i geos-3.2.0-ARM.bug222.patch -p0  
 
 #SET compile flags
 CXX=$NDK/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/arm-linux-androideabi-g++ \
