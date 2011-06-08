@@ -37,7 +37,7 @@ while test "$1" != "" ; do
                         shift
                 ;;
                 --removedownloads|-r)
-                        echo "TMP_DIR and the downloaded packages will be deleted"
+                        echo "$TMP_DIR and the downloaded packages will be deleted"
                         export REMOVE_DOWNLOADS=1
                 ;;
                 --install|-i)
@@ -81,13 +81,11 @@ mkdir -p $TMP_DIR
 #Get Updated config.sub
 wget "http://git.savannah.gnu.org/gitweb/?p=autoconf.git;a=blob_plain;f=build-aux/config.sub;hb=7420ce3483ec7d50de0667ec03b86be143f72c52" -O $TMP_DIR/config.sub
 
-#FIXME
-#diff $NDK_PLATFORM/usr/include/sys/types.h.orig $NDK_PLATFORM/usr/include/sys/types.h
-#124c124
-#< typedef uint64_t       u_int64_t;
-#---
-#
-#> //typedef uint64_t       u_int64_t;
+#Get NDK patch
+wget "https://raw.github.com/mbernasocchi/qgis-mobile/master/patches/android-ndk-r5b.patch" -O $TMP_DIR/android-ndk-r5b.patch
+
+cd $NDK
+patch -p0 -i $TMP_DIR/android-ndk-r5b.patch
 
 mkdir -p $SRC_DIR
 cd $SRC_DIR
