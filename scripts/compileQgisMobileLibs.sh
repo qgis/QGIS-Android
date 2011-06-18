@@ -9,14 +9,28 @@ export INSTALL_DIR=$HOME/apps/qgis-mobile
 export SRC_DIR=$ROOT_DIR/src
 export TMP_DIR=$ROOT_DIR/tmp
 export SCRIPTS_DIR=$ROOT_DIR/scripts
-export NDK=$HOME/dev/necessitas/android-ndk-r5b
+export NDK_VERSION=r5b
+export NDK=/opt/necessitas/android-ndk-$NDK_VERSION
+export ARCHITECTURE=arm
+export ANDROID_API=9
 #############################
 #######END CONFIGURE#########
 #############################
-#
 
+########SET COMPILERS########
+export SYSROOT=$NDK/platforms/android-$ANDROID_API/arch-$ARCHITECTURE
+export CC="$NDK/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc --sysroot=$SYSROOT"
+export CXX="$NDK/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/arm-linux-androideabi-g++ --sysroot=$SYSROOT"
+#detect cpu cores
+export CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
 
+#######SET FLAGS (seems not needed yet)##########
+#CXXFLAGS="-nostdlib -DHAVE_ISNAN"
+#CFLAGS="  -nostdlib"
+#LDFLAGS="-Wl" 
  
+
+########START SCRIPT########
 usage(){
  echo "Usage:"
  echo " compileQgisMobileLibs.sh 
@@ -29,7 +43,10 @@ usage(){
 
 echo "NDK location: " $NDK
 echo "Downloading src to: " $SRC_DIR
+echo "SYSROOT: " $SYSROOT
 
+REMOVE_DOWNLOADS=0
+INSTALL_LIBS=0
 while test "$1" != "" ; do
         case $1 in
                 --echo|-e)
@@ -73,19 +90,16 @@ else
   exit 1
 fi
 
-export NDK_PLATFORM=$NDK/platforms/android-4/arch-arm
-#detect cpu cores
-export CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
 
 mkdir -p $TMP_DIR
 #Get Updated config.sub
 wget "http://git.savannah.gnu.org/gitweb/?p=autoconf.git;a=blob_plain;f=build-aux/config.sub;hb=7420ce3483ec7d50de0667ec03b86be143f72c52" -O $TMP_DIR/config.sub
 
 #Get NDK patch
-wget "https://raw.github.com/mbernasocchi/qgis-mobile/master/patches/android-ndk-r5b.patch" -O $TMP_DIR/android-ndk-r5b.patch
+#wget "https://raw.github.com/mbernasocchi/qgis-mobile/master/patches/android-ndk-r5b.patch" -O $TMP_DIR/android-ndk-r5b.patch
 
-cd $NDK
-patch -p0 -i $TMP_DIR/android-ndk-r5b.patch
+#cd $NDK
+#patch -p0 -i $TMP_DIR/android-ndk-r5b.patch
 
 mkdir -p $SRC_DIR
 cd $SRC_DIR
