@@ -1,4 +1,5 @@
 #GEOS3.2.2
+echo "GEOS3.2.2"
 wget http://download.osgeo.org/geos/geos-3.2.2.tar.bz2
 tar xjf geos-3.2.2.tar.bz2 
 if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm geos-3.2.2.tar.bz2; fi
@@ -10,7 +11,8 @@ wget http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -
 patch -i geos-3.2.0-ARM.bug222.patch -p0  
 
 #CONFIGURE
-./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+     ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
 
 #COMPILE LIB
 make -j$CORES 2>&1 | tee make.out

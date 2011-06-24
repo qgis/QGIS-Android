@@ -1,0 +1,25 @@
+This page contains details about Google Summer of Code 2011 project "QGIS mobile"
+
+Here's the [http://www.google-melange.com/gsoc/project/google/gsoc2011/mbernasocchi/14005 project page] on GSoC 2011 site.
+
+I created a public repository on GitHub [https://github.com/mbernasocchi/qgis-mobile].
+
+==Goal==
+The idea is to Port QGIS to Android and improve the GUI for using it on a Tablet PC. Qt, the
+base library of QGIS has already been ported to Android recently under the name Necessitas.
+
+==Timeline==
+===Until midterm===
+The first part of the project would be dedicated to get all the other required libraries for building QGIS compiled for Android and to get a standard Qgis running under Android.
+====Libraries to port====
+*proj
+*geos
+*sqlite
+*qwt
+*gdal
+
+===After midterm===
+The second part would then be dedicated to the UI improvement for using QGIS with a touchscreen interface, this would be a first version of QGIS Mobile.
+
+===In case of extra time===
+A third part, depending on the difficulty of the two first parts (or as part of a future project), would be to create a prototype for an optimized UI for smaller Android devices with basic functionality.
