@@ -1,0 +1,26 @@
+diff --git a/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h b/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h
+index 3782c15..3330fd4 100644
+--- a/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h
++++ b/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h
+@@ -134,7 +134,7 @@ typedef	unsigned long	u_long;
+ typedef uint32_t       u_int32_t;
+ typedef uint16_t       u_int16_t;
+ typedef uint8_t        u_int8_t;
+-typedef uint64_t       u_int64_t;
++//typedef uint64_t       u_int64_t;
+ #endif
+ 
+ #endif
+diff --git a/sysroot/usr/include/sys/types.h b/sysroot/usr/include/sys/types.h
+index 33fe30e..e567469 100644
+--- a/sysroot/usr/include/sys/types.h
++++ b/sysroot/usr/include/sys/types.h
+@@ -121,7 +121,7 @@ typedef	unsigned long	u_long;
+ typedef uint32_t       u_int32_t;
+ typedef uint16_t       u_int16_t;
+ typedef uint8_t        u_int8_t;
+-typedef uint64_t       u_int64_t;
++//typedef uint64_t       u_int64_t;
+ #endif
+ 
+ #endif
