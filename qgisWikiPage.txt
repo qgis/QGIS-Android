@@ -5,21 +5,65 @@ Here's the [http://www.google-melange.com/gsoc/project/google/gsoc2011/mbernasoc
 I created a public repository on GitHub [https://github.com/mbernasocchi/qgis-mobile].
 
 ==Goal==
-The idea is to Port QGIS to Android and improve the GUI for using it on a Tablet PC. Qt, the
-base library of QGIS has already been ported to Android recently under the name Necessitas.
+The idea is to Port QGIS to Android and improve the GUI for using it on a Tablet PC. Qt, the base library of QGIS has already been ported to Android recently under the name Necessitas. A QT libs manager for android already exists as well under the name Ministro.
+QGIS mobile should be finally packaged as an .apk pakage for easy distribution.
+
+See also: 
+*http://sourceforge.net/p/necessitas/home/
+*http://labs.qt.nokia.com/2011/02/28/necessitas/
+*http://blip.tv/bogdan-vatra/necessitas-qt-suite-for-android-platform-4819643
 
 ==Timeline==
 ===Until midterm===
 The first part of the project would be dedicated to get all the other required libraries for building QGIS compiled for Android and to get a standard Qgis running under Android.
-====Libraries to port====
-*proj
-*geos
-*sqlite
-*qwt
-*gdal
-
 ===After midterm===
-The second part would then be dedicated to the UI improvement for using QGIS with a touchscreen interface, this would be a first version of QGIS Mobile.
+The second part would then be dedicated to the UI improvement (based on a user case?) for using QGIS with a touchscreen interface, this would be a first version of QGIS Mobile.
+====GPS integration====
+Of utter importance is the integration of the mobile GPS device. This should be implemented using qgsGpsConnection, gpsNmeaConnection and qgsGpsDConnection
+
+See also:
+*http://www.qtcentre.org/threads/41698-QT-in-Android-Example-for-accessing-the-GPS-Service
 
 ===In case of extra time===
 A third part, depending on the difficulty of the two first parts (or as part of a future project), would be to create a prototype for an optimized UI for smaller Android devices with basic functionality.
+
+==Libraries Porting==
+these libraries need to be ported to Android.
+
+I started creating scripts that do all the work, they are located in the scripts folder of the [https://github.com/mbernasocchi/qgis-mobile/tree/master/scripts github repo]
+===proj===
+'''Done'''
+needs updating config.sub and configuring like this:
+ <nowiki>./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR</nowiki>
+
+Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/proj-4.7.0.sh
+
+===geos===
+'''Almost Done'''
+
+Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/geos-3.2.2.sh
+
+See also
+*https://github.com/mrenouf/android-spatialite/issues/1
+
+===sqlite===
+already in? http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+
+===qwt===
+See also:
+*http://groups.google.com/group/android-qt/browse_thread/thread/a27f11971192d82d?pli=1
+===gdal===
+'''Done'''
+needs updating config.sub and guess.sub and setting this flags:
+ <nowiki>CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+      ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR</nowiki>
+
+Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/gdal-1.8.0.sh
+further info:
+http://trac.osgeo.org/gdal/wiki/BuildingForAndroid
+
+==Interesting link collection==
+*[http://code.google.com/p/python-for-android/ Python for Android]
+*http://android-tricks.blogspot.com/2009/02/hello-world-c-program-on-using-android.html
+*http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
+
