@@ -30,40 +30,69 @@ A third part, depending on the difficulty of the two first parts (or as part of 
 ==Libraries Porting==
 these libraries need to be ported to Android.
 
-I started creating scripts that do all the work, they are located in the scripts folder of the [https://github.com/mbernasocchi/qgis-mobile/tree/master/scripts github repo]
+I wrote scripts that do all the work, they are located in the scripts folder of the [https://github.com/mbernasocchi/qgis-mobile/tree/master/scripts github repo]
 ===proj===
-'''Done'''
-needs updating config.sub and configuring like this:
- <nowiki>./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR</nowiki>
-
-Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/proj-4.7.0.sh
+'''Done using version 4.7.0'''
 
 ===geos===
-'''Almost Done'''
+'''Done using version 3.2.2'''
 
-Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/geos-3.2.2.sh
-
-See also
+See also:
 *https://github.com/mrenouf/android-spatialite/issues/1
 
 ===sqlite===
-already in? http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+'''Done  using version 3.7.4'''
+
+See also:
+*http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
 
 ===qwt===
+'''Done using version 5.2.0 and necessitas'''
+
 See also:
 *http://groups.google.com/group/android-qt/browse_thread/thread/a27f11971192d82d?pli=1
-===gdal===
-'''Done'''
-needs updating config.sub and guess.sub and setting this flags:
- <nowiki>CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
-      ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR</nowiki>
 
-Installer Script: https://github.com/mbernasocchi/qgis-mobile/blob/master/scripts/gdal-1.8.0.sh
-further info:
+===gdal===
+'''Done using version 1.8.0'''
+
+See also:
 http://trac.osgeo.org/gdal/wiki/BuildingForAndroid
 
-==Interesting link collection==
+===expat===
+'''Done using version 2.0.1'''
+
+=Compile QGIS=
+*http://www.srombauts.fr/2011/03/15/cmake-for-android/
+*http://code.google.com/p/android-cmake/source/browse/toolchain/android.toolchain.cmake
+*http://www.paraview.org/Wiki/CMake_Cross_Compiling#The_toolchain_file
+
+=HOWTO=
+here a step by step tutorial:
+*Get Necessitas (http://sourceforge.net/projects/necessitas/files/)
+*run Setup Script
+*run Build Script
+
+=GUI Adaptations=
+==Needed toolbars==
+*Navigation
+*Layer load
+*basic digitizing (add, move nodes)
+*infotool
+*attribute table
+*measurements
+*layer legend
+*Layer properties add scrollbars
+
+==GPS==
+core/gps
+app/gps 
+qgsGpsConnection sub class with parseData() (like nmeaConnection)
+QIODevice subclass listening to android gps api and emitting readyRead()
+extend QgsGpsDetector
+
+=Interesting link collection=
 *[http://code.google.com/p/python-for-android/ Python for Android]
+*http://thp.io/2011/pyside-android/
 *http://android-tricks.blogspot.com/2009/02/hello-world-c-program-on-using-android.html
 *http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
 

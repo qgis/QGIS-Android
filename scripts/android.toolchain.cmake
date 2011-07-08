@@ -223,7 +223,7 @@ endif()
 
 if( BUILD_WITH_ANDROID_NDK_TOOLCHAIN )
  set( STL_LIBRARIES_PATH "${CMAKE_INSTALL_PREFIX}/lib" )
- set( CMAKE_FIND_ROOT_PATH  ${ANDROID_NDK_TOOLCHAIN_ROOT}/bin ${ANDROID_NDK_TOOLCHAIN_ROOT}/arm-linux-androideabi ${ANDROID_NDK_TOOLCHAIN_ROOT}/sysroot ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_PREFIX}/share )
+ set( CMAKE_FIND_ROOT_PATH  $ENV{QT_ROOT} ${ANDROID_NDK_TOOLCHAIN_ROOT}/bin ${ANDROID_NDK_TOOLCHAIN_ROOT}/arm-linux-androideabi ${ANDROID_NDK_TOOLCHAIN_ROOT}/sysroot ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_PREFIX}/share )
  #for some reason this is needed? TODO figure out why...
  include_directories( ${ANDROID_NDK_TOOLCHAIN_ROOT}/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi )
 endif()
