@@ -2,12 +2,12 @@
 #
 set -e
 #######Load config#######
-source ./setup.conf
+source ./config.conf
 
 ########START SCRIPT########
 usage(){
  echo "Usage:"
- echo " compileQgisMobileLibs.sh 
+ echo " setup-libs.sh 
         --removedownloads (-r)  removes the downloaded archives after unpacking
         --help (-h)
         --version (-v)
@@ -15,7 +15,7 @@ usage(){
 }
 
 echo "NDK location: " $NDK
-echo "Standalone toolchain location: " $STANDALONE_TOOLCHAIN
+echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "Downloading src to: " $SRC_DIR
 echo "PATH:" $PATH
 
@@ -62,12 +62,12 @@ else
 
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
-  $NDK/build/tools/make-standalone-toolchain.sh --platform=android-$ANDROID_API --install-dir=$STANDALONE_TOOLCHAIN
+  $NDK/build/tools/make-standalone-toolchain.sh --platform=android-$ANDROID_API --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
 
   echo "PATCHING STANDALONE TOOLCHAIN"
   #Get NDK patch
   wget "https://raw.github.com/mbernasocchi/qgis-mobile/master/patches/ndk_toolchain_uint64_t.patch" -O $TMP_DIR/ndk_toolchain_uint64_t.patch
-  cd $STANDALONE_TOOLCHAIN
+  cd $ANDROID_NDK_TOOLCHAIN_ROOT
   patch -p1 -i $TMP_DIR/ndk_toolchain_uint64_t.patch
 
 

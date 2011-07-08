@@ -2,12 +2,12 @@
 #
 set -e
 #######Load config#######
-source ./setup.conf
+source ./config.conf
 
 ########START SCRIPT########
 usage(){
  echo "Usage:"
- echo " build.sh 
+ echo " build-libs.sh 
         --help (-h)
         --version (-v)
         --echo <text> (-e)      this option does noting"
@@ -15,7 +15,7 @@ usage(){
 
 echo "SRC location: " $SRC_DIR
 echo "NDK location: " $NDK
-echo "Standalone toolchain location: " $STANDALONE_TOOLCHAIN
+echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "PATH:" $PATH
 
 export REMOVE_DOWNLOADS=0
