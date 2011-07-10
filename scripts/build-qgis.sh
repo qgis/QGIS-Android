@@ -1,5 +1,9 @@
 source ~/dev/qgis-mobile/scripts/config.conf
 
+#TODO
+#fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
+#check -DEXPAT_INCLUDE_DIR=/usr/include \
+#check GSL
 ccmake \
 -DARM_TARGET=$ARM_TARGET \
 -DBISON_EXECUTABLE=/usr/bin/bison \
@@ -28,6 +32,7 @@ ccmake \
 -DPROJ_INCLUDE_DIR=$INSTALL_DIR/include \
 -DPROJ_LIBRARY=$INSTALL_DIR/lib/libproj.so \
 -DQT_QMAKE_EXECUTABLE=$QMAKE \
+-DQT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
 -DQWT_INCLUDE_DIR=$SRC_DIR/qwt-5.2.0/src \
 -DQWT_LIBRARY=$INSTALL_DIR/lib/libqwt.so \
 -DWITH_APIDOC=OFF \
