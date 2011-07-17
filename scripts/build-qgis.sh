@@ -1,5 +1,9 @@
 source ~/dev/qgis-mobile/scripts/config.conf
 
+#TODO
+#fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
+#check -DEXPAT_INCLUDE_DIR=/usr/include \
+#check GSL
 ccmake \
 -DANDROID=ON \
 -DARM_TARGET=$ARM_TARGET \
