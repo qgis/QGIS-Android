@@ -90,6 +90,18 @@ else
   #########END EXPAT2.0.1########
 
 
+  #########LIBICONV1.13.1########
+  echo "LIBICONV"
+  cd libiconv-1.13.1/
+  #configure
+  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END LIBICONV1.13.1########
+  
+
   #########SQLITE3.7.4########
   echo "SQLITE"
   cd sqlite-autoconf-3070400/
@@ -113,6 +125,7 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   cd $SRC_DIR
   #########END GDAL1.8.0########
+  
 
   exit 0
 fi

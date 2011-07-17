@@ -131,6 +131,20 @@ else
   ######END GDAL#######
 
 
+  #######LIBICONV1.13.1#######
+  echo "LIBICONV"
+  cd $SRC_DIR
+  wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+  tar xf libiconv-1.13.1.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
+  cd libiconv-1.13.1/
+  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
+  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
+  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
+  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
+  #######END LIBICONV1.13.1#######
+  
+  
   #######SQLITE3.7.4#######
   echo "SQLITE"
   cd $SRC_DIR
@@ -141,6 +155,7 @@ else
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   #######END SQLITE3.7.4#######
+  
 
   #######QWT5.2.0#######
   echo "QWT"
@@ -154,7 +169,8 @@ else
   sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
   sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
 
-  #######END SQLITE3.7.4#######
+  #######END QWT5.2.0#######
+  
 
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0
