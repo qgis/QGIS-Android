@@ -34,6 +34,7 @@ echo "NDK location: " $NDK
 echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "Downloading src to: " $SRC_DIR
 echo "PATH:" $PATH
+echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
 

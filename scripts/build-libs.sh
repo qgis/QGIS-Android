@@ -32,6 +32,7 @@ echo "SRC location: " $SRC_DIR
 echo "NDK location: " $NDK
 echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "PATH:" $PATH
+echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
 
@@ -71,73 +72,73 @@ else
   cd $SRC_DIR
 
 #  #########PROJ4########
-#  echo "PROJ4"
-#  cd proj-4.7.0/
+  echo "PROJ4"
+  cd proj-4.7.0/
+  #configure
+  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END PROJ4########
+
+  #########GEOS3.2.2########
+  echo "GEOS3.2.2"
+  cd geos-3.2.2/
+  #configure
+  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+       ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END GEOS3.2.2########
+
+  #########EXPAT2.0.1########
+  echo "EXPAT2.0.1"
+  cd expat-2.0.1/
+  #configure
+  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END EXPAT2.0.1########
+
+
+  #########LIBICONV1.13.1########
+#  echo "LIBICONV"
+#  cd libiconv-1.13.1/
 #  #configure
-#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+#  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
 #  #compile
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
 #  cd $SRC_DIR
-#  #########END PROJ4########
+  #########END LIBICONV1.13.1########
+  
 
-#  #########GEOS3.2.2########
-#  echo "GEOS3.2.2"
-#  cd geos-3.2.2/
-#  #configure
-#  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
-#       ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  cd $SRC_DIR
-#  #########END GEOS3.2.2########
-
-#  #########EXPAT2.0.1########
-#  echo "EXPAT2.0.1"
-#  cd expat-2.0.1/
-#  #configure
-#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  cd $SRC_DIR
-#  #########END EXPAT2.0.1########
-
-
-#  #########LIBICONV1.13.1########
-##  echo "LIBICONV"
-##  cd libiconv-1.13.1/
-##  #configure
-##  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
-##  #compile
-##  make -j$CORES 2>&1 | tee make.out
-##  make -j$CORES 2>&1 install | tee makeInstall.out
-##  cd $SRC_DIR
-#  #########END LIBICONV1.13.1########
-#  
-
-#  #########SQLITE3.7.4########
-#  echo "SQLITE"
-#  cd sqlite-autoconf-3070400/
-#  #configure
-#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  cd $SRC_DIR
-#  #########END SQLITE3.7.4########
-#  
-#  
-#  #########GDAL1.8.0########
-#  echo "GDAL"
-#  cd gdal-1.8.0/
-#  #configure
-#  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
-#        ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########SQLITE3.7.4########
+  echo "SQLITE"
+  cd sqlite-autoconf-3070400/
+  #configure
+  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END SQLITE3.7.4########
+  
+  
+  #########GDAL1.8.0########
+  echo "GDAL"
+  cd gdal-1.8.0/
+  #configure
+  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+        ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
   cd $SRC_DIR
   #########END GDAL1.8.0########
   
