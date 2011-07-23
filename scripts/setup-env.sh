@@ -1,8 +1,24 @@
 #!/bin/bash
-#
+
+#   ***************************************************************************
+#     setup-env.sh - prepares the build environnement for android QGIS
+#      --------------------------------------
+#      Date                 : 01-Jun-2011
+#      Copyright            : (C) 2011 by Marco Bernasocchi
+#      Email                : marco at bernawebdesign.ch
+#   ***************************************************************************
+#   *                                                                         *
+#   *   This program is free software; you can redistribute it and/or modify  *
+#   *   it under the terms of the GNU General Public License as published by  *
+#   *   the Free Software Foundation; either version 2 of the License, or     *
+#   *   (at your option) any later version.                                   *
+#   *                                                                         *
+#   ***************************************************************************/
+
 set -e
+
 #######Load config#######
-source ./config.conf
+source `dirname $0`/config.conf
 
 ########START SCRIPT########
 usage(){
@@ -49,12 +65,12 @@ while test "$1" != "" ; do
 done
 
 #confirm settings
-CONTINUE=n
+CONTINUE="n"
 echo "OK? [y, n*]:"
 read CONTINUE
-CONTINUE=$(echo $CONTINUE | tr "[:lower:]" "[:upper:]")
+CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
 
-if [ "$CONTINUE" = "N" ]; then
+if [ "$CONTINUE" != "y" ]; then
   echo "Abort"
   exit 1
 else
@@ -65,12 +81,14 @@ else
   $NDK/build/tools/make-standalone-toolchain.sh --platform=android-$ANDROID_API --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
 
   echo "PATCHING STANDALONE TOOLCHAIN"
-  #Get NDK patch
-  wget "https://raw.github.com/mbernasocchi/qgis-mobile/master/patches/ndk_toolchain_uint64_t.patch" -O $TMP_DIR/ndk_toolchain_uint64_t.patch
   cd $ANDROID_NDK_TOOLCHAIN_ROOT
-  patch -p1 -i $TMP_DIR/ndk_toolchain_uint64_t.patch
+  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
-
+  echo "PATCHING NECESSITAS"
+  cd $QT_INCLUDE/QtCore
+  patch -p1 -i $PATCH_DIR/qreal.patch
+  
+  
   #Get Updated config.sub
   wget "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub" -O $TMP_DIR/config.sub
   #Get Updated guess.sub
@@ -132,16 +150,16 @@ else
 
 
   #######LIBICONV1.13.1#######
-  echo "LIBICONV"
-  cd $SRC_DIR
-  wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
-  tar xf libiconv-1.13.1.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
-  cd libiconv-1.13.1/
-  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
-  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
-  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
-  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
+#  echo "LIBICONV"
+#  cd $SRC_DIR
+#  wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+#  tar xf libiconv-1.13.1.tar.gz
+#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
+#  cd libiconv-1.13.1/
+#  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
+#  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
+#  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
+#  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
   

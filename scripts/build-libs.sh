@@ -1,8 +1,23 @@
 #!/bin/bash
-#
+
+#   ***************************************************************************
+#     build-libs.sh - builds all needed libraries for android QGIS
+#      --------------------------------------
+#      Date                 : 01-Jun-2011
+#      Copyright            : (C) 2011 by Marco Bernasocchi
+#      Email                : marco at bernawebdesign.ch
+#   ***************************************************************************
+#   *                                                                         *
+#   *   This program is free software; you can redistribute it and/or modify  *
+#   *   it under the terms of the GNU General Public License as published by  *
+#   *   the Free Software Foundation; either version 2 of the License, or     *
+#   *   (at your option) any later version.                                   *
+#   *                                                                         *
+#   ***************************************************************************/
+
 set -e
-#######Load config#######
-source ./config.conf
+
+source `dirname $0`/config.conf
 
 ########START SCRIPT########
 usage(){
@@ -44,88 +59,98 @@ while test "$1" != "" ; do
 done
 
 #confirm settings
-CONTINUE=n
+CONTINUE="n"
 echo "OK? [y, n*]:"
 read CONTINUE
-CONTINUE=$(echo $CONTINUE | tr "[:lower:]" "[:upper:]")
+CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
 
-if [ "$CONTINUE" = "N" ]; then
+if [ "$CONTINUE" != "y" ]; then
   echo "Abort"
   exit 1
 else
   cd $SRC_DIR
 
-  #########PROJ4########
-  echo "PROJ4"
-  cd proj-4.7.0/
-  #configure
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
-  #########END PROJ4########
+#  #########PROJ4########
+#  echo "PROJ4"
+#  cd proj-4.7.0/
+#  #configure
+#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  cd $SRC_DIR
+#  #########END PROJ4########
 
-  #########GEOS3.2.2########
-  echo "GEOS3.2.2"
-  cd geos-3.2.2/
-  #configure
-  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
-       ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
-  #########END GEOS3.2.2########
+#  #########GEOS3.2.2########
+#  echo "GEOS3.2.2"
+#  cd geos-3.2.2/
+#  #configure
+#  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+#       ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  cd $SRC_DIR
+#  #########END GEOS3.2.2########
 
-  #########EXPAT2.0.1########
-  echo "EXPAT2.0.1"
-  cd expat-2.0.1/
-  #configure
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
-  #########END EXPAT2.0.1########
+#  #########EXPAT2.0.1########
+#  echo "EXPAT2.0.1"
+#  cd expat-2.0.1/
+#  #configure
+#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  cd $SRC_DIR
+#  #########END EXPAT2.0.1########
 
 
-  #########LIBICONV1.13.1########
-  echo "LIBICONV"
-  cd libiconv-1.13.1/
-  #configure
-  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
-  #########END LIBICONV1.13.1########
-  
+#  #########LIBICONV1.13.1########
+##  echo "LIBICONV"
+##  cd libiconv-1.13.1/
+##  #configure
+##  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+##  #compile
+##  make -j$CORES 2>&1 | tee make.out
+##  make -j$CORES 2>&1 install | tee makeInstall.out
+##  cd $SRC_DIR
+#  #########END LIBICONV1.13.1########
+#  
 
-  #########SQLITE3.7.4########
-  echo "SQLITE"
-  cd sqlite-autoconf-3070400/
-  #configure
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
-  #########END SQLITE3.7.4########
-  
-  
-  #########GDAL1.8.0########
-  echo "GDAL"
-  cd gdal-1.8.0/
-  #configure
-  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
-        ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########SQLITE3.7.4########
+#  echo "SQLITE"
+#  cd sqlite-autoconf-3070400/
+#  #configure
+#  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  cd $SRC_DIR
+#  #########END SQLITE3.7.4########
+#  
+#  
+#  #########GDAL1.8.0########
+#  echo "GDAL"
+#  cd gdal-1.8.0/
+#  #configure
+#  CFLAGS="-mthumb" CXXFLAGS="-mthumb" LIBS="-lsupc++ -lstdc++" \
+#        ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
   cd $SRC_DIR
   #########END GDAL1.8.0########
   
+  echo "please compile QWT using necessitas QtCreator"
+  echo "run $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro now?"
+  echo "[y*, n]:"
+  read CONTINUE
+  CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
 
+  if [ "$CONTINUE" = "n" ]; then
+    echo "remember to manually run $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro"
+  else
+    $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro
+  fi
   exit 0
 fi
