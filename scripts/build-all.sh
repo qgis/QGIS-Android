@@ -26,4 +26,3 @@ $SCRIPT_DIR/build-libs.sh
 mkdir -p $QGIS_BUILD_DIR
 cd $QGIS_BUILD_DIR
 $SCRIPT_DIR/build-qgis.sh
-$SCRIPT_DIR/build-qgis.sh
