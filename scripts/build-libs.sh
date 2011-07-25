@@ -103,6 +103,19 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   cd $SRC_DIR
   #########END EXPAT2.0.1########
+  
+  #########GSL1.14########
+  echo "GSL1.14"
+  cd gsl-1.14/
+  #configure
+  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
+  LDFLAGS='-Wl,--fix-cortex-a8' \
+  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  #compile
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  cd $SRC_DIR
+  #########END GSL1.14########
+
 
 
   #########SQLITE3.7.4########

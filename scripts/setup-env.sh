@@ -135,6 +135,18 @@ else
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   ######END EXPAT2.0.1#######
+  
+  
+  #######GSL1.14#######
+  echo "GSL1.14"
+  cd $SRC_DIR
+  wget -c http://ftp.gnu.org/gnu/gsl/gsl-1.14.tar.gz
+  tar xf gsl-1.14.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
+  cd gsl-1.14/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  ######END EXPAT2.0.1#######
 
 
   #######GDAL#######
