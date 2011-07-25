@@ -31,8 +31,8 @@ usage(){
 }
 
 echo "SETTING UP ANDROID QGIS ENVIRONEMENT"
-echo "NDK location: " $NDK
-echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "NDK location: " $ANDROID_NDK_ROOT
+echo "Standalone toolchain location: " $ANDROID_NDK_STANDALONE_TOOLCHAIN_ROOT
 echo "Downloading src to: " $SRC_DIR
 echo "PATH:" $PATH
 echo "You can configure all this and more in `dirname $0`/config.conf"
@@ -80,10 +80,10 @@ else
 
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
-  $NDK/build/tools/make-standalone-toolchain.sh --platform=android-$ANDROID_API --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
+  $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_STANDALONE_TOOLCHAIN_ROOT
 
   echo "PATCHING STANDALONE TOOLCHAIN"
-  cd $ANDROID_NDK_TOOLCHAIN_ROOT
+  cd $ANDROID_NDK_STANDALONE_TOOLCHAIN_ROOT
   #patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
   echo "PATCHING NECESSITAS"

@@ -30,8 +30,8 @@ usage(){
 
 echo "BUILDING ANDROID QGIS LIBS2"
 echo "SRC location: " $SRC_DIR
-echo "NDK location: " $NDK
-echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "NDK location: " $ANDROID_NDK_ROOT
+echo "Standalone toolchain location: " $ANDROID_NDK_STANDALONE_TOOLCHAIN_ROOT
 echo "PATH:" $PATH
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
@@ -79,15 +79,15 @@ else
 #ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../qwt-5.2.0/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
 
   #########QWT5.2.0########
-  echo "QWT5.2.0"
+  echo "QWT5.2.0"	
   cd qwt-5.2.0/
   #configure
-#  CFLAGS='-Wno-psabi -fpic -ffunction-sections -funwind-tables -stack-protector -fno-short-enums -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__' \
-#  LDFLAGS='-Wl,--fix-cortex-a8' \
-#  $QMAKE qwt.pro
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
+  CFLAGS='-Wno-psabi -fpic -ffunction-sections -funwind-tables -stack-protector -fno-short-enums -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__' \
+  LDFLAGS='-Wl,--fix-cortex-a8' \
+  $QMAKE qwt.pro
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
   cd $SRC_DIR
   #########END EXPAT2.0.1########
 
@@ -176,16 +176,5 @@ else
   cd $SRC_DIR
   #########END GDAL1.8.0########
   
-  echo "please compile QWT using necessitas QtCreator"
-  echo "run $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro now?"
-  echo "[y*, n]:"
-  read CONTINUE
-  CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
-
-  if [ "$CONTINUE" = "n" ]; then
-    echo "remember to manually run $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro"
-  else
-    $NECESSITAS_DIR/QtCreator/bin/necessitas ./qwt-5.2.0/qwt.pro
-  fi
   exit 0
 fi
