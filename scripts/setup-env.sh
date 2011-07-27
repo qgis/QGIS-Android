@@ -34,6 +34,7 @@ echo "SETTING UP ANDROID QGIS ENVIRONEMENT"
 echo "NDK location: " $ANDROID_NDK_ROOT
 echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "Downloading src to: " $SRC_DIR
+echo "Installing to: " $INSTALL_DIR
 echo "PATH:" $PATH
 echo "You can configure all this and more in `dirname $0`/config.conf"
 

@@ -23,7 +23,13 @@ source `dirname $0`/config.conf
 #fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
 #check QT_COORD_TYPE=double is to fix the type def of qreal to float for arm in QtCore/qglobal.h
 
-cmake \
+if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
+  MY_CMAKE=cmake
+else
+  MY_CMAKE=ccmake
+fi
+
+$MY_CMAKE \
 -DANDROID=ON \
 -DARM_TARGET=$ANDROID_TARGET_ARCH \
 -DBISON_EXECUTABLE=/usr/bin/bison \
