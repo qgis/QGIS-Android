@@ -21,14 +21,13 @@ source `dirname $0`/config.conf
 
 #TODO
 #fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
-#check GSL
 #check QT_COORD_TYPE=double is to fix the type def of qreal to float for arm in QtCore/qglobal.h
 
 cmake \
 -DANDROID=ON \
 -DARM_TARGET=$ANDROID_TARGET_ARCH \
 -DBISON_EXECUTABLE=/usr/bin/bison \
--DCMAKE_BUILD_TYPE=Debug \
+-DCMAKE_BUILD_TYPE=None \
 -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
 -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/android.toolchain.cmake \
 -DEXECUTABLE_OUTPUT_PATH=$INSTALL_DIR/$ANDROID_TARGET_ARCH/bin \
@@ -48,13 +47,15 @@ cmake \
 -DGSL_CONFIG=$INSTALL_DIR/bin/gsl-config \
 -DGSL_CONFIG_PREFER_PATH=$INSTALL_DIR/bin \
 -DGSL_EXE_LINKER_FLAGS=-Wl,-rpath, \
--DGSL_INCLUDE_DIR$INSTALL_DIR/include/gsl \
+-DGSL_INCLUDE_DIR=$INSTALL_DIR/include/gsl \
 -DINCLUDE_DIRECTORIES=$INSTALL_DIR \
 -DLDFLAGS='-Wl,--fix-cortex-a8' \
 -DLIBRARY_OUTPUT_PATH_ROOT=$INSTALL_DIR \
--DPEDANTIC=ON \
+-DNO_SWIG=true \
+-DPEDANTIC=OFF \
 -DPROJ_INCLUDE_DIR=$INSTALL_DIR/include \
 -DPROJ_LIBRARY=$INSTALL_DIR/lib/libproj.so \
+-DQT_MKSPECS_DIR=$QT_ROOT/mkspecs \
 -DQT_QMAKE_EXECUTABLE=$QMAKE \
 -DQT_COORD_TYPE='double' \
 -DQT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \

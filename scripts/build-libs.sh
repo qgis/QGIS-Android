@@ -31,7 +31,7 @@ usage(){
 echo "BUILDING ANDROID QGIS LIBS2"
 echo "SRC location: " $SRC_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
-echo "Standalone toolchain location: " $ANDROID_NDK_STANDALONE_TOOLCHAIN_ROOT
+echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "PATH:" $PATH
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
