@@ -90,7 +90,7 @@ else
 
   #########QWT5.2.0########
   echo "QWT5.2.0"	
-  cd qwt-5.2.0/
+  cd $SRC_DIR/qwt-5.2.0/
   #configure
   CFLAGS='-Wno-psabi -fpic -ffunction-sections -funwind-tables -stack-protector -fno-short-enums -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__' \
   LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -98,25 +98,23 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END EXPAT2.0.1########
 
 
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
-  cd expat-2.0.1/
+  cd $SRC_DIR/expat-2.0.1/
   #configure
   CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
   LDFLAGS='-Wl,--fix-cortex-a8' \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
   #compile
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END EXPAT2.0.1########
   
   #########GSL1.14########
   echo "GSL1.14"
-  cd gsl-1.14/
+  cd $SRC_DIR/gsl-1.14/
   #configure
   CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
   LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -124,14 +122,13 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END GSL1.14########
 
 
 
   #########SQLITE3.7.4########
   echo "SQLITE"
-  cd sqlite-autoconf-3070400/
+  cd $SRC_DIR/sqlite-autoconf-3070400/
   #configure
   CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
   LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -139,29 +136,25 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END SQLITE3.7.4########
 
 
   ##########PROJ4########
   echo "PROJ4"
-  cd proj-4.7.0/
-
+  cd $SRC_DIR/proj-4.7.0/
   #configure
   CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
   LDFLAGS='-Wl,--fix-cortex-a8' \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
-
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END PROJ4########
 
 
   #########LIBICONV1.13.1########
 #  echo "LIBICONV"
-#  cd libiconv-1.13.1/
+#  cd $SRC_DIR/libiconv-1.13.1/
 #  #configure
 #  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
 #  LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -169,13 +162,12 @@ else
 #  #compile
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
-#  cd $SRC_DIR
   #########END LIBICONV1.13.1########
   
 
   #########GEOS3.2.2########
   echo "GEOS3.2.2"
-  cd geos-3.2.2/
+  cd $SRC_DIR/geos-3.2.2/
   #configure
   CFLAGS="-mthumb -march=armv7-a -mfloat-abi=softfp" LIBS="-lsupc++ -lstdc++" \
   LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -183,13 +175,12 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END GEOS3.2.2########
 
 
   #########GDAL1.8.0########
   echo "GDAL"
-  cd gdal-1.8.0/
+  cd $SRC_DIR/gdal-1.8.0/
   #configure
   CFLAGS="-mthumb -march=armv7-a -mfloat-abi=softfp" LIBS="-lsupc++ -lstdc++" \
   LDFLAGS='-Wl,--fix-cortex-a8' \
@@ -197,7 +188,6 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  cd $SRC_DIR
   #########END GDAL1.8.0########
   
   exit 0

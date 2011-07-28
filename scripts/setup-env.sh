@@ -31,11 +31,12 @@ usage(){
 }
 
 echo "SETTING UP ANDROID QGIS ENVIRONEMENT"
-echo "NDK location: " $ANDROID_NDK_ROOT
-echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
-echo "Downloading src to: " $SRC_DIR
-echo "Installing to: " $INSTALL_DIR
-echo "PATH:" $PATH
+echo "QGIS build dir (WILL BE EMPTIED): " $QGIS_BUILD_DIR
+echo "NDK dir:                          " $ANDROID_NDK_ROOT
+echo "Standalone toolchain dir:         " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "Downloading src to:               " $SRC_DIR
+echo "Installing to:                    " $INSTALL_DIR
+echo "PATH:                             " $PATH
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
@@ -74,10 +75,43 @@ read CONTINUE
 CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
 
 if [ "$CONTINUE" != "y" ]; then
-  echo "Abort"
+  echo "User Abort"
   exit 1
 else
+  #preparing environnement
   mkdir -p $TMP_DIR
+  mkdir -p $QGIS_BUILD_DIR
+  rm -rf $QGIS_BUILD_DIR/*
+  cd $QGIS_BUILD_DIR
+  
+  #######QTUITOOLS#######
+  #HACK temporary needed until necessitas will include qtuitools
+  #check if qt-src are installed
+  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
+    ln -sf $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
+    ln -sf $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
+    cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
+    cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
+  else
+    echo "Please download the QT source using the package manager in Necessitas \
+    Creator under help/start updater and rerun this script"
+    exit 1
+  fi
+
+
+  #check if an android branch of qgis is present
+  set +e
+    git checkout android
+  set -e
+  BRANCH="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
+  
+  if [ "$BRANCH" != "android" ]; then
+    echo "Aborting, the qgis branch checkedout is not 'android', please clone or fork this repo: git://github.com/mbernasocchi/Quantum-GIS.git"
+    exit 1
+  else
+    echo "Environement looks good, lets start"
+  fi
+  
 
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
@@ -95,19 +129,7 @@ else
 
   mkdir -p $SRC_DIR
   
-  #######QTUITOOLS#######
-  #HACK temporary needed until necessitas will include qtuitools
-  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
-    ln -sf $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
-    ln -sf $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
-    cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
-    cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
-  else
-    echo "Please download the QT source using the package manager in Necessitas Creator under help/start updater"
-    exit 1
-  fi
-
-
+  
   #######PROJ4#######
   echo "PROJ4"
   cd $SRC_DIR
