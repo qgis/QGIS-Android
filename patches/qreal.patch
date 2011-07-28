@@ -1,13 +1,168 @@
-diff --git a/qglobal.h b/qglobal.h
-index f217166..7d3371f 100644
---- a/qglobal.h
-+++ b/qglobal.h
-@@ -1162,7 +1162,7 @@ typedef int QNoImplicitBoolCast;
- #if defined(QT_COORD_TYPE)
- typedef QT_COORD_TYPE qreal;
- #elif defined(QT_NO_FPU) || defined(QT_ARCH_ARM) || defined(QT_ARCH_WINDOWSCE) || defined(QT_ARCH_SYMBIAN)
--typedef float qreal;
-+typedef double qreal;
- #else
- typedef double qreal;
- #endif
+diff --git a/src/core/qgscoordinatetransform.cpp b/src/core/qgscoordinatetransform.cpp
+index 7d3d575..fe141b4 100644
+--- a/src/core/qgscoordinatetransform.cpp
++++ b/src/core/qgscoordinatetransform.cpp
+@@ -343,6 +343,80 @@ void QgsCoordinateTransform::transformInPlace( std::vector<double>& x,
+   }
+ }
+ 
++#ifdef ANDROID
++void QgsCoordinateTransform::transformInPlace( float& x, float& y, float& z,
++    TransformDirection direction ) const
++{
++  if ( mShortCircuit || !mInitialisedFlag )
++    return;
++#ifdef QGISDEBUG
++// QgsDebugMsg(QString("Using transform in place %1 %2").arg(__FILE__).arg(__LINE__));
++#endif
++  // transform x
++  try
++  {
++    double xd = x;
++    double yd = y;
++    double zd = z;
++    transformCoords( 1, &xd, &yd, &zd, direction );
++    x = xd;
++    y = yd;
++    z = zd;
++  }
++  catch ( QgsCsException &cse )
++  {
++    // rethrow the exception
++    QgsDebugMsg( "rethrowing exception" );
++    throw cse;
++  }
++}
++
++void QgsCoordinateTransform::transformInPlace( std::vector<float>& x,
++    std::vector<float>& y, std::vector<float>& z,
++    TransformDirection direction ) const
++{
++  if ( mShortCircuit || !mInitialisedFlag )
++    return;
++
++  Q_ASSERT( x.size() == y.size() );
++
++  // Apparently, if one has a std::vector, it is valid to use the
++  // address of the first element in the vector as a pointer to an
++  // array of the vectors data, and hence easily interface with code
++  // that wants C-style arrays.
++
++  try
++  {
++    //copy everything to double vectors since proj needs double
++    int vectorSize = x.size();
++    std::vector<double> xd( x.size() );
++    std::vector<double> yd( y.size() );
++    std::vector<double> zd( z.size() );
++    for( int i = 0; i < vectorSize; ++i )
++    {
++        xd[i] = x[i];
++        yd[i] = y[i];
++        zd[i] = z[i];
++    }
++    transformCoords( x.size(), &xd[0], &yd[0], &zd[0], direction );
++
++    //copy back
++    for( int i = 0; i < vectorSize; ++i )
++    {
++        x[i] = xd[i];
++        y[i] = yd[i];
++        z[i] = zd[i];
++    }
++  }
++  catch ( QgsCsException &cse )
++  {
++    // rethrow the exception
++    QgsDebugMsg( "rethrowing exception" );
++    throw cse;
++  }
++}
++#endif //ANDROID
++
+ 
+ QgsRectangle QgsCoordinateTransform::transformBoundingBox( const QgsRectangle rect, TransformDirection direction ) const
+ {
+diff --git a/src/core/qgscoordinatetransform.h b/src/core/qgscoordinatetransform.h
+index cf675e9..f6d4d50 100644
+--- a/src/core/qgscoordinatetransform.h
++++ b/src/core/qgscoordinatetransform.h
+@@ -157,6 +157,13 @@ class CORE_EXPORT QgsCoordinateTransform: public QObject
+     void transformInPlace( std::vector<double>& x, std::vector<double>& y, std::vector<double>& z,
+                            TransformDirection direction = ForwardTransform ) const;
+ 
++#ifdef ANDROID
++    void transformInPlace( float& x, float& y, float& z, TransformDirection direction = ForwardTransform ) const;
++
++    void transformInPlace( std::vector<float>& x, std::vector<float>& y, std::vector<float>& z,
++                           TransformDirection direction = ForwardTransform ) const;
++#endif
++
+     /*! Transform a QgsRectangle to the dest Coordinate system
+     * If the direction is ForwardTransform then coordinates are transformed from layer CS --> map canvas CS,
+     * otherwise points are transformed from map canvas CS to layerCS.
+diff --git a/src/core/qgsmaptopixel.cpp b/src/core/qgsmaptopixel.cpp
+index d0cc76d..2d3fe25 100644
+--- a/src/core/qgsmaptopixel.cpp
++++ b/src/core/qgsmaptopixel.cpp
+@@ -143,3 +143,19 @@ void QgsMapToPixel::transformInPlace( std::vector<double>& x,
+   for ( unsigned int i = 0; i < x.size(); ++i )
+     transformInPlace( x[i], y[i] );
+ }
++
++#ifdef ANDROID
++void QgsMapToPixel::transformInPlace( float& x, float& y ) const
++{
++  x = ( x - xMin ) / mMapUnitsPerPixel;
++  y = yMax - ( y - yMin ) / mMapUnitsPerPixel;
++}
++
++void QgsMapToPixel::transformInPlace( std::vector<float>& x,
++                                      std::vector<float>& y ) const
++{
++  assert( x.size() == y.size() );
++  for ( unsigned int i = 0; i < x.size(); ++i )
++    transformInPlace( x[i], y[i] );
++}
++#endif
+diff --git a/src/core/qgsmaptopixel.h b/src/core/qgsmaptopixel.h
+index 344671f..e6406dc 100644
+--- a/src/core/qgsmaptopixel.h
++++ b/src/core/qgsmaptopixel.h
+@@ -73,6 +73,12 @@ class CORE_EXPORT QgsMapToPixel
+     void transformInPlace( std::vector<double>& x,
+                            std::vector<double>& y ) const;
+ 
++#ifdef ANDROID
++    void transformInPlace( float& x, float& y ) const;
++    void transformInPlace( std::vector<float>& x,
++                          std::vector<float>& y ) const;
++#endif
++
+     QgsPoint toMapCoordinates( int x, int y ) const;
+ 
+     /*! Transform device coordinates to map (world) coordinates
+diff --git a/src/core/symbology-ng/qgsrendererv2.cpp b/src/core/symbology-ng/qgsrendererv2.cpp
+index ed95707..70a24df 100644
+--- a/src/core/symbology-ng/qgsrendererv2.cpp
++++ b/src/core/symbology-ng/qgsrendererv2.cpp
+@@ -53,7 +53,8 @@ unsigned char* QgsFeatureRendererV2::_getLineString( QPolygonF& pts, QgsRenderCo
+   wkb += sizeof( unsigned int );
+ 
+   bool hasZValue = ( wkbType == QGis::WKBLineString25D );
+-  double x, y, z;
++  double x, y;
++  qreal z;
+ 
+   const QgsCoordinateTransform* ct = context.coordinateTransform();
+   const QgsMapToPixel& mtp = context.mapToPixel();
+@@ -116,7 +117,7 @@ unsigned char* QgsFeatureRendererV2::_getPolygon( QPolygonF& pts, QList<QPolygon
+ 
+   const QgsCoordinateTransform* ct = context.coordinateTransform();
+   const QgsMapToPixel& mtp = context.mapToPixel();
+-  double z = 0; // dummy variable for coordiante transform
++  qreal z = 0; // dummy variable for coordiante transform
+ 
+   const QgsRectangle& e = context.extent();
+   double cw = e.width() / 10; double ch = e.height() / 10;
+
