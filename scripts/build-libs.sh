@@ -76,13 +76,12 @@ if [ "$CONTINUE" != "y" ]; then
 else
   cd $SRC_DIR
 
-#ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../qwt-5.2.0/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
-  
+
   #########QTUITOOLS########
   echo "QTUITOOLS"	
   cd $QT_SRC/tools/designer/src/uitools
-  CFLAGS='-Wno-psabi -fpic -ffunction-sections -funwind-tables -stack-protector -fno-short-enums -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE  uitools.pro 
   make -j2
   #########END QTUITOOLS########
@@ -92,8 +91,8 @@ else
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
   #configure
-  CFLAGS='-Wno-psabi -fpic -ffunction-sections -funwind-tables -stack-protector -fno-short-enums -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -105,8 +104,8 @@ else
   echo "EXPAT2.0.1"
   cd $SRC_DIR/expat-2.0.1/
   #configure
-  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
   #compile
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -116,8 +115,8 @@ else
   echo "GSL1.14"
   cd $SRC_DIR/gsl-1.14/
   #configure
-  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -130,8 +129,8 @@ else
   echo "SQLITE"
   cd $SRC_DIR/sqlite-autoconf-3070400/
   #configure
-  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -143,8 +142,8 @@ else
   echo "PROJ4"
   cd $SRC_DIR/proj-4.7.0/
   #configure
-  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -156,8 +155,8 @@ else
 #  echo "LIBICONV"
 #  cd $SRC_DIR/libiconv-1.13.1/
 #  #configure
-#  CFLAGS='-mthumb -march=armv7-a -mfloat-abi=softfp' \
-#  LDFLAGS='-Wl,--fix-cortex-a8' \
+#  CFLAGS=$MY_STD_CFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
 #  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
 #  #compile
 #  make -j$CORES 2>&1 | tee make.out
@@ -169,8 +168,8 @@ else
   echo "GEOS3.2.2"
   cd $SRC_DIR/geos-3.2.2/
   #configure
-  CFLAGS="-mthumb -march=armv7-a -mfloat-abi=softfp" LIBS="-lsupc++ -lstdc++" \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -182,8 +181,8 @@ else
   echo "GDAL"
   cd $SRC_DIR/gdal-1.8.0/
   #configure
-  CFLAGS="-mthumb -march=armv7-a -mfloat-abi=softfp" LIBS="-lsupc++ -lstdc++" \
-  LDFLAGS='-Wl,--fix-cortex-a8' \
+  CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
+  LDFLAGS=$MY_STD_LDFLAGS \
   ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
   #compile
   make -j$CORES 2>&1 | tee make.out

@@ -25,16 +25,10 @@ source `dirname $0`/config.conf
 
 cd $QGIS_BUILD_DIR
 
-if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
-  MY_CMAKE=cmake
-else
-  MY_CMAKE=ccmake
-fi
-
-$MY_CMAKE \
--DANDROID=ON \
+MY_CMAKE_FLAGS="-DANDROID=ON \
 -DARM_TARGET=$ANDROID_TARGET_ARCH \
 -DBISON_EXECUTABLE=/usr/bin/bison \
+-DCFLAGS=$MY_BASE_CFLAGS \
 -DCMAKE_BUILD_TYPE=None \
 -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
 -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/android.toolchain.cmake \
@@ -57,7 +51,7 @@ $MY_CMAKE \
 -DGSL_EXE_LINKER_FLAGS=-Wl,-rpath, \
 -DGSL_INCLUDE_DIR=$INSTALL_DIR/include/gsl \
 -DINCLUDE_DIRECTORIES=$INSTALL_DIR \
--DLDFLAGS='-Wl,--fix-cortex-a8' \
+-DLDFLAGS=$MY_STD_LDFLAGS \
 -DLIBRARY_OUTPUT_PATH_ROOT=$INSTALL_DIR \
 -DNO_SWIG=true \
 -DPEDANTIC=OFF \
@@ -79,5 +73,18 @@ $MY_CMAKE \
 -DWITH_MAPSERVER=OFF \
 -DWITH_POSTGRESQL=OFF \
 -DWITH_SPATIALITE=OFF \
--DWITH_TXT2TAGS_PDF=OFF \
-.. && make -j$CORES install
+-DWITH_TXT2TAGS_PDF=OFF"
+
+
+if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
+  MY_CMAKE=cmake
+else
+  MY_CMAKE=ccmake
+fi
+
+set +e
+  #hack to avoid dpkg-architecture: Warning...
+  cmake $MY_CMAKE_FLAGS ..
+set -e
+
+$MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
