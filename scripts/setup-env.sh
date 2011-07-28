@@ -37,6 +37,8 @@ echo "Standalone toolchain dir:         " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "Downloading src to:               " $SRC_DIR
 echo "Installing to:                    " $INSTALL_DIR
 echo "PATH:                             " $PATH
+echo "CFLAGS:                           " $MY_STD_CFLAGS
+echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
