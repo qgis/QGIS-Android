@@ -83,7 +83,8 @@ else
   CFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE  uitools.pro 
-  make -j2
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
   #########END QTUITOOLS########
   
 
