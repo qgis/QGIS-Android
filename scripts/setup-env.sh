@@ -87,17 +87,25 @@ else
   cd $ANDROID_NDK_TOOLCHAIN_ROOT
   patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
-  echo "PATCHING NECESSITAS"
-  cd $QT_INCLUDE/QtCore
-  #patch -p1 -i $PATCH_DIR/qreal.patch
-  
-  
+
   #Get Updated config.sub
   wget -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub" -O $TMP_DIR/config.sub
   #Get Updated guess.sub
   wget -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $TMP_DIR/config.guess
 
   mkdir -p $SRC_DIR
+  
+  #######QTUITOOLS#######
+  #HACK temporary needed until necessitas will include qtuitools
+  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
+    ln -sf $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
+    ln -sf $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
+    cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
+    cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
+  else
+    echo "Please download the QT source using the package manager in Necessitas Creator under help/start updater"
+    exit 1
+  fi
 
 
   #######PROJ4#######

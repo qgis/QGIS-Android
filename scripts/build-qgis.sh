@@ -23,6 +23,8 @@ source `dirname $0`/config.conf
 #fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
 #check QT_COORD_TYPE=double is to fix the type def of qreal to float for arm in QtCore/qglobal.h
 
+cd $QGIS_BUILD_DIR
+
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake
 else
@@ -43,7 +45,7 @@ $MY_CMAKE \
 -DGDAL_CONFIG=$INSTALL_DIR/bin/gdal-config \
 -DGDAL_CONFIG_PREFER_FWTOOLS_PAT=/bin_safe \
 -DGDAL_CONFIG_PREFER_PATH=$INSTALL_DIR/bin \
--DGDAL_INCLUDE_DIR=$INSTALL_DIR/include/gdal \
+-DGDAL_INCLUDE_DIR=$INSTALL_DIR/include \
 -DGDAL_LIBRARY=$INSTALL_DIR/lib/libgdal.so \
 -DGEOS_CONFIG=$INSTALL_DIR/bin/geos-config \
 -DGEOS_CONFIG_PREFER_PATH=$INSTALL_DIR/bin \
@@ -63,8 +65,6 @@ $MY_CMAKE \
 -DPROJ_LIBRARY=$INSTALL_DIR/lib/libproj.so \
 -DQT_MKSPECS_DIR=$QT_ROOT/mkspecs \
 -DQT_QMAKE_EXECUTABLE=$QMAKE \
--DQT_COORD_TYPE='double' \
--DQT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
 -DQWT_INCLUDE_DIR=$SRC_DIR/qwt-5.2.0/src \
 -DQWT_LIBRARY=$INSTALL_DIR/lib/libqwt.so \
 -DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
