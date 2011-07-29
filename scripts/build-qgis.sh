@@ -28,7 +28,7 @@ cd $QGIS_BUILD_DIR
 MY_CMAKE_FLAGS=" \
 -DARM_TARGET=$ANDROID_TARGET_ARCH \
 -DBISON_EXECUTABLE=/usr/bin/bison \
--DCFLAGS=$MY_STD_CFLAGS \
+-DCFLAGS='$MY_STD_CFLAGS' \
 -DCMAKE_BUILD_TYPE=None \
 -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
 -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/android.toolchain.cmake \
@@ -75,6 +75,9 @@ MY_CMAKE_FLAGS=" \
 -DWITH_SPATIALITE=OFF \
 -DWITH_TXT2TAGS_PDF=OFF"
 
+#uncomment the next 2 lines to only get the needed cmake flags echoed
+#echo $MY_CMAKE_FLAGS
+#exit
 
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake
