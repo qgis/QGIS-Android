@@ -19,10 +19,6 @@ set -e
 
 source `dirname $0`/config.conf
 
-#TODO
-#fix QT_QTUITOOLS_INCLUDE_DIR=/usr/include/qt4/QtUiTools \
-#check QT_COORD_TYPE=double is to fix the type def of qreal to float for arm in QtCore/qglobal.h
-
 cd $QGIS_BUILD_DIR
 
 MY_CMAKE_FLAGS=" \
@@ -77,7 +73,7 @@ MY_CMAKE_FLAGS=" \
 
 #uncomment the next 2 lines to only get the needed cmake flags echoed
 #echo $MY_CMAKE_FLAGS
-#exit
+#exit 0
 
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake
