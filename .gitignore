@@ -5,7 +5,7 @@
 /tmp/
 /out/
 */android/gen/
-*/android/bin/classes*
+*/android/bin/
 */android/libs/
 /QtApk/Makefile
 /test-apk/Makefile

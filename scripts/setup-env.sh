@@ -96,6 +96,7 @@ else
   fi
 
   #preparing environnement
+  android update project --name Qgis --path $APK_DIR
   mkdir -p $TMP_DIR
   mkdir -p $QGIS_BUILD_DIR
   rm -rf $QGIS_BUILD_DIR/*
