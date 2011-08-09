@@ -81,6 +81,7 @@ else
   echo "QTUITOOLS"	
   cd $QT_SRC/tools/designer/src/uitools
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE  uitools.pro 
   make -j$CORES 2>&1 | tee make.out
@@ -93,6 +94,7 @@ else
   cd $SRC_DIR/qwt-5.2.0/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE qwt.pro
   #compile
@@ -106,6 +108,7 @@ else
   cd $SRC_DIR/expat-2.0.1/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -118,6 +121,7 @@ else
   cd $SRC_DIR/gsl-1.14/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -133,6 +137,7 @@ else
   cd $SRC_DIR/sqlite-autoconf-3070400/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -147,6 +152,7 @@ else
   cd $SRC_DIR/proj-4.7.0/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -161,6 +167,7 @@ else
 #  cd $SRC_DIR/libiconv-1.13.1/
 #  #configure
 #  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
 #  ./configure $MY_STD_CONFIGURE_FLAGS
 #  #compile
@@ -174,8 +181,10 @@ else
   echo "GEOS3.2.2"
   cd $SRC_DIR/geos-3.2.2/
   #configure
-  CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
@@ -189,8 +198,10 @@ else
   echo "GDAL"
   cd $SRC_DIR/gdal-1.8.0/
   #configure
-  CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
   #compile
   make -j$CORES 2>&1 | tee make.out
