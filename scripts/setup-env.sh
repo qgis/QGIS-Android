@@ -95,6 +95,12 @@ else
     exit 1
   fi
 
+  ########CHECK IF rpl EXISTS################
+  hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
+  
+  ########CHECK IF xpath EXISTS################
+  hash xpath 2>&- || { echo >&2 "The Program xpath is required but it's not installed. Aborting."; exit 1; }
+
   #preparing environnement
   mkdir -p $TMP_DIR
   mkdir -p $QGIS_BUILD_DIR
@@ -115,12 +121,6 @@ else
   fi
   
   
-  ########CHECK IF rpl EXISTS################
-  hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
-  
-  ########CHECK IF xpath EXISTS################
-  hash xpath 2>&- || { echo >&2 "The Program xpath is required but it's not installed. Aborting."; exit 1; }
-
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
   $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
