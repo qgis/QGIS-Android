@@ -107,9 +107,10 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 install | tee makeInstall.out
+  rpl -R -e libexpat.so.1 "libexpat.so\x00\x00" $INSTALL_DIR/lib
   #########END EXPAT2.0.1########
   
   #########GSL1.14########
@@ -118,10 +119,11 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  rpl -R -e libgsl.so.0 "libgsl.so\x00\x00" $INSTALL_DIR/lib
   #########END GSL1.14########
 
 
@@ -132,10 +134,11 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  rpl -R -e libsqlite3.so.0 "libsqlite3.so\x00\x00" $INSTALL_DIR/lib
   #########END SQLITE3.7.4########
 
 
@@ -145,10 +148,11 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --prefix=$INSTALL_DIR --host=arm-linux-androideabi
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  rpl -R -e libproj.so.0 "libproj.so\x00\x00" $INSTALL_DIR/lib
   #########END PROJ4########
 
 
@@ -158,10 +162,11 @@ else
 #  #configure
 #  CFLAGS=$MY_STD_CFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
-#  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+#  ./configure $MY_STD_CONFIGURE_FLAGS
 #  #compile
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
+#  rpl -R -e libiconv.so.1 "libiconv.so\x00\x00" $INSTALL_DIR/lib
   #########END LIBICONV1.13.1########
   
 
@@ -171,10 +176,12 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --host=arm-linux-androideabi --prefix=$INSTALL_DIR
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  #not needed for geos since SONAME is geos-3.2.2.so
+  rpl -R -e libgeos_c.so.1 "libgeos_c.so\x00\x00" $INSTALL_DIR/lib
   #########END GEOS3.2.2########
 
 
@@ -184,10 +191,11 @@ else
   #configure
   CFLAGS=$MY_STD_CFLAGS LIBS="-lsupc++ -lstdc++" \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure --host=arm-linux-androideabi --without-grib --prefix=$INSTALL_DIR
+  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  rpl -R -e libgdal.so.1 "libgdal.so\x00\x00" $INSTALL_DIR/lib
   #########END GDAL1.8.0########
   
   exit 0

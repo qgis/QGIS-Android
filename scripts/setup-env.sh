@@ -80,11 +80,6 @@ if [ "$CONTINUE" != "y" ]; then
   echo "User Abort"
   exit 1
 else
-  #preparing environnement
-  mkdir -p $TMP_DIR
-  mkdir -p $QGIS_BUILD_DIR
-  rm -rf $QGIS_BUILD_DIR/*
-  cd $QGIS_BUILD_DIR
   
   #######QTUITOOLS#######
   #HACK temporary needed until necessitas will include qtuitools
@@ -100,7 +95,12 @@ else
     exit 1
   fi
 
-
+  #preparing environnement
+  mkdir -p $TMP_DIR
+  mkdir -p $QGIS_BUILD_DIR
+  rm -rf $QGIS_BUILD_DIR/*
+  cd $QGIS_DIR
+  
   #check if an android branch of qgis is present
   set +e
     git checkout android
@@ -114,6 +114,12 @@ else
     echo "Environement looks good, lets start"
   fi
   
+  
+  ########CHECK IF rpl EXISTS################
+  hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
+  
+  ########CHECK IF xpath EXISTS################
+  hash xpath 2>&- || { echo >&2 "The Program xpath is required but it's not installed. Aborting."; exit 1; }
 
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"

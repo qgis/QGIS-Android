@@ -1,9 +1,9 @@
-./src/
-./tmp/
+*.out
 *.class
 *local.properties
-/test-apk/android/gen/eu/licentia/necessitas/ministro/IMinistroCallback.java
-/test-apk/android/gen/eu/licentia/necessitas/ministro/IMinistro.java
-/test-apk/android/bin/classes.dex
-/test-apk/android/gen/org/qgis/qgis/R.java
-/test-apk/android/qgis_libs/
+/src/
+/tmp/
+/out/
+*/android/gen/
+*/android/bin/classes*
+*/android/libs/
