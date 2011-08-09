@@ -7,3 +7,5 @@
 */android/gen/
 */android/bin/classes*
 */android/libs/
+/QtApk/Makefile
+/test-apk/Makefile
