@@ -36,7 +36,15 @@ echo "NDK dir:                          " $ANDROID_NDK_ROOT
 echo "Standalone toolchain dir:         " $ANDROID_NDK_TOOLCHAIN_ROOT
 echo "Downloading src to:               " $SRC_DIR
 echo "Installing to:                    " $INSTALL_DIR
-echo "PATH:                             " $PATH
+if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+  echo "WARNING: armeabi-v7a builds usually don't work on android emulators"
+else
+  echo "NOTICE: if you build for a newer device (hummingbird, tegra,... processors)\
+ armeabi-v7a arch would increase the performance. Set the architecture accordingly\
+ in the conf file. Look as well for MY_FPU in the conf file for further tuning."
+fi  
+echo "PATH:"
+echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS
 echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
