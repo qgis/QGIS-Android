@@ -1,4 +1,6 @@
 TODO:
-- compile QWT from shell
-- compile QGIS
+- fix qgis compilation output path
+- compile QGISapp.so
+- integrate gps
+- ui customization
 
