@@ -17,6 +17,7 @@
 
 
 set -e
+start_time=`date +%s`
 #######Load config#######
 source `dirname $0`/config.conf
 export QGIS_ANDROID_BUILD_ALL=1
@@ -25,3 +26,10 @@ $SCRIPT_DIR/setup-env.sh
 $SCRIPT_DIR/build-libs.sh
 $SCRIPT_DIR/build-qgis.sh
 $SCRIPT_DIR/build-apk.sh
+
+end_time=`date +%s`
+seconds=`expr $end_time - $start_time`
+minutes=$((seconds / 60))
+seconds=$((seconds % 60))
+echo "Successfully built all in $minutes minutes and $seconds seconds"
+
