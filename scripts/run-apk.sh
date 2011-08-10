@@ -21,4 +21,4 @@ source `dirname $0`/config.conf
 
 cd $APK_DIR
 ant install
-adb -d shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
+adb shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
