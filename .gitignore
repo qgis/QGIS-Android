@@ -9,3 +9,5 @@
 */android/libs/
 /QtApk/Makefile
 /test-apk/Makefile
+/QtApk/android/.classpath
+/QtApk/android/.project
