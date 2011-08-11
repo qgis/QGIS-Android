@@ -211,8 +211,8 @@ endif()
 #setup output directories
 set( LIBRARY_OUTPUT_PATH_ROOT ${CMAKE_SOURCE_DIR} CACHE PATH "root for library output, set this to change where android libs are installed to" )
 set( LIBRARY_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH_ROOT}/libs/${ARMEABI_NDK_NAME} CACHE PATH "path for android libs" FORCE )
-set( EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH_ROOT}/bin/${ARMEABI_NDK_NAME} CACHE PATH "Output directory for applications" FORCE)
-set( CMAKE_INSTALL_PREFIX ${ANDROID_NDK_TOOLCHAIN_ROOT}/user/${ARMEABI_NDK_NAME} CACHE STRING "path for installing" FORCE )
+#set( EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH_ROOT}/bin/${ARMEABI_NDK_NAME} CACHE PATH "Output directory for applications" FORCE)
+#set( CMAKE_INSTALL_PREFIX ${ANDROID_NDK_TOOLCHAIN_ROOT}/user/${ARMEABI_NDK_NAME} CACHE STRING "path for installing" FORCE )
 
 # where is the target environment 
 if( BUILD_WITH_ANDROID_NDK )
