@@ -4,8 +4,9 @@
 /src/
 /tmp/
 /out/
-*/android/gen/
 */android/bin/
 */android/libs/
+*/android/gen/org/qgis/qgis/R.java
 /QtApk/Makefile
 /test-apk/Makefile
+
