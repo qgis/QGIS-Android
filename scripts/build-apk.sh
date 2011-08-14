@@ -24,13 +24,15 @@ $QMAKE qgis.pro
 make -j$CORES 2>&1 | tee make.out
 make -j$CORES clean 2>&1 | tee make.out
 
-#query libs.xml to se wich libs need to be deployed on the device
-for libname in `xpath -q -e "/resources/array[@name=\"bundled_libs\"]/item/text()" $APK_DIR/res/values/libs.xml  2> /dev/null`
-  do
-    cpcmd="cp -f $INSTALL_DIR/lib/lib$libname.so $APK_DIR/libs/$ANDROID_TARGET_ARCH/lib$libname.so"
-    echo $cpcmd
-    $cpcmd
-  done
+ln -s $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
+
+##query libs.xml to se wich libs need to be deployed on the device
+#for libname in `xpath -q -e "/resources/array[@name=\"bundled_libs\"]/item/text()" $APK_DIR/res/values/libs.xml  2> /dev/null`
+#  do
+#    cpcmd="cp -f $INSTALL_DIR/lib/lib$libname.so $APK_DIR/libs/$ANDROID_TARGET_ARCH/lib$libname.so"
+#    echo $cpcmd
+#    $cpcmd
+#  done
 
 cd $APK_DIR
 ant debug

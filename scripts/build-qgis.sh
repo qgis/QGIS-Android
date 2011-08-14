@@ -90,3 +90,9 @@ set +e
 set -e
 
 $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
+
+#remove versioned information
+rpl -R -e libqgis_core.so.1.8.0 "libqgis_core.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
+rpl -R -e libqgis_gui.so.1.8.0 "libqgis_gui.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
+rpl -R -e libqgis_analysis.so.1.8.0 "libqgis_analysis.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
+rpl -R -e libqgissqlanyconnection.so.1.8.0 "libqgissqlanyconnection.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
