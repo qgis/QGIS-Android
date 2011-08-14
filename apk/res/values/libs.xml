@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <array name="bundled_libs">
+      <item vesion=''>expat</item>
+      <item vesion=''>geos-3.2.2</item>
+      <item vesion=''>geos</item>
+      <item vesion=''>geos_c</item>
+<!--       <item vesion=''>gsl</item> -->
+      <item vesion=''>gdal</item>
+      <item vesion=''>proj</item>
+      <item vesion=''>qwt</item>
+      <item vesion=''>gslcblas</item>
+      <item vesion=''>sqlite3</item>
+      <item vesion=''>QtUiTools</item>
+      <item vesion=''>qgis_core</item>
+      <item vesion=''>qgissqlanyconnection</item>
+      <item vesion=''>qgis_analysis</item>
+      <item vesion=''>qgis_gui</item>
+    </array>
+    <array name="qt_libs">
+      <item>QtCore</item>
+      <item>QtGui</item>
+      <item>QtNetwork</item>
+      <item>QtSensors</item>
+      <item>QtSql</item>
+      <item>QtXml</item>
+      <item>QtBearer</item>
+      <item>QtLocation</item>
+      <item>QtOpenGL</item>
+      <item>QtSvg</item>
+      <item>QtSystemInfo</item>
+      <item>QtWebKit</item>
+    </array>
+</resources>
