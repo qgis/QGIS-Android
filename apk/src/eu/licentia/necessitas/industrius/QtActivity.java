@@ -166,7 +166,6 @@ public class QtActivity extends Activity {
         }
     }
 
-
     private void startApplication(String [] libs, String environment, String params)
     {
         QtApplication.loadQtLibraries(libs);

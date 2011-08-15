@@ -15,6 +15,8 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+#pass -configure as first parameter to perform cmake (configure step)
+
 set -e
 
 source `dirname $0`/config.conf
@@ -83,13 +85,11 @@ if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
 else
   MY_CMAKE=ccmake
 fi
-
-set +e
-  #hack to avoid dpkg-architecture: Warning...
-  cmake $MY_CMAKE_FLAGS ..
-set -e
-
-$MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
+if [ $1 = "-configure" ]; then
+    $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
+else
+    make -j$CORES install    
+fi
 
 #remove versioned information
 rpl -R -e libqgis_core.so.1.8.0 "libqgis_core.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
