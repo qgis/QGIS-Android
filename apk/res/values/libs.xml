@@ -5,11 +5,11 @@
       <item vesion=''>geos-3.2.2</item>
       <item vesion=''>geos</item>
       <item vesion=''>geos_c</item>
-<!--       <item vesion=''>gsl</item> -->
+      <item vesion=''>gslcblas</item>
+      <item vesion=''>gsl</item>
       <item vesion=''>gdal</item>
       <item vesion=''>proj</item>
       <item vesion=''>qwt</item>
-      <item vesion=''>gslcblas</item>
       <item vesion=''>sqlite3</item>
       <item vesion=''>QtUiTools</item>
       <item vesion=''>qgis_core</item>

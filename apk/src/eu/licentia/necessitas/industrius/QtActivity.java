@@ -167,71 +167,72 @@ public class QtActivity extends Activity {
     }
 
     private void startApplication(String [] libs, String environment, String params)
-    {
-        QtApplication.loadQtLibraries(libs);
-        //HACK
-        //createLibsAliases();
-
-        try
-        {
-            ActivityInfo ai=getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            if (ai.metaData.containsKey("android.app.bundled_libs_resource_id"))
-            {
-                // Load bundle libs
-                int resourceId = ai.metaData.getInt("android.app.bundled_libs_resource_id");
-                QtApplication.loadBundledLibraries(getResources().getStringArray(resourceId));
-            }
-
-            if (ai.metaData.containsKey("android.app.lib_name")) // Load application
-                QtApplication.loadBundledLibraries(new String[]{ai.metaData.getString("android.app.lib_name")});
-
-            // if the applications is debuggable and it has a native debug request
-            if ( /*(ai.flags&ApplicationInfo.FLAG_DEBUGGABLE) != 0
-                    &&*/ getIntent().getExtras() != null
-                    && getIntent().getExtras().containsKey("native_debug")
-                    && getIntent().getExtras().getString("native_debug").equals("true"))
-            {
-                try
-                {
-                    String packagePath=getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS).dataDir+"/";
-                    String gdbserverPath=getIntent().getExtras().containsKey("gdbserver_path")?getIntent().getExtras().getString("gdbserver_path"):packagePath+"lib/gdbserver ";
-                    String socket=getIntent().getExtras().containsKey("gdbserver_socket")?getIntent().getExtras().getString("gdbserver_socket"):"+debug-socket";
-                    // start debugger
-                    m_debuggerProcess =Runtime.getRuntime().exec(gdbserverPath+socket+" --attach "+android.os.Process.myPid(),null, new File(packagePath));
-                }
-                catch (IOException ioe)
-                {
-                        Log.e(QtApplication.QtTAG,"Can't start debugging"+ioe.getMessage());
-                }
-                catch (SecurityException se)
-                {
-                        Log.e(QtApplication.QtTAG,"Can't start debugging"+se.getMessage());
-                }
-            }
-            // start application
-
-            if (ai.metaData.containsKey("android.app.application_startup_params"))
-            {
-                if (params.length()>0)
-                    params+="\t";
-                params += ai.metaData.getString("android.app.application_startup_params");
-            }
-
-            final String homePath="HOME="+getFilesDir().getAbsolutePath()+"\tTMPDIR="+getFilesDir().getAbsolutePath();
-            if (environment != null && environment.length()>0)
-                environment=homePath+"\t"+environment;
-            else
-                environment=homePath;
-
-            QtApplication.startApplication(params, environment);
-            m_surface.applicationStared();
-            m_started = true;
-        }
-        catch (NameNotFoundException e)
-        {
-            Log.e(QtApplication.QtTAG, "Can't package metadata", e);
-        }
-    }
+	{
+	    QtApplication.loadQtLibraries(libs);
+	    //HACK
+	    //createLibsAliases();
+	
+	    try
+	    {
+	        ActivityInfo ai=getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+	        if (ai.metaData.containsKey("android.app.bundled_libs_resource_id"))
+	        {
+	            // Load bundle libs
+	            int resourceId = ai.metaData.getInt("android.app.bundled_libs_resource_id");
+	            QtApplication.loadBundledLibraries(getResources().getStringArray(resourceId));
+	        }
+	
+	        if (ai.metaData.containsKey("android.app.lib_name")) // Load application
+	            QtApplication.loadBundledLibraries(new String[]{ai.metaData.getString("android.app.lib_name")});
+	
+	        // if the applications is debuggable and it has a native debug request
+	        if ( /*(ai.flags&ApplicationInfo.FLAG_DEBUGGABLE) != 0
+	                &&*/ getIntent().getExtras() != null
+	                && getIntent().getExtras().containsKey("native_debug")
+	                && getIntent().getExtras().getString("native_debug").equals("true"))
+	        {
+	            try
+	            {
+	                String packagePath=getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS).dataDir+"/";
+	                String gdbserverPath=getIntent().getExtras().containsKey("gdbserver_path")?getIntent().getExtras().getString("gdbserver_path"):packagePath+"lib/gdbserver ";
+	                String socket=getIntent().getExtras().containsKey("gdbserver_socket")?getIntent().getExtras().getString("gdbserver_socket"):"+debug-socket";
+	                // start debugger
+	                m_debuggerProcess =Runtime.getRuntime().exec(gdbserverPath+socket+" --attach "+android.os.Process.myPid(),null, new File(packagePath));
+	            }
+	            catch (IOException ioe)
+	            {
+	                    Log.e(QtApplication.QtTAG,"Can't start debugging"+ioe.getMessage());
+	            }
+	            catch (SecurityException se)
+	            {
+	                    Log.e(QtApplication.QtTAG,"Can't start debugging"+se.getMessage());
+	            }
+	        }
+	        // start application
+	
+	        if (ai.metaData.containsKey("android.app.application_startup_params"))
+	        {
+	            if (params.length()>0)
+	                params+="\t";
+	            params += ai.metaData.getString("android.app.application_startup_params");
+	        }
+	
+	        final String homePath="HOME="+getFilesDir().getAbsolutePath()+"\tTMPDIR="+getFilesDir().getAbsolutePath();
+	        if (environment != null && environment.length()>0)
+	            environment=homePath+"\t"+environment;
+	        else
+	            environment=homePath;
+	
+	        QtApplication.startApplication(params, environment);
+	        m_surface.applicationStared();
+	        m_started = true;
+	        Log.w(QtTAG, "QtApplication.startApplication Started? '" + m_started + "'");
+	    }
+	    catch (NameNotFoundException e)
+	    {
+	        Log.e(QtApplication.QtTAG, "Can't package metadata", e);
+	    }
+	}
 
     private IMinistroCallback m_ministroCallback = new IMinistroCallback.Stub() {
         @Override

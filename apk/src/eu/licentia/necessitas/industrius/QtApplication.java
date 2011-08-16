@@ -166,6 +166,7 @@ public class QtApplication extends Application
             if (params.length()>0)
                 params="\t"+params;
             startQtApp("QtApp"+params, environment);
+            
             m_started=true;
         }
     }
