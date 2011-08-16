@@ -86,6 +86,7 @@ else
   $QMAKE  uitools.pro 
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
+  cp -f $QT_ROOT/lib/libQtUiTools.so $INSTALL_DIR/lib
   #########END QTUITOOLS########
   
 
