@@ -192,6 +192,9 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #not needed for geos since SONAME is geos-3.2.2.so
   rpl -R -e libgeos_c.so.1 "libgeos_c.so\x00\x00" $INSTALL_DIR/lib
+  rpl -R -e libgeos-3.2.2.so "libgeos.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
+  rm $INSTALL_DIR/lib/libgeos.so
+  mv $INSTALL_DIR/lib/libgeos-3.2.2.so $INSTALL_DIR/lib/libgeos.so
   #########END GEOS3.2.2########
 
 
