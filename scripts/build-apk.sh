@@ -20,6 +20,7 @@ set -e
 source `dirname $0`/config.conf
 
 ln -sf $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
+ln -sf $INSTALL_DIR/../assets $APK_DIR/assets
 
 ##query libs.xml to se wich libs need to be deployed on the device
 #for libname in `xpath -q -e "/resources/array[@name=\"bundled_libs\"]/item/text()" $APK_DIR/res/values/libs.xml  2> /dev/null`
