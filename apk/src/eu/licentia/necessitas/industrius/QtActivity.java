@@ -73,6 +73,7 @@ import java.lang.Runtime;
 import java.lang.Process;
 import java.io.BufferedOutputStream;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 //needed for copyAssets
 import java.io.FileOutputStream;
@@ -167,13 +168,28 @@ public class QtActivity extends Activity {
 		}
 	}
 
-	private void copyAssets() {
-		String path = "share";
+	/**
+	 * Recursively copies the given top level assets folders to the getFilesDir() directory 
+	 * for example maps APK/assets/share/subdir to getFilesDir()/share/subdir
+	 * @param dirs      name of the needed top level asset/dir to be copied
+	 */
+	private void copyAssets(String[] dirs) {
 		AssetManager assetManager = getAssets();
-		copyDir(assetManager, path);
+		for (String dir : dirs) {
+			if(newerAssetsVersion(assetManager, dir)){
+				copyDir(assetManager, dir);
+			}
+		}
 	}
-
+	
+	/**
+	 * copies all files in a apk dir to a system dir
+	 * @param AssetManager
+	 * @param path
+	 * @return void
+	 */
 	private void copyDir(AssetManager assetManager, String path) {
+		//create the needed dir in FilesDir
 		File dir = new File(getFilesDir() + "/" + path);
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -181,7 +197,8 @@ public class QtActivity extends Activity {
 		} else {
 			Log.d(QtApplication.QtTAG, dir.getAbsolutePath() + " folder exists");
 		}
-
+		
+		//iterate over File list
 		String[] files = null;
 		try {
 			files = assetManager.list(path);
@@ -193,14 +210,14 @@ public class QtActivity extends Activity {
 			String destFilepath = getFilesDir() + "/" + filepath;
 			Log.d(QtTAG, "copying " + filepath + " to " + destFilepath);
 
-			InputStream in = null;
-			OutputStream out = null;
-
-			if (new File(filepath).isDirectory()) {
+			if (hasChildren(assetManager, filepath)) {
 				Log.d(QtTAG, "DIR FOUND at: " + filepath);
 				copyDir(assetManager, filepath);
 			} else {
+				Log.d(QtTAG, "FILE FOUND at: " + filepath);
 				try {
+					InputStream in = null;
+					OutputStream out = null;
 					in = assetManager.open(filepath);
 					out = new FileOutputStream(destFilepath);
 					copyFile(in, out);
@@ -209,6 +226,7 @@ public class QtActivity extends Activity {
 					out.flush();
 					out.close();
 					out = null;
+					
 				} catch (Exception e) {
 					Log.e(QtTAG, "Problem while copying: " + filepath + " to "
 							+ destFilepath);
@@ -218,6 +236,12 @@ public class QtActivity extends Activity {
 		}
 	}
 
+	/**
+	 * copies a file in a apk dir to a system dir
+	 * @param InputStream
+	 * @param OutputStream
+	 * @return void
+	 */
 	private void copyFile(InputStream in, OutputStream out) throws IOException {
 		BufferedOutputStream outBuff = new BufferedOutputStream(out);
 		BufferedInputStream inBuff = new BufferedInputStream(in);
@@ -230,14 +254,74 @@ public class QtActivity extends Activity {
 		outBuff.close();
 	}
 
+	private boolean newerAssetsVersion(AssetManager assetManager, String dir) {
+		try {
+			String versionFilePath = dir + "/version.txt";
+			InputStream assetsVersionStream = assetManager.open(versionFilePath);
+			String assetsVersion = readTextFile(assetsVersionStream);
+			Log.i(QtApplication.QtTAG, "Latest " + dir + " files version: " + assetsVersion);
+			
+			InputStream installedVersionStream = new FileInputStream(new File(getFilesDir() + "/" + versionFilePath));
+			String installedVersion = readTextFile(installedVersionStream);
+			Log.i(QtApplication.QtTAG, "Installed " + dir + " files version: " + installedVersion);
+			
+			if (installedVersion.equals(assetsVersion)){
+				Log.i(QtApplication.QtTAG, "No need to copy files from APK to getFilesDir");
+				return false;
+			}
+		} catch (IOException e) {
+		    Log.w(QtApplication.QtTAG, e.getMessage());
+		        }
+		Log.i(QtApplication.QtTAG, "Copying files from APK to getFilesDir");
+		return true;
+	}
+	
+	/**
+	 * This method reads simple text file
+	 * @param inputStream
+	 * @return data from file
+	 */
+	private String readTextFile(InputStream inputStream) {
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    byte buf[] = new byte[1024];
+	    int len;
+	    try {
+	        while ((len = inputStream.read(buf)) != -1) {
+	            outputStream.write(buf, 0, len);
+	        }
+	        outputStream.close();
+	        inputStream.close();
+	    } catch (IOException e) {
+	    }
+	    return outputStream.toString();
+	}
+	
+	/**
+	 * Returns if a path has children or not (files and empty directory return false 
+	 * @param assetManager      The AssetManager object
+	 * @param path              The path to be checked for children
+	 * @return                  if has children or not
+	 */
+	private boolean hasChildren(AssetManager assetManager, String path)
+	{
+		try {
+			if (assetManager.list(path).length > 0){
+				return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	private void startApplication(String[] libs, String environment,
 			String params) {
 		QtApplication.loadQtLibraries(libs);
-		// HACK
 		// createLibsAliases();
 
 		// extract assets folder to app data directory
-		copyAssets();
+		String[] assetDirs = {"share"};
+		copyAssets(assetDirs);
 
 		try {
 			ActivityInfo ai = getPackageManager().getActivityInfo(
