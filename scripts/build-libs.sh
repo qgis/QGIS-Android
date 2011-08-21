@@ -80,10 +80,12 @@ else
   #########QTUITOOLS########
   echo "QTUITOOLS"	
   cd $QT_SRC/tools/designer/src/uitools
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  $QMAKE  uitools.pro 
+  $QMAKE  ../uitools.pro 
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
   cp -f $QT_ROOT/lib/libQtUiTools.so $INSTALL_DIR/lib
@@ -93,11 +95,13 @@ else
   #########QWT5.2.0########
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  $QMAKE qwt.pro
+  $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -107,11 +111,13 @@ else
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
   cd $SRC_DIR/expat-2.0.1/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 install | tee makeInstall.out
   rpl -R -e libexpat.so.1 "libexpat.so\x00\x00" $INSTALL_DIR/lib
@@ -120,11 +126,13 @@ else
   #########GSL1.14########
   echo "GSL1.14"
   cd $SRC_DIR/gsl-1.14/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -136,11 +144,13 @@ else
   #########SQLITE3.7.4########
   echo "SQLITE"
   cd $SRC_DIR/sqlite-autoconf-3070400/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -151,11 +161,13 @@ else
   ##########PROJ4########
   echo "PROJ4"
   cd $SRC_DIR/proj-4.7.0/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -166,11 +178,13 @@ else
   #########LIBICONV1.13.1########
 #  echo "LIBICONV"
 #  cd $SRC_DIR/libiconv-1.13.1/
+#  mkdir build-$ANDROID_TARGET_ARCH
+#  cd build-$ANDROID_TARGET_ARCH
 #  #configure
 #  CFLAGS=$MY_STD_CFLAGS \
 #  CXXFLAGS=$MY_STD_CFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
-#  ./configure $MY_STD_CONFIGURE_FLAGS
+#  ../configure $MY_STD_CONFIGURE_FLAGS
 #  #compile
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
@@ -181,12 +195,14 @@ else
   #########GEOS3.2.2########
   echo "GEOS3.2.2"
   cd $SRC_DIR/geos-3.2.2/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -201,12 +217,14 @@ else
   #########GDAL1.8.0########
   echo "GDAL"
   cd $SRC_DIR/gdal-1.8.0/
+  mkdir build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
+  ../configure $MY_STD_CONFIGURE_FLAGS --without-grib
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
