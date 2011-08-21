@@ -93,8 +93,8 @@ else
   #HACK temporary needed until necessitas will include qtuitools
   #check if qt-src are installed
   if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
-    ln -sf $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
-    ln -sf $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
+    ln -sfn $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
+    ln -sfn $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
     cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
     cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
   else
@@ -115,10 +115,6 @@ else
   mkdir -p $QGIS_BUILD_DIR
   rm -rf $QGIS_BUILD_DIR/*
   cd $QGIS_DIR
-  
-  #add sym links for apk
-  ln -sf $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
-  ln -sf $INSTALL_DIR/files $APK_DIR/assets
   
   #check if an android branch of qgis is present
   set +e
