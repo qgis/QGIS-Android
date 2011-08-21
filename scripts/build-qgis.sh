@@ -98,4 +98,7 @@ rpl -R -e libqgis_analysis.so.1.8.0 "libqgis_analysis.so\x00\x00\x00\x00\x00\x00
 rpl -R -e libqgissqlanyconnection.so.1.8.0 "libqgissqlanyconnection.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
 
 GIT_REV=$(git rev-parse HEAD)
+#update version file in share
 echo $GIT_REV > $INSTALL_DIR/files/share/version.txt
+#update apk manifest
+sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml
