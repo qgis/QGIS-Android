@@ -116,6 +116,10 @@ else
   rm -rf $QGIS_BUILD_DIR/*
   cd $QGIS_DIR
   
+  #add sym links for apk
+  ln -sf $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
+  ln -sf $INSTALL_DIR/files $APK_DIR/assets
+  
   #check if an android branch of qgis is present
   set +e
     git checkout android
