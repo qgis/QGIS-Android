@@ -23,14 +23,6 @@ source `dirname $0`/config.conf
 ln -sfn $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
 ln -sfn $INSTALL_DIR/files $APK_DIR/assets
 
-##query libs.xml to se wich libs need to be deployed on the device
-#for libname in `xpath -q -e "/resources/array[@name=\"bundled_libs\"]/item/text()" $APK_DIR/res/values/libs.xml  2> /dev/null`
-#  do
-#    cpcmd="cp -f $INSTALL_DIR/lib/lib$libname.so $APK_DIR/libs/$ANDROID_TARGET_ARCH/lib$libname.so"
-#    echo $cpcmd
-#    $cpcmd
-#  done
-
 #keytool -genkey -v -keystore my-release-key.keystore -alias bernawebdesignKey -keyalg RSA -keysize 2048 -validity 10000
 #cd $APK_DIR
 #ant release

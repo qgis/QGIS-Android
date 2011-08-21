@@ -106,9 +106,6 @@ else
   ########CHECK IF rpl EXISTS################
   hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
   
-  ########CHECK IF xpath EXISTS################
-  hash xpath 2>&- || { echo >&2 "The Program xpath is required but it's not installed. Aborting."; exit 1; }
-
   #preparing environnement
   android update project --name Qgis --path $APK_DIR
   mkdir -p $TMP_DIR
