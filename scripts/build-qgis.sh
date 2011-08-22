@@ -27,6 +27,7 @@ MY_CMAKE_FLAGS=" \
 -DARM_TARGET=$ANDROID_TARGET_ARCH \
 -DBISON_EXECUTABLE=/usr/bin/bison \
 -DCFLAGS='$MY_STD_CFLAGS' \
+-DCHARSET_LIBRARY=$INSTALL_DIR/lib/libcharset.so \
 -DCMAKE_BUILD_TYPE=Debug \
 -DCMAKE_VERBOSE_MAKEFILE=OFF \
 -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
@@ -51,6 +52,8 @@ MY_CMAKE_FLAGS=" \
 -DGSL_CONFIG_PREFER_PATH=$INSTALL_DIR/bin \
 -DGSL_EXE_LINKER_FLAGS=-Wl,-rpath, \
 -DGSL_INCLUDE_DIR=$INSTALL_DIR/include/gsl \
+-DICONV_INCLUDE_DIR=$INSTALL_DIR/include \
+-DICONV_LIBRARY=$INSTALL_DIR/lib/libiconv.so \
 -DINCLUDE_DIRECTORIES=$INSTALL_DIR \
 -DLDFLAGS=$MY_STD_LDFLAGS \
 -DLIBRARY_OUTPUT_PATH_ROOT=$INSTALL_DIR \
@@ -70,10 +73,10 @@ MY_CMAKE_FLAGS=" \
 -DWITH_GLOBE=OFF \
 -DWITH_GRASS=OFF \
 -DWITH_INTERNAL_QWTPOLAR=ON \
--DWITH_INTERNAL_SPATIALITE=OFF \
+-DWITH_INTERNAL_SPATIALITE=ON \
 -DWITH_MAPSERVER=OFF \
 -DWITH_POSTGRESQL=OFF \
--DWITH_SPATIALITE=OFF \
+-DWITH_SPATIALITE=ON \
 -DWITH_TXT2TAGS_PDF=OFF"
 
 #uncomment the next 2 lines to only get the needed cmake flags echoed
@@ -91,11 +94,6 @@ else
     make -j$CORES install    
 fi
 
-#remove versioned information
-rpl -R -e libqgis_core.so.1.8.0 "libqgis_core.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
-rpl -R -e libqgis_gui.so.1.8.0 "libqgis_gui.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
-rpl -R -e libqgis_analysis.so.1.8.0 "libqgis_analysis.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
-rpl -R -e libqgissqlanyconnection.so.1.8.0 "libqgissqlanyconnection.so\x00\x00\x00\x00\x00\x00" $INSTALL_DIR/lib
 
 GIT_REV=$(git rev-parse HEAD)
 #update version file in share

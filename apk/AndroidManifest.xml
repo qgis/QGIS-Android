@@ -1,6 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest package="org.qgis.qgis" android:versionCode="0" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.180" android:installLocation="preferExternal">
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <application android:name="eu.licentia.necessitas.industrius.QtApplication" android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
         <activity android:name="eu.licentia.necessitas.industrius.QtActivity" android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden" android:label="@string/app_name" android:screenOrientation="sensorLandscape">
             <intent-filter>
@@ -10,7 +12,7 @@
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:name="android.app.lib_name" android:value="qgis"/>
-            <meta-data android:name="android.app.git_rev" android:value="94ff04b70ed9deef63345187265aeb6a0d36c8b6"/>
+            <meta-data android:name="android.app.git_rev" android:value="4308a4b117a2e5afa0282a7b9eb1fac9e5e61640"/>
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="10"/>

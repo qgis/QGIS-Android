@@ -109,6 +109,7 @@ else
   #preparing environnement
   android update project --name Qgis --path $APK_DIR
   mkdir -p $TMP_DIR
+  mkdir -p $INSTALL_DIR/lib
   mkdir -p $QGIS_BUILD_DIR
   rm -rf $QGIS_BUILD_DIR/*
   cd $QGIS_DIR
@@ -209,16 +210,16 @@ else
 
 
   #######LIBICONV1.13.1#######
-#  echo "LIBICONV"
-#  cd $SRC_DIR
-#  wget -c http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
-#  tar xf libiconv-1.13.1.tar.gz
-#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
-#  cd libiconv-1.13.1/
-#  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
-#  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
-#  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
-#  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
+  echo "LIBICONV"
+  cd $SRC_DIR
+  wget -c http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+  tar xf libiconv-1.13.1.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
+  cd libiconv-1.13.1/
+  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
+  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
+  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
+  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
   
@@ -244,7 +245,7 @@ else
 
   #edit qwtconfig.pri
   sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
-  sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = \$\$(INSTALL_DIR)|" qwtconfig.pri
+  sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   #######END QWT5.2.0#######
   
 
