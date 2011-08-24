@@ -42,6 +42,8 @@ import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +57,9 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.text.method.MetaKeyKeyListener;
 import android.util.DisplayMetrics;
@@ -168,19 +172,6 @@ public class QtActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Recursively copies the given top level assets folders to the getFilesDir() directory 
-	 * for example maps APK/assets/share/subdir to getFilesDir()/share/subdir
-	 * @param dirs      name of the needed top level asset/dir to be copied
-	 */
-	private void copyAssets(String[] dirs) {
-		AssetManager assetManager = getAssets();
-		for (String dir : dirs) {
-			if(newerAssetsVersion(assetManager, dir)){
-				copyDir(assetManager, dir);
-			}
-		}
-	}
 	
 	/**
 	 * copies all files in a apk dir to a system dir
@@ -318,10 +309,6 @@ public class QtActivity extends Activity {
 			String params) {
 		QtApplication.loadQtLibraries(libs);
 		// createLibsAliases();
-
-		// extract assets folder to app data directory
-		String[] assetDirs = {"share"};
-		copyAssets(assetDirs);
 
 		try {
 			ActivityInfo ai = getPackageManager().getActivityInfo(
@@ -545,11 +532,18 @@ public class QtActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	static final int PROGRESS_DIALOG = 0;
+    ProgressThread progressThread;
+    ProgressDialog progressDialog;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		m_quitApp = true;
+		
+		showDialog(PROGRESS_DIALOG);
+		
 		QtApplication.setMainActivity(this);
 		if (null == getLastNonConfigurationInstance()) {
 			DisplayMetrics metrics = new DisplayMetrics();
@@ -566,6 +560,94 @@ public class QtActivity extends Activity {
 		m_layout.bringChildToFront(m_surface);
 		if (null == getLastNonConfigurationInstance())
 			startApp(true);
+	}
+	
+    protected Dialog onCreateDialog(int id) {
+        switch(id) {
+        case PROGRESS_DIALOG:
+            progressDialog = new ProgressDialog(QtActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("Copying post installation data...");
+            return progressDialog;
+        default:
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch(id) {
+        case PROGRESS_DIALOG:
+            progressDialog.setProgress(0);
+            progressThread = new ProgressThread(handler);
+            progressThread.start();
+        }
+    }
+    
+ // Define the Handler that receives messages from the thread and update the progress
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            int total = msg.arg1;
+            progressDialog.setProgress(total);
+            if (total >= 100){
+                dismissDialog(PROGRESS_DIALOG);
+                progressThread.setState(ProgressThread.STATE_DONE);
+            }
+        }
+    };
+    
+    /** Nested class that performs progress calculations (counting) */
+    private class ProgressThread extends Thread {
+        Handler mHandler;
+        final static int STATE_DONE = 0;
+        final static int STATE_RUNNING = 1;
+        int mState;
+        int total;
+       
+        ProgressThread(Handler h) {
+            mHandler = h;
+        }
+       
+        public void run() {
+            mState = STATE_RUNNING;   
+            total = 0;
+            AssetManager assetManager = getAssets();
+            String[] assetDirs = {"share", "test", "test1", "test2"};
+            while (mState == STATE_RUNNING) {
+            	//TODO update more often
+            	// extract assets folder to app data directory
+        		for (int i = 0; i < assetDirs.length; i++) {
+        			if(newerAssetsVersion(assetManager, assetDirs[i])){
+        				copyDir(assetManager, assetDirs[i]);
+        			}
+        			Message msg = mHandler.obtainMessage();
+        			total = 100/assetDirs.length*(i+1);
+        			Log.d(QtApplication.QtTAG, "Sending " + total);
+                    msg.arg1 = total;
+                    mHandler.sendMessage(msg);
+        		}
+            }
+        }
+        
+        /* sets the current state for the thread,
+         * used to stop the thread */
+        public void setState(int state) {
+            mState = state;
+        }
+    }
+    
+    /**
+	 * Recursively copies the given top level assets folders to the getFilesDir() directory 
+	 * for example maps APK/assets/share/subdir to getFilesDir()/share/subdir
+	 * @param dirs      name of the needed top level asset/dir to be copied
+	 */
+	private void copyAssets(String[] dirs) {
+		AssetManager assetManager = getAssets();
+		for (String dir : dirs) {
+			if(newerAssetsVersion(assetManager, dir)){
+				copyDir(assetManager, dir);
+			}
+		}
 	}
 
 	public QtLayout getQtLayout() {

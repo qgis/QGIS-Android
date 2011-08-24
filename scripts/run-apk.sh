@@ -18,7 +18,14 @@
 set -e
 
 source `dirname $0`/config.conf
+ADB=$ANDROID_SDK_ROOT/platform-tools/adb
+$ADB kill-server
+sudo $ADB devices
 
-cd $APK_DIR
-ant install
-adb shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
+echo "Uninstalling org.qgis.qgis"
+$ADB uninstall org.qgis.qgis
+echo "Installing $APK_DIR/bin/Qgis-debug.apk"
+$ADB install $APK_DIR/bin/Qgis-debug.apk
+$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
+$ADB logcat
+

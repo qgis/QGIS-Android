@@ -10,8 +10,10 @@
       <item vesion=''>gdal</item>
       <item vesion=''>proj</item>
       <item vesion=''>qwt</item>
-      <item vesion=''>sqlite3</item>
+      <item vesion=''>iconv</item>
+      <item vesion=''>charset</item>
       <item vesion=''>QtUiTools</item>
+      <item vesion=''>pq</item>
       <item vesion=''>qgis_core</item>
       <item vesion=''>qgissqlanyconnection</item>
       <item vesion=''>qgis_analysis</item>

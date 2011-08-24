@@ -29,5 +29,5 @@ source `dirname $0`/config.conf
 ##adb install bin/Qgis.apk
 
 cd $APK_DIR
-ant install
+ant debug
 

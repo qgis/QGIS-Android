@@ -75,7 +75,7 @@ MY_CMAKE_FLAGS=" \
 -DWITH_INTERNAL_QWTPOLAR=ON \
 -DWITH_INTERNAL_SPATIALITE=ON \
 -DWITH_MAPSERVER=OFF \
--DWITH_POSTGRESQL=OFF \
+-DWITH_POSTGRESQL=ON \
 -DWITH_SPATIALITE=ON \
 -DWITH_TXT2TAGS_PDF=OFF"
 
@@ -88,7 +88,7 @@ if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
 else
   MY_CMAKE=ccmake
 fi
-if [ "$1" = "-configure" ]; then
+if [ "$1" = "--configure" ]; then
     $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
 else
     make -j$CORES install    

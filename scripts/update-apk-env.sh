@@ -34,6 +34,7 @@ rm $APK_LIBS_DIR/libgeos.so
 mv $APK_LIBS_DIR/libgeos-3.2.2.so $APK_LIBS_DIR/libgeos.so
 
 echo "REMOVING LIBS VERSIONING"
+#needed because of http://comments.gmane.org/gmane.comp.handhelds.android.ndk/11819
 rpl -R -e libexpat.so.1 "libexpat.so\x00\x00" $APK_LIBS_DIR
 rpl -R -e libgsl.so.0 "libgsl.so\x00\x00" $APK_LIBS_DIR
 rpl -R -e libiconv.so.2 "libiconv.so\x00\x00" $APK_LIBS_DIR
@@ -44,6 +45,7 @@ rpl -R -e libgeos_c.so.1 "libgeos_c.so\x00\x00" $APK_LIBS_DIR
 rpl -R -e libgeos-3.2.2.so "libgeos.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
 rpl -R -e libgdal.so.1 "libgdal.so\x00\x00" $APK_LIBS_DIR
 rpl -R -e libspatialite.so.1 "libspatialite.so\x00\x00" $APK_LIBS_DIR
+rpl -R -e libpq.so.5 "libpq.so\x00\x00" $APK_LIBS_DIR
 
 #remove versioned information from qgis libs 
 rpl -R -e libqgis_core.so.1.8.0 "libqgis_core.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR

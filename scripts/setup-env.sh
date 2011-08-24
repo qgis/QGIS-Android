@@ -248,6 +248,19 @@ else
   sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   #######END QWT5.2.0#######
   
+  
+  #######postgresql-9.0.4#######
+  echo "postgresql-9.0.4"
+  cd $SRC_DIR
+  wget -c http://wwwmaster.postgresql.org/redir/376/h/source/v9.0.4/postgresql-9.0.4.tar.bz2
+  tar xjf postgresql-9.0.4.tar.bz2 
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
+  cd postgresql-9.0.4/
+  cp -f $TMP_DIR/config.sub ./config/config.sub
+  cp -f $TMP_DIR/config.guess ./config/config.guess  
+  
+  patch -p1 -i $PATCH_DIR/libpq.patch
+  #######END postgresql-9.0.4#######
 
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0

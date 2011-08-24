@@ -12,7 +12,7 @@
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:name="android.app.lib_name" android:value="qgis"/>
-            <meta-data android:name="android.app.git_rev" android:value="4308a4b117a2e5afa0282a7b9eb1fac9e5e61640"/>
+            <meta-data android:name="android.app.git_rev" android:value="096808ef5f6d016a6070dc29ac83f417e19c25a0"/>
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="10"/>

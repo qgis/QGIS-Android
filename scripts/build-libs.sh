@@ -223,5 +223,28 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END GDAL1.8.0########
   
+  
+  #########postgresql-9.0.4########
+  echo "postgresql"
+  cd $SRC_DIR/postgresql-9.0.4/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
+  ../configure $MY_STD_CONFIGURE_FLAGS --without-readline
+  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out
+  
+  #simulate of make install
+  cp -f ../src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
+  rm -f $INSTALL_DIR/lib/libpq.so*
+  cp src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
+  cd $INSTALL_DIR/lib
+  ln -s libpq.so.5.3 libpq.so.5
+  ln -s libpq.so.5.3 libpq.so
+  #######END postgresql-9.0.4#######
+  
   exit 0
 fi
