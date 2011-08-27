@@ -238,6 +238,7 @@ else
   make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out
   
   #simulate of make install
+  cp -f ../src/include/postgres_ext.h $INSTALL_DIR/include
   cp -f ../src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   rm -f $INSTALL_DIR/lib/libpq.so*
   cp src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
