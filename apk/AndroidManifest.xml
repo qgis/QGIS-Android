@@ -14,7 +14,7 @@
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:name="android.app.lib_name" android:value="qgis"/>
-            <meta-data android:name="android.app.git_rev" android:value="5cba1250fd0e9240bc79c28674c2f18bcc513d97"/>
+            <meta-data android:name="android.app.git_rev" android:value="76244bc59ce766dca0d65918f130d3277f49c707"/>
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="10"/>
