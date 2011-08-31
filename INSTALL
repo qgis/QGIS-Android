@@ -1,0 +1,13 @@
+The QGIS android APK package (the one you need to download to your device) is in the folder /apk/bin/
+Android 2.3 is the minimal version required
+The whole installation process takes around 10min, you will be downloading around 70Mb of qgis + 25Mb of Qt libraries, so maybe doing it on a wifi is better.
+just opening the Apk should trigger the install.
+First QGIS is installed, then when qgis is trying to start for the first time you will be prompted to install Ministro by BogDan Vatra, this is the Qt libraries manager.
+Once ministro is installed, Start QGIS again and you will be asked if you want to install the Qt libraries. Say yes. 
+Once ministro is done, QGIS should start, the first run after an installation or an update will need to unpack some files and copy them to the proper location, this might take up to a minute or more.
+Don't panic!! You shoud see soon the splash screen coming.
+
+In case of problem it is usefull to have a look at the adb logcat, to get it instal the android SDK on your pc (http://developer.android.com/guide/developing/tools/logcat.html) 
+an easier alternative might be free application aLogCat on the android market (https://market.android.com/details?id=org.jtb.alogcat).
+
+Enjoy touching QGIS :), marco@bernawebdesign.ch

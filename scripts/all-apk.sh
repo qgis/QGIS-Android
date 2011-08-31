@@ -18,19 +18,8 @@
 set -e
 
 source `dirname $0`/config.conf
-ADB=$ANDROID_SDK_ROOT/platform-tools/adb
-$ADB kill-server
-sudo $ADB devices
-
-
-if [ "$1" = "--clear" ]; then
-    echo "clearing org.qgis.qgis"
-    $ADB clear org.qgis.qgis
-fi
-
-gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
-
-$ADB logcat | tee /tmp/logcat.log
-
-
+sudo echo "Building and installing new APK" #using sudo to ask passw at the beginning and not later when needed.
+$SCRIPT_DIR/update-apk-env.sh
+$SCRIPT_DIR/build-apk.sh
+$SCRIPT_DIR/install-apk.sh
+$SCRIPT_DIR/run-apk.sh

@@ -157,20 +157,20 @@ else
   #########END LIBICONV1.13.1########
 
 
-  #########SQLITE3.7.4########
-  echo "SQLITE"
-  cd $SRC_DIR/sqlite-autoconf-3070400/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
-  #configure
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
-  LDFLAGS=$MY_STD_LDFLAGS \
-  ../configure $MY_STD_CONFIGURE_FLAGS
-  #compile
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END SQLITE3.7.4########
+#  #########SQLITE3.7.4########
+#  echo "SQLITE"
+#  cd $SRC_DIR/sqlite-autoconf-3070400/
+#  mkdir -p build-$ANDROID_TARGET_ARCH
+#  cd build-$ANDROID_TARGET_ARCH
+#  #configure
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  ../configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END SQLITE3.7.4########
 
 
   ##########PROJ4########
@@ -238,6 +238,7 @@ else
   make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out
   
   #simulate of make install
+  cp -f ../src/include/postgres_ext.h $INSTALL_DIR/include
   cp -f ../src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   rm -f $INSTALL_DIR/lib/libpq.so*
   cp src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/

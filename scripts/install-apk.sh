@@ -22,15 +22,7 @@ ADB=$ANDROID_SDK_ROOT/platform-tools/adb
 $ADB kill-server
 sudo $ADB devices
 
-
-if [ "$1" = "--clear" ]; then
-    echo "clearing org.qgis.qgis"
-    $ADB clear org.qgis.qgis
-fi
-
-gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.QtActivity
-
-$ADB logcat | tee /tmp/logcat.log
-
-
+echo "Uninstalling org.qgis.qgis"
+$ADB uninstall org.qgis.qgis
+echo "Installing $APK_DIR/bin/Qgis-debug.apk"
+$ADB install $APK_DIR/bin/Qgis-debug.apk

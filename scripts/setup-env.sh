@@ -223,16 +223,16 @@ else
   #######END LIBICONV1.13.1#######
   
   
-  #######SQLITE3.7.4#######
-  echo "SQLITE"
-  cd $SRC_DIR
-  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
-  tar xf sqlite-autoconf-3070400.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
-  cd sqlite-autoconf-3070400/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
-  #######END SQLITE3.7.4#######
+#  #######SQLITE3.7.4#######
+#  echo "SQLITE"
+#  cd $SRC_DIR
+#  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
+#  tar xf sqlite-autoconf-3070400.tar.gz
+#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
+#  cd sqlite-autoconf-3070400/
+#  cp -f $TMP_DIR/config.sub ./config.sub
+#  cp -f $TMP_DIR/config.guess ./config.guess
+#  #######END SQLITE3.7.4#######
   
 
   #######QWT5.2.0#######
