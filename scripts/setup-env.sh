@@ -248,6 +248,11 @@ else
   sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   #######END QWT5.2.0#######
   
+  #######openssl-android#######
+  #needed for postgresssql
+  echo "openssl-android"
+  cd $SRC_DIR
+  git clone git://github.com/mbernasocchi/openssl-android.git
   
   #######postgresql-9.0.4#######
   echo "postgresql-9.0.4"

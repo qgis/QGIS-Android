@@ -223,19 +223,31 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END GDAL1.8.0########
   
+  #######openssl-android#######
+  echo "openssl-android"
+  cd $SRC_DIR/openssl-android
+  $ANDROID_NDK_ROOT/ndk-build
+  
   
   #########postgresql-9.0.4########
   echo "postgresql"
-  cd $SRC_DIR/postgresql-9.0.4/
+  cd $SRC_DIR/postgresql-9.0.4/src/interfaces/libpq
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
-  #configure
+  #configure with openssl
+#  CFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
+#  CXXFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
+#  LDFLAGS="$MY_STD_LDFLAGS -L$SRC_DIR/openssl-android/libs/armeabi" \
+#  LIBS="-lcrypto -lsupc++ -lstdc++" \
+#  ../../../../configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+  
+   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ../configure $MY_STD_CONFIGURE_FLAGS --without-readline
-  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out
+  ../../../../configure $MY_STD_CONFIGURE_FLAGS --without-readline
+  make -j$CORES 2>&1 | tee make.out
   
   #simulate of make install
   cp -f ../src/include/postgres_ext.h $INSTALL_DIR/include
