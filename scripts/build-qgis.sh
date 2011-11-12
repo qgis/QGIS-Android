@@ -82,8 +82,8 @@ MY_CMAKE_FLAGS=" \
 -DWITH_TXT2TAGS_PDF=OFF"
 
 #uncomment the next 2 lines to only get the needed cmake flags echoed
-#echo $MY_CMAKE_FLAGS
-#exit 0
+echo $MY_CMAKE_FLAGS
+exit 0
 
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake

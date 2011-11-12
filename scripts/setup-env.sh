@@ -92,19 +92,22 @@ else
   #######QTUITOOLS#######
   #HACK temporary needed until necessitas will include qtuitools
   #check if qt-src are installed
-  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
-    ln -sfn $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
-    ln -sfn $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
-    cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
-    cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
-  else
-    echo "Please download the QT source using the package manager in Necessitas \
-    Creator under help/start updater and rerun this script"
-    exit 1
-  fi
+#  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
+#    ln -sfn $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
+#    ln -sfn $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
+#    cp -rf $PATCH_DIR/qtuitools/QtDesigner/* $QT_INCLUDE/QtDesigner/
+#    cp -rf $PATCH_DIR/qtuitools/QtUiTools/* $QT_INCLUDE/QtUiTools/
+#  else
+#    echo "Please download the QT source using the package manager in Necessitas \
+#    Creator under help/start updater and rerun this script"
+#    exit 1
+#  fi
 
   ########CHECK IF rpl EXISTS################
   hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
+  
+  ########CHECK IF ant EXISTS################
+  hash ant 2>&- || { echo >&2 "The Program required to create APK. Aborting."; exit 1; }
   
   #preparing environnement
   android update project --name Qgis --path $APK_DIR
@@ -252,7 +255,12 @@ else
   #needed for postgresssql
   echo "openssl-android"
   cd $SRC_DIR
-  git clone git://github.com/mbernasocchi/openssl-android.git
+  if [ -d "openssl-android" ]; then
+    cd openssl-android
+    git pull
+  else
+    git clone git://github.com/mbernasocchi/openssl-android.git
+  fi
   
   #######postgresql-9.0.4#######
   echo "postgresql-9.0.4"

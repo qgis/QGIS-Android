@@ -240,7 +240,7 @@ public class QtApplication extends Application
             }
         });
     }
-
+    
     @Override
     public void onTerminate() {
         if (m_started)
@@ -302,7 +302,9 @@ public class QtApplication extends Application
 
     static public void sendTouchEvent(MotionEvent event, int id)
     {
-        //@ANDROID-5
+        //TODO
+    	//touchLong(id,(int) event.getX(), (int) event.getY());
+    	//@ANDROID-5
         touchBegin(id);
         for (int i=0;i<event.getPointerCount();i++)
                 touchAdd(id,event.getPointerId(i), getAction(i, event), i==0,
@@ -376,7 +378,6 @@ public class QtApplication extends Application
         }
     }
 
-
     private static void showSoftwareKeyboard()
     {
         runAction(new Runnable() {
@@ -420,6 +421,7 @@ public class QtApplication extends Application
     public static native void mouseDown(int winId, int x, int y);
     public static native void mouseUp(int winId, int x, int y);
     public static native void mouseMove(int winId, int x, int y);
+    //TODO public static native void touchLong(int winId, int x, int y);
     public static native void touchBegin(int winId);
     public static native void touchAdd(int winId, int pointerId, int action, boolean primary, int x, int y, float size, float pressure);
     public static native void touchEnd(int winId, int action);

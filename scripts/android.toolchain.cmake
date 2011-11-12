@@ -92,7 +92,7 @@ set( CMAKE_SYSTEM_NAME Linux )
 #this one not so much
 set( CMAKE_SYSTEM_VERSION 1 )
 
-set( ANDROID_NDK_DEFAULT_SEARCH_PATH /opt/android-ndk-r5b )
+set( ANDROID_NDK_DEFAULT_SEARCH_PATH /opt/android-ndk )
 set( ANDROID_NDK_TOOLCHAIN_DEFAULT_SEARCH_PATH /opt/android-toolchain )
 set( TOOL_OS_SUFFIX "" )
 

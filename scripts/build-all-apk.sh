@@ -19,7 +19,7 @@
 set -e
 #######Load config#######
 source `dirname $0`/config.conf
-
+sudo echo ""
 $SCRIPT_DIR/build-apk.sh
 $SCRIPT_DIR/install-apk.sh
 $SCRIPT_DIR/run-apk.sh
