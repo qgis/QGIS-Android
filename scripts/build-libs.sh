@@ -96,7 +96,6 @@ else
   #########QWT5.2.0########
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
-  sed -i "s|    INSTALLBASE    = /.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -106,7 +105,7 @@ else
   $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
+  #make -j$CORES 2>&1 install | tee makeInstall.out
   #########END EXPAT2.0.1########
 
 

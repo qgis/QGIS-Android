@@ -90,7 +90,7 @@ if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
 else
   MY_CMAKE=ccmake
 fi
-if [ "$1" = "--configure" ]; then
+if [ "$1" = "--configurebu" ]; then
     $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
 else
     make -j$CORES install    
