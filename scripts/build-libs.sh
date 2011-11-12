@@ -28,7 +28,7 @@ usage(){
         --echo <text> (-e)      this option does noting"
 }
 
-echo "BUILDING ANDROID QGIS LIBS2"
+echo "BUILDING ANDROID QGIS LIBS"
 echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
@@ -93,172 +93,172 @@ else
 #  #########END QTUITOOLS########
 #  
 
-#  #########QWT5.2.0########
-#  echo "QWT5.2.0"	
-#  cd $SRC_DIR/qwt-5.2.0/
-#  sed -i "s|    INSTALLBASE    = /.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  $QMAKE ../qwt.pro
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END EXPAT2.0.1########
+  #########QWT5.2.0########
+  echo "QWT5.2.0"	
+  cd $SRC_DIR/qwt-5.2.0/
+  sed -i "s|    INSTALLBASE    = /.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  $QMAKE ../qwt.pro
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END EXPAT2.0.1########
 
 
-#  #########EXPAT2.0.1########
-#  echo "EXPAT2.0.1"
-#  cd $SRC_DIR/expat-2.0.1/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  ../configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END EXPAT2.0.1########
-#  
-#  #########GSL1.14########
-#  echo "GSL1.14"
-#  cd $SRC_DIR/gsl-1.14/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  ../configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  ########END GSL1.14########
-
-
-#  #########LIBICONV1.13.1########
-#  echo "LIBICONV"
-#  cd $SRC_DIR/libiconv-1.13.1/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  gl_cv_header_working_stdint_h=yes \
-#  ../configure $MY_STD_CONFIGURE_FLAGS 
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END LIBICONV1.13.1########
-
-
-##  #########SQLITE3.7.4########
-##  echo "SQLITE"
-##  cd $SRC_DIR/sqlite-autoconf-3070400/
-##  mkdir -p build-$ANDROID_TARGET_ARCH
-##  cd build-$ANDROID_TARGET_ARCH
-##  #configure
-##  CFLAGS=$MY_STD_CFLAGS \
-##  CXXFLAGS=$MY_STD_CFLAGS \
-##  LDFLAGS=$MY_STD_LDFLAGS \
-##  ../configure $MY_STD_CONFIGURE_FLAGS
-##  #compile
-##  make -j$CORES 2>&1 | tee make.out
-##  make -j$CORES 2>&1 install | tee makeInstall.out
-##  #########END SQLITE3.7.4########
-
-
-#  ##########PROJ4########
-#  echo "PROJ4"
-#  cd $SRC_DIR/proj-4.7.0/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  ../configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END PROJ4########
-
-
-#  #########GEOS3.2.2########
-#  echo "GEOS3.2.2"
-#  cd $SRC_DIR/geos-3.2.2/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lsupc++ -lstdc++" \
-#  ../configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  
-#  #########END GEOS3.2.2########
-
-
-#  #########GDAL1.8.0########
-#  echo "GDAL"
-#  cd $SRC_DIR/gdal-1.8.0/
-#  #mkdir -p build-$ANDROID_TARGET_ARCH
-#  #cd build-$ANDROID_TARGET_ARCH
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lsupc++ -lstdc++" \
-#  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END GDAL1.8.0########
-#  
-#  #######openssl-android#######
-#  echo "openssl-android"
-#  cd $SRC_DIR/openssl-android
-#  $ANDROID_NDK_ROOT/ndk-build
-#  echo "installing openssl"
-#  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
-#  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
-#  
+  #########EXPAT2.0.1########
+  echo "EXPAT2.0.1"
+  cd $SRC_DIR/expat-2.0.1/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  ../configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END EXPAT2.0.1########
   
-#  #########postgresql-9.0.4########
-#  echo "postgresql"
-#  cd $SRC_DIR/postgresql-9.0.4
-#  #building in an other dir seems not to work
-#    #  cd src/interfaces/libpq
-#    #  mkdir -p build-$ANDROID_TARGET_ARCH
-#    #  cd build-$ANDROID_TARGET_ARCH
-#    
-#  #configure with openssl
-#  CFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
-#  CXXFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
-#  LDFLAGS="$MY_STD_LDFLAGS -L$SRC_DIR/openssl-android/libs/armeabi" \
-#  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
-#  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
-#  
-#  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out  
-#  
-#  #simulate of make install
-#  echo "installing libpq"
-#  cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
-#  cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-#  rm -fv $INSTALL_DIR/lib/libpq.so*
-#  cp -fv src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
-#  cd $INSTALL_DIR/lib
-#  ln -sv libpq.so.5.3 libpq.so.5
-#  ln -sv libpq.so.5.3 libpq.so
-#  #######END postgresql-9.0.4#######
-#  
+  #########GSL1.14########
+  echo "GSL1.14"
+  cd $SRC_DIR/gsl-1.14/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  ../configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  ########END GSL1.14########
+
+
+  #########LIBICONV1.13.1########
+  echo "LIBICONV"
+  cd $SRC_DIR/libiconv-1.13.1/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  gl_cv_header_working_stdint_h=yes \
+  ../configure $MY_STD_CONFIGURE_FLAGS 
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END LIBICONV1.13.1########
+
+
+#  #########SQLITE3.7.4########
+#  echo "SQLITE"
+#  cd $SRC_DIR/sqlite-autoconf-3070400/
+#  mkdir -p build-$ANDROID_TARGET_ARCH
+#  cd build-$ANDROID_TARGET_ARCH
+#  #configure
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  ../configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END SQLITE3.7.4########
+
+
+  ##########PROJ4########
+  echo "PROJ4"
+  cd $SRC_DIR/proj-4.7.0/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  ../configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END PROJ4########
+
+
+  #########GEOS3.2.2########
+  echo "GEOS3.2.2"
+  cd $SRC_DIR/geos-3.2.2/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
+  ../configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  
+  #########END GEOS3.2.2########
+
+
+  #########GDAL1.8.0########
+  echo "GDAL"
+  cd $SRC_DIR/gdal-1.8.0/
+  #mkdir -p build-$ANDROID_TARGET_ARCH
+  #cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
+  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END GDAL1.8.0########
+  
+  #######openssl-android#######
+  echo "openssl-android"
+  cd $SRC_DIR/openssl-android
+  $ANDROID_NDK_ROOT/ndk-build
+  echo "installing openssl"
+  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
+  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
+  
+  
+  #########postgresql-9.0.4########
+  echo "postgresql"
+  cd $SRC_DIR/postgresql-9.0.4
+  #building in an other dir seems not to work
+    #  cd src/interfaces/libpq
+    #  mkdir -p build-$ANDROID_TARGET_ARCH
+    #  cd build-$ANDROID_TARGET_ARCH
+    
+  #configure with openssl
+  CFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
+  CXXFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
+  LDFLAGS="$MY_STD_LDFLAGS -L$SRC_DIR/openssl-android/libs/armeabi" \
+  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
+  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+  
+  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out  
+  
+  #simulate of make install
+  echo "installing libpq"
+  cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
+  cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
+  rm -fv $INSTALL_DIR/lib/libpq.so*
+  cp -fv src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
+  cd $INSTALL_DIR/lib
+  ln -sv libpq.so.5.3 libpq.so.5
+  ln -sv libpq.so.5.3 libpq.so
+  #######END postgresql-9.0.4#######
+  
   exit 0
 fi
