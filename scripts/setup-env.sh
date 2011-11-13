@@ -17,6 +17,9 @@
 
 set -e
 
+#######Create config file#######
+cp `dirname $0`/config.templ `dirname $0`/config.conf
+
 #######Load config#######
 source `dirname $0`/config.conf
 
