@@ -239,14 +239,17 @@ else
     #  mkdir -p build-$ANDROID_TARGET_ARCH
     #  cd build-$ANDROID_TARGET_ARCH
     
-  #configure with openssl
   CFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
   CXXFLAGS="$MY_STD_CFLAGS -I$SRC_DIR/openssl-android/include" \
   LDFLAGS="$MY_STD_LDFLAGS -L$SRC_DIR/openssl-android/libs/armeabi" \
-  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
-  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+  #configure with openssl
+  #LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
+  #$SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+  #no ssl
+  LIBS="-lsupc++ -lstdc++" \
+  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
   
-  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out  
+  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out    
   
   #simulate of make install
   echo "installing libpq"
