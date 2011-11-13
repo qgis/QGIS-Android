@@ -12,9 +12,10 @@
       <item vesion=''>qwt</item>
       <item vesion=''>iconv</item>
       <item vesion=''>charset</item>
-      <item vesion=''>crypto</item>
-      <item vesion=''>ssl</item>
-      <item vesion=''>pq</item>
+<!--      <item vesion=''>crypto</item>-->
+<!--      <item vesion=''>ssl</item>-->
+<!--      <item vesion=''>pq</item>-->
+      <item vesion=''>QtUiTools</item>
       <item vesion=''>qgis_core</item>
       <item vesion=''>qgissqlanyconnection</item>
       <item vesion=''>qgis_analysis</item>
