@@ -30,12 +30,10 @@ end_time=`date +%s`
 seconds=`expr $end_time - $start_time`
 minutes=$((seconds / 60))
 seconds=$((seconds % 60))
-echo ""
 
 SUBJECT="Android CRON build"
 EMAIL="marco@bernawebdesign.ch"
 EMAILMESSAGE="/tmp/emailmessage.txt"
 echo "Successfully built all in $minutes minutes and $seconds seconds"> $EMAILMESSAGE
-# send an email using /bin/mail
-/bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
 
