@@ -48,8 +48,8 @@ rpl -R -e libspatialite.so.1 "libspatialite.so\x00\x00" $APK_LIBS_DIR
 rpl -R -e libpq.so.5 "libpq.so\x00\x00" $APK_LIBS_DIR
 
 #remove versioned information from qgis libs 
-rpl -R -e libqgis_core.so.1.9.90 "libqgis_core.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
-rpl -R -e libqgis_gui.so.1.9.90 "libqgis_gui.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
-rpl -R -e libqgis_analysis.so.1.9.90 "libqgis_analysis.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
-rpl -R -e libqgissqlanyconnection.so.1.9.90 "libqgissqlanyconnection.so\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
+rpl -R -e libqgis_core.so.1.9.90 "libqgis_core.so\x00\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
+rpl -R -e libqgis_gui.so.1.9.90 "libqgis_gui.so\x00\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
+rpl -R -e libqgis_analysis.so.1.9.90 "libqgis_analysis.so\x00\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
+rpl -R -e libqgissqlanyconnection.so.1.9.90 "libqgissqlanyconnection.so\x00\x00\x00\x00\x00\x00\x00" $APK_LIBS_DIR
 
