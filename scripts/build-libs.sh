@@ -28,7 +28,7 @@ usage(){
         --echo <text> (-e)      this option does noting"
 }
 
-echo "BUILDING ANDROID QGIS LIBS2"
+echo "BUILDING ANDROID QGIS LIBS"
 echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
@@ -78,25 +78,24 @@ else
   cd $SRC_DIR
 
 
-  #########QTUITOOLS########
-  echo "QTUITOOLS"	
-  cd $QT_SRC/tools/designer/src/uitools
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
-  LDFLAGS=$MY_STD_LDFLAGS \
-  $QMAKE  ../uitools.pro 
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  cp -pf $QT_ROOT/lib/libQtUiTools.so $INSTALL_DIR/lib
-  #########END QTUITOOLS########
-  
+#  #########QTUITOOLS########
+#  echo "QTUITOOLS"	
+#  cd $QT_SRC/tools/designer/src/uitools
+#  mkdir -p build-$ANDROID_TARGET_ARCH
+#  cd build-$ANDROID_TARGET_ARCH
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  $QMAKE  ../uitools.pro 
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  cp -pf $QT_ROOT/lib/libQtUiTools.so $INSTALL_DIR/lib
+#  #########END QTUITOOLS########
+#  
 
   #########QWT5.2.0########
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
-  sed -i "s|    INSTALLBASE    = /.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -106,7 +105,7 @@ else
   $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
+  #make -j$CORES 2>&1 install | tee makeInstall.out
   #########END EXPAT2.0.1########
 
 
@@ -223,28 +222,44 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END GDAL1.8.0########
   
+  #######openssl-android#######
+  echo "openssl-android"
+  cd $SRC_DIR/openssl-android
+  $ANDROID_NDK_ROOT/ndk-build
+  echo "installing openssl"
+  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
+  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
+  
   
   #########postgresql-9.0.4########
   echo "postgresql"
-  cd $SRC_DIR/postgresql-9.0.4/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
-  #configure
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
-  LDFLAGS=$MY_STD_LDFLAGS \
+  cd $SRC_DIR/postgresql-9.0.4
+  #building in an other dir seems not to work
+    #  cd src/interfaces/libpq
+    #  mkdir -p build-$ANDROID_TARGET_ARCH
+    #  cd build-$ANDROID_TARGET_ARCH
+  #no ssl  
+  CFLAGS="$MY_STD_CFLAGS" \
+  CXXFLAGS="$MY_STD_CFLAGS" \
+  LDFLAGS="$MY_STD_LDFLAGS" \
   LIBS="-lsupc++ -lstdc++" \
-  ../configure $MY_STD_CONFIGURE_FLAGS --without-readline
-  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out
+  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
+  #configure with openssl
+  #LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
+  #$SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+  
+  
+  make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out    
   
   #simulate of make install
-  cp -f ../src/include/postgres_ext.h $INSTALL_DIR/include
-  cp -f ../src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-  rm -f $INSTALL_DIR/lib/libpq.so*
-  cp src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
+  echo "installing libpq"
+  cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
+  cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
+  rm -fv $INSTALL_DIR/lib/libpq.so*
+  cp -fv src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
   cd $INSTALL_DIR/lib
-  ln -s libpq.so.5.3 libpq.so.5
-  ln -s libpq.so.5.3 libpq.so
+  ln -sv libpq.so.5.3 libpq.so.5
+  ln -sv libpq.so.5.3 libpq.so
   #######END postgresql-9.0.4#######
   
   exit 0
