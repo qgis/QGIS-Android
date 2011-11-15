@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #   ***************************************************************************
-#     build-apk.sh - builds the and installs the needed libraries for android QGIS
+#     build-all.sh - builds android QGIS
 #      --------------------------------------
-#      Date                 : 01-Aug-2011
+#      Date                 : 01-Jun-2011
 #      Copyright            : (C) 2011 by Marco Bernasocchi
 #      Email                : marco at bernawebdesign.ch
 #   ***************************************************************************
@@ -15,23 +15,29 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+
 set -e
-
+start_time=`date +%s`
+#######Load config#######
 source `dirname $0`/config.conf
-ADB=$ANDROID_SDK_ROOT/platform-tools/adb
-$ADB kill-server
-sudo $ADB devices
+export QGIS_ANDROID_BUILD_ALL=1
 
+cd $QGIS_DIR
+git reset --hard HEAD
+git pull
+$SCRIPT_DIR/build-qgis.sh
+$SCRIPT_DIR/update-apk-env.sh
+$SCRIPT_DIR/build-apk.sh
 
-if [ "$1" = "--clear" ]; then
-    echo "clearing org.qgis.qgis"
-    $ADB clear org.qgis.qgis
-fi
+end_time=`date +%s`
+seconds=`expr $end_time - $start_time`
+minutes=$((seconds / 60))
+seconds=$((seconds % 60))
 
-$ADB logcat -c
-gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.PreStartActivity
-
-$ADB logcat | tee /tmp/logcat.log
-
+SUBJECT="Android CRON build"
+EMAIL="marco@bernawebdesign.ch"
+EMAILMESSAGE="/tmp/emailmessage.txt"
+echo "Successfully built all in $minutes minutes and $seconds seconds"> $EMAILMESSAGE
+mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+cp -f $APK_DIR/bin/Qgis-debug.apk /home/mbernasocchi/www/Qgis-debug-latest.apk
 

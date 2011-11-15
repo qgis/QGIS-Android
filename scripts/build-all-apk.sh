@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #   ***************************************************************************
-#     build-apk.sh - builds the and installs the needed libraries for android QGIS
+#     build-all.sh - builds android QGIS
 #      --------------------------------------
-#      Date                 : 01-Aug-2011
+#      Date                 : 01-Jun-2011
 #      Copyright            : (C) 2011 by Marco Bernasocchi
 #      Email                : marco at bernawebdesign.ch
 #   ***************************************************************************
@@ -15,23 +15,12 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+
 set -e
-
+#######Load config#######
 source `dirname $0`/config.conf
-ADB=$ANDROID_SDK_ROOT/platform-tools/adb
-$ADB kill-server
-sudo $ADB devices
-
-
-if [ "$1" = "--clear" ]; then
-    echo "clearing org.qgis.qgis"
-    $ADB clear org.qgis.qgis
-fi
-
-$ADB logcat -c
-gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.PreStartActivity
-
-$ADB logcat | tee /tmp/logcat.log
-
+sudo echo ""
+$SCRIPT_DIR/build-apk.sh
+$SCRIPT_DIR/install-apk.sh
+$SCRIPT_DIR/run-apk.sh
 
