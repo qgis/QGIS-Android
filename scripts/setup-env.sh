@@ -17,9 +17,6 @@
 
 set -e
 
-#######Create config file#######
-cp `dirname $0`/config.templ `dirname $0`/config.conf
-
 #######Load config#######
 source `dirname $0`/config.conf
 
@@ -107,10 +104,19 @@ else
 #  fi
 
   ########CHECK IF rpl EXISTS################
-  hash rpl 2>&- || { echo >&2 "The Program rpl is required but it's not installed. Aborting."; exit 1; }
+  hash rpl 2>&- || { echo >&2 "rpl is required but it's not installed. Aborting."; exit 1; }
   
   ########CHECK IF ant EXISTS################
-  hash ant 2>&- || { echo >&2 "The Program required to create APK. Aborting."; exit 1; }
+  hash ant 2>&- || { echo >&2 "ant required to create APK. Aborting."; exit 1; }
+  
+  ########CHECK IF cmake EXISTS################
+  hash cmake 2>&- || { echo >&2 "cmake required to build QGIS. Aborting."; exit 1; }
+  
+  ########CHECK IF cmake EXISTS################
+  hash bison 2>&- || { echo >&2 "cison build required to build QGIS. Aborting."; exit 1; }
+  
+  ########CHECK IF cmake EXISTS################
+  hash flex 2>&- || { echo >&2 "flex required to build QGIS. Aborting."; exit 1; }
   
   #preparing environnement
   android update project --name Qgis --path $APK_DIR

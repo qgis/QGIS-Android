@@ -30,8 +30,7 @@ fi
 
 $ADB logcat -c
 gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/eu.licentia.necessitas.industrius.PreStartActivity
-
+$ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
 $ADB logcat | tee /tmp/logcat.log
 
 

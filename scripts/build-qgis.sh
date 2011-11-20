@@ -64,7 +64,7 @@ MY_CMAKE_FLAGS=" \
 -DPOSTGRES_INCLUDE_DIR=$INSTALL_DIR/include \
 -DPOSTGRES_LIBRARY=$INSTALL_DIR/lib/libpq.so \
 -DQT_MKSPECS_DIR=$QT_ROOT/mkspecs \
--DQT_QMAKE_EXECUTABLbuE=$QMAKE \
+-DQT_QMAKE_EXECUTABLE=$QMAKE \
 -DQWT_INCLUDE_DIR=$INSTALL_DIR/include \
 -DQWT_LIBRARY=$INSTALL_DIR/lib/libqwt.so \
 -DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
@@ -99,6 +99,6 @@ fi
 
 GIT_REV=$(git rev-parse HEAD)
 #update version file in share
-echo $GIT_REV > $INSTALL_DIR/files/share/version.txt
+echo $GIT_REV > $INSTALL_DIR/files/version.txt
 #update apk manifest
 sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml

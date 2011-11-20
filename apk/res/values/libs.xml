@@ -25,7 +25,7 @@
       <item>QtCore</item>
       <item>QtGui</item>
       <item>QtNetwork</item>
-      <item>QtSensors</item>
+<!--      <item>QtSensors</item>-->
       <item>QtSql</item>
       <item>QtXml</item>
       <item>QtBearer</item>

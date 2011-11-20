@@ -105,7 +105,8 @@ else
   $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
-  #make -j$CORES 2>&1 install | tee makeInstall.out
+  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
+  make -j$CORES 2>&1 install | tee makeInstall.out
   #########END EXPAT2.0.1########
 
 
