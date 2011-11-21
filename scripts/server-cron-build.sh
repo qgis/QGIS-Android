@@ -25,6 +25,10 @@ export QGIS_ANDROID_BUILD_ALL=1
 cd $QGIS_DIR
 git reset --hard HEAD
 git pull
+
+cd $ROOT_DIR
+git reset --hard HEAD
+git pull
 $SCRIPT_DIR/build-qgis.sh
 $SCRIPT_DIR/update-apk-env.sh
 $SCRIPT_DIR/build-apk.sh
