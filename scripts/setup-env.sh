@@ -103,9 +103,6 @@ else
 #    exit 1
 #  fi
 
-  ########CHECK IF rpl EXISTS################
-  hash rpl 2>&- || { echo >&2 "rpl is required but it's not installed. Aborting."; exit 1; }
-  
   ########CHECK IF ant EXISTS################
   hash ant 2>&- || { echo >&2 "ant required to create APK. Aborting."; exit 1; }
   
@@ -283,7 +280,12 @@ else
   
   patch -p1 -i $PATCH_DIR/libpq.patch
   #######END postgresql-9.0.4#######
-
+  
+  
+  #######REPLACE ALL CONFIGURE SCRIPTS TO PRODUCE UNVERSIONED LIBS####################
+  cp -rf $PATCH_DIR/replace_configure_files/* $SRC_DIR
+  
+  
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0
 fi

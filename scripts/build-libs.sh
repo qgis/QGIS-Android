@@ -256,11 +256,7 @@ else
   echo "installing libpq"
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-  rm -fv $INSTALL_DIR/lib/libpq.so*
-  cp -fv src/interfaces/libpq/libpq.so.5.3 $INSTALL_DIR/lib/
-  cd $INSTALL_DIR/lib
-  ln -sv libpq.so.5.3 libpq.so.5
-  ln -sv libpq.so.5.3 libpq.so
+  cp -fv src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
   #######END postgresql-9.0.4#######
   
   exit 0
