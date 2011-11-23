@@ -19,13 +19,7 @@ set -e
 
 source `dirname $0`/config.conf
 
-APK_LIBS_DIR=$APK_DIR/libs/$ANDROID_TARGET_ARCH
+$SCRIPT_DIR/build-qgis.sh
+$SCRIPT_DIR/update-apk-env.sh
+$SCRIPT_DIR/build-apk.sh
 
-#copy libs to apk
-mkdir -p $APK_DIR/libs/
-rm -vrf $APK_DIR/libs/*
-cp -vrf $INSTALL_DIR/lib $APK_LIBS_DIR
-
-#copy assets to apk 
-rm -vrf $APK_DIR/assets
-cp -vrf $INSTALL_DIR/files $APK_DIR/assets
