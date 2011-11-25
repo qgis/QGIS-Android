@@ -15,7 +15,6 @@
 <!--      <item vesion=''>crypto</item>-->
 <!--      <item vesion=''>ssl</item>-->
       <item vesion=''>pq</item>
-      <item vesion=''>QtUiTools</item>
       <item vesion=''>qgis_core</item>
       <item vesion=''>qgissqlanyconnection</item>
       <item vesion=''>qgis_analysis</item>
@@ -25,12 +24,11 @@
       <item>QtCore</item>
       <item>QtGui</item>
       <item>QtNetwork</item>
-<!--      <item>QtSensors</item>-->
+      <item>QtSensors</item>
       <item>QtSql</item>
       <item>QtXml</item>
       <item>QtBearer</item>
       <item>QtLocation</item>
-      <item>QtOpenGL</item>
       <item>QtSvg</item>
       <item>QtSystemInfo</item>
       <item>QtWebKit</item>

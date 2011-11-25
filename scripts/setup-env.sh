@@ -255,7 +255,6 @@ else
   #edit qwtconfig.pri
   sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
   sed -i "s|CONFIG           += QwtDll|CONFIG     += QwtDll plugin|" qwtconfig.pri
-  sed -i "s|    INSTALLBASE    = /usr/local/qwt-5.2.0|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   #######END QWT5.2.0#######
   
   #######openssl-android#######

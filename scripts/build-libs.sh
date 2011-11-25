@@ -96,6 +96,7 @@ else
   #########QWT5.2.0########
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
+  sed -i "s|    INSTALLBASE    =.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -105,7 +106,7 @@ else
   $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
-  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_TARGET_ARCH/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END EXPAT2.0.1########
 
@@ -228,6 +229,7 @@ else
   cd $SRC_DIR/openssl-android
   $ANDROID_NDK_ROOT/ndk-build
   echo "installing openssl"
+  cp -rfv include/openssl $INSTALL_DIR/include/openssl
   cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
   cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
   
@@ -245,10 +247,13 @@ else
   LDFLAGS="$MY_STD_LDFLAGS" \
   LIBS="-lsupc++ -lstdc++" \
   $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
-  #configure with openssl
-  #LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
-  #$SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
   
+#  #configure with openssl
+#  CFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include/" \
+#  CXXFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include/" \
+#  LDFLAGS="$MY_STD_LDFLAGS" \
+#  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
+#  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
   
   make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out    
   
