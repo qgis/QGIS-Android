@@ -1,3 +1,34 @@
+/**
+ * @author  Marco Bernasocchi - <marco@bernawebdesign.ch>
+ * @version 0.1
+ */
+/*
+ Copyright (c) 2011, Marco Bernasocchi <marco@bernawebdesign.ch>
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ * Neither the name of the  Marco Bernasocchi <marco@bernawebdesign.ch> nor the
+ names of its contributors may be used to endorse or promote products
+ derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY Marco Bernasocchi <marco@bernawebdesign.ch> ''AS IS'' AND ANY
+ EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL Marco Bernasocchi <marco@bernawebdesign.ch> BE LIABLE FOR ANY
+ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.qgis.installer;
 
 import java.io.BufferedInputStream;
@@ -21,32 +52,63 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 public class QgisinstallerActivity extends Activity {
 	private static final int DOWNLOAD_DIALOG = 0;
 	private static final int PROMPT_INSTALL_DIALOG = 1;
 	private static final int NO_CONNECIVITY_DIALOG = 2;
-	ProgressDialog mProgressDialog;
-	String mUrlString = "http://android.qgis.org/Qgis-debug-latest.apk";
-	String mFilePath = Environment.getExternalStorageDirectory() + "/download/qgis.apk";
+	protected DownloadTask mDownloadTask = new DownloadTask();
+	protected ProgressDialog mProgressDialog;
+	protected String mUrlString = "http://android.qgis.org/download/";
+	protected String mFilePath = Environment.getExternalStorageDirectory()
+			+ "/download/";
+	protected String mVersion = "nightly";
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		if (isOnline()) {
-			showDialog(PROMPT_INSTALL_DIALOG);
-		} else {
-			showDialog(NO_CONNECIVITY_DIALOG);
-		}
+
+		final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.versions_array,
+				android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+
+		Button installButton = (Button) this.findViewById(R.id.install);
+		installButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mVersion = spinner.getSelectedItem().toString();
+				String fileName = "qgis-" + mVersion + ".apk";
+				mUrlString = mUrlString + fileName;
+				mFilePath = mFilePath + fileName;
+				if (isOnline()) {
+					showDialog(PROMPT_INSTALL_DIALOG);
+				} else {
+					showDialog(NO_CONNECIVITY_DIALOG);
+				}
+			}
+		});
+	}
+
+	public void onDestroy() {
+		super.onDestroy();
+		mDownloadTask.cancel(true);
 	}
 
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DOWNLOAD_DIALOG:
 			mProgressDialog = new ProgressDialog(QgisinstallerActivity.this);
-			mProgressDialog.setMessage("Downloading " + mUrlString);
+			mProgressDialog
+					.setMessage(R.string.downloading + ": " + mUrlString);
 			mProgressDialog.setIndeterminate(false);
 			mProgressDialog.setMax(100);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -54,30 +116,28 @@ public class QgisinstallerActivity extends Activity {
 
 		case PROMPT_INSTALL_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
-					.setTitle("Download QGIS package?")
-					.setMessage(
-							"This will download the latest stable version of QGIS. The download is larger than 70MB, do yo want to continue?")
-					.setPositiveButton("Ok",
+					.setTitle(R.string.install_dialog_title)
+					.setMessage(String.format(getString(R.string.install_dialog_message), mVersion))
+					.setPositiveButton(R.string.ok,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									new DownloadFile().execute(mUrlString);
+									mDownloadTask.execute(mUrlString);
 								}
 							})
-					.setNegativeButton("Cancel",
+					.setNegativeButton(R.string.cancel,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
 									// Action for 'NO' Button
-									QgisinstallerActivity.this.finish();
+									dialog.cancel();
 								}
 							}).create();
 		case NO_CONNECIVITY_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
-					.setTitle("No data connectivity detected")
-					.setMessage(
-							"Check your connectivity settings and try again")
-					.setPositiveButton("Close",
+					.setTitle(R.string.no_connectivity_dialog_title)
+					.setMessage(R.string.no_connectivity_dialog_message)
+					.setPositiveButton(R.string.quit,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
@@ -98,7 +158,7 @@ public class QgisinstallerActivity extends Activity {
 		return false;
 	}
 
-	private class DownloadFile extends AsyncTask<String, Integer, String> {
+	private class DownloadTask extends AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... mUrlString) {
 			int count;
@@ -118,7 +178,7 @@ public class QgisinstallerActivity extends Activity {
 
 				long total = 0;
 
-				while ((count = input.read(data)) != -1) {
+				while (!isCancelled() && (count = input.read(data)) != -1) {
 					total += count;
 					// publishing the progress....
 					int progress = (int) (total * 100 / lenghtOfFile);
@@ -134,9 +194,10 @@ public class QgisinstallerActivity extends Activity {
 			return null;
 		}
 
-		protected void onPreExecute(){
+		protected void onPreExecute() {
 			showDialog(DOWNLOAD_DIALOG);
 		}
+
 		protected void onProgressUpdate(Integer... progress) {
 			super.onProgressUpdate(progress);
 			mProgressDialog.setProgress(progress[0]);

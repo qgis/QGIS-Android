@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Qgis-installer</string>
-
+    <string name="app_name">Qgis installer</string>
+    <string name="install">Download and install</string>
+    <string name="quit">Quit</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+	<string name="version_prompt">Choose a version. (Nightly is a debug enabled build and is untested)</string>
+    <string-array name="versions_array">
+        <item>alpha-1.9</item>
+        <item>nightly</item>
+    </string-array>
+    <string name="downloading">Downloading</string>
+    <string name="install_dialog_title">Download QGIS package?</string>
+    <string name="install_dialog_message">This will download and install the %s build of QGIS. The download is larger than 70MB, do yo want to continue?</string>
+    <string name="no_connectivity_dialog_title">No data connectivity detected</string>
+    <string name="no_connectivity_dialog_message">Check your connectivity settings and try again</string>
 </resources>
