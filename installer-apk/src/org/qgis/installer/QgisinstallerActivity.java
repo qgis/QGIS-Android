@@ -107,8 +107,7 @@ public class QgisinstallerActivity extends Activity {
 		switch (id) {
 		case DOWNLOAD_DIALOG:
 			mProgressDialog = new ProgressDialog(QgisinstallerActivity.this);
-			mProgressDialog
-					.setMessage(R.string.downloading + ": " + mUrlString);
+			mProgressDialog.setMessage(getString(R.string.downloading_dialog_message) + ": " + mUrlString);
 			mProgressDialog.setIndeterminate(false);
 			mProgressDialog.setMax(100);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -116,16 +115,16 @@ public class QgisinstallerActivity extends Activity {
 
 		case PROMPT_INSTALL_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
-					.setTitle(R.string.install_dialog_title)
+					.setTitle(getString(R.string.install_dialog_title))
 					.setMessage(String.format(getString(R.string.install_dialog_message), mVersion))
-					.setPositiveButton(R.string.ok,
+					.setPositiveButton(getString(R.string.ok),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
 									mDownloadTask.execute(mUrlString);
 								}
 							})
-					.setNegativeButton(R.string.cancel,
+					.setNegativeButton(getString(R.string.cancel),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
@@ -135,9 +134,9 @@ public class QgisinstallerActivity extends Activity {
 							}).create();
 		case NO_CONNECIVITY_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
-					.setTitle(R.string.no_connectivity_dialog_title)
-					.setMessage(R.string.no_connectivity_dialog_message)
-					.setPositiveButton(R.string.quit,
+					.setTitle(getString(R.string.no_connectivity_dialog_title))
+					.setMessage(getString(R.string.no_connectivity_dialog_message))
+					.setPositiveButton(getString(R.string.quit),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {

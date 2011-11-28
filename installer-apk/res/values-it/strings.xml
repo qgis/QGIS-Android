@@ -6,11 +6,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancella</string>
 	<string name="version_prompt">Scegli un versione. (Nightly supporta il debugging e non é testata)</string>
-    <string-array name="versions_array">
-        <item>alpha-1.9</item>
-        <item>nightly</item>
-    </string-array>
-    <string name="downloading">Scaricando</string>
+    <string name="downloading_dialog_message">Scaricando</string>
     <string name="install_dialog_title">Scaricare il pacchetto QGIS?</string>
     <string name="install_dialog_message">Questo scaricherà e installerà la versione %s di QGIS. Il download é più di 70MB, vuoi davvero continuare?</string>
     <string name="no_connectivity_dialog_title">Nessuna connettività</string>
