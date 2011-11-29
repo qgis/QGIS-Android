@@ -3,8 +3,6 @@
 	<string name="app_name">Qgis installer</string>
     <string name="install">Download and install</string>
     <string name="quit">Quit</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">Cancel</string>
 	<string name="version_prompt">Choose a version. (Nightly is a debug enabled build and is untested)</string>
     <string name="downloading_dialog_message">Downloading</string>
     <string name="install_dialog_title">Download QGIS package?</string>

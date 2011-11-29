@@ -114,12 +114,11 @@ public class FirstRunActivity extends Activity {
             progressDialog = new ProgressDialog(FirstRunActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 //            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMessage("Unpacking post install data. This might take a long time.");
             return progressDialog;
         case QUIT_MESSAGE_DIALOG:
             return new AlertDialog.Builder(FirstRunActivity.this)
                 .setTitle("Done unpacking, you can now start QGIS using its launcher.")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 						PackageManager pm = getApplicationContext().getPackageManager();
 

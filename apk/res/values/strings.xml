@@ -5,4 +5,6 @@
     <string name="ministro_not_found_msg">Can\'t find Ministro service.\nThe application can\'t start.</string>
     <string name="ministro_needed_msg">This application requires Ministro service. Would you like to install it?</string>
     <string name="fatal_error_msg">Your application encountered a fatal error and cannot continue.</string>
+    <string name="done_unpacking_msg">Done unpacking, you can now start QGIS using its launcher.</string>
+    <string name="unpacking_msg">Unpacking post install data. This might take a long time.\nUnpacking:\n</string>
 </resources>

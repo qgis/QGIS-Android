@@ -117,14 +117,14 @@ public class QgisinstallerActivity extends Activity {
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
 					.setTitle(getString(R.string.install_dialog_title))
 					.setMessage(String.format(getString(R.string.install_dialog_message), mVersion))
-					.setPositiveButton(getString(R.string.ok),
+					.setPositiveButton(getString(android.R.string.ok),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
 									mDownloadTask.execute(mUrlString);
 								}
 							})
-					.setNegativeButton(getString(R.string.cancel),
+					.setNegativeButton(getString(android.R.string.cancel),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
