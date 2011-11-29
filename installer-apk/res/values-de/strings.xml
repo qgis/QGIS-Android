@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">QGIS Installer</string>
+    <string name="install">Download und Installation</string>
+    <string name="quit">Beenden</string>
+	<string name="version_prompt">Wähle eine Version. (Nightly ist debugging aktiviert und nicht getestet)</string>
+    <string name="downloading_dialog_message">Downloading</string>
+    <string name="install_dialog_title">Download QGIS Paket?</string>
+    <string name="install_dialog_message">Dies wird den QGIS build %s runterladen und installieren. Der Download is größer als 70MB, wollen sie fortfahren?</string>
+    <string name="no_connectivity_dialog_title">Keine Datenverbindung verfügbar</string>
+    <string name="no_connectivity_dialog_message">Überprüfen Sie die Verbindungseinstellungen und versuchen Sie es erneut</string>
+</resources>
