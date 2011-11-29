@@ -24,5 +24,5 @@ sudo $ADB devices
 
 echo "Uninstalling org.qgis.qgis"
 $ADB uninstall org.qgis.qgis
-echo "Installing $APK_DIR/bin/Qgis-debug.apk"
-$ADB install $APK_DIR/bin/Qgis-debug.apk
+echo "Installing $APK_DIR/bin/qgis-debug.apk"
+$ADB install $APK_DIR/bin/qgis-debug.apk

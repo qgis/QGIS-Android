@@ -22,15 +22,20 @@ ADB=$ANDROID_SDK_ROOT/platform-tools/adb
 $ADB kill-server
 sudo $ADB devices
 
+echo "" > /tmp/logcat.log
+gnome-system-log /tmp/logcat.log &
+$ADB logcat -c
 
 if [ "$1" = "--clear" ]; then
     echo "clearing org.qgis.qgis"
     $ADB clear org.qgis.qgis
+    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
+elif [ "$1" = "--first" ]; then
+    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
+else
+    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QtActivity
 fi
 
-$ADB logcat -c
-gnome-system-log /tmp/logcat.log &
-$ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
 $ADB logcat | tee /tmp/logcat.log
 
 
