@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="versions_array">
+        <item>master-alpha1</item>
+        <item>nightly</item>
+    </string-array>
+</resources>
