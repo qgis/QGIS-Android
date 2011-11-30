@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Qgis installer</string>
+	<string name="app_name">QGIS installer</string>
     <string name="install">Download and install</string>
     <string name="quit">Quit</string>
 	<string name="version_prompt">Choose a version. (Nightly is a debug enabled build and is untested)</string>
