@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="app_name">Qgis</string>
+    <string name="first_run">Qgis Eerste Keer Opstarten</string>
     <string name="ministro_not_found_msg">De Ministro service is niet gevonden.\nDe applicatie kan niet starten.</string>
     <string name="ministro_needed_msg">Deze applicatie maakt gebruik van de Ministro service. Wilt u deze installeren?</string>
     <string name="fatal_error_msg">Er is een fatale fout in de applicatie opgetreden. De applicatie kan niet verder gaan.</string>
+    <string name="done_unpacking_msg">Klaar met uitpakken, u kunt QGIS nu opstarten via het startscherm.</string>
+    <string name="unpacking_msg">Bezig met uitpakken van de installatiedata. Dit kan wel even duren.\nUitpakken:\n</string>
 </resources>
