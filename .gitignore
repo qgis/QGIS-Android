@@ -6,7 +6,7 @@
 /out/
 /*apk/bin/
 /*apk/libs/
-/*apk/gen/*
+/*apk/gen/
 /*apk/Makefile
 /*apk/assets
 /scripts/config.conf
