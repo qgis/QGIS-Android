@@ -6,7 +6,7 @@
   <string name="version_prompt">Виберіть версію. (Версія Nightly є тестовою та може мати помилки)</string>
     <string name="downloading_dialog_message">Завантажується</string>
     <string name="install_dialog_title">Завантажити пакет QGIS?</string>
-    <string name="install_dialog_message">Ця програма завантажить та встановить QGIS версії %s. Об'єм завантажуваних файлів перевищує 70MB, продовжити?</string>
+    <string name="install_dialog_message">Ця програма завантажить та встановить QGIS версії %s. Об\'єм завантажуваних файлів перевищує 70MB, продовжити?</string>
     <string name="no_connectivity_dialog_title">Відсутній канал передачі даних</string>
-    <string name="no_connectivity_dialog_message">Перевірте настройки з'єднання та спробуйте ще раз</string>
+    <string name="no_connectivity_dialog_message">Перевірте настройки з\'єднання та спробуйте ще раз</string>
 </resources>
