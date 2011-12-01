@@ -32,12 +32,15 @@
 package org.qgis.installer;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -62,52 +65,54 @@ public class QgisinstallerActivity extends Activity {
 	private static final int DOWNLOAD_DIALOG = 0;
 	private static final int PROMPT_INSTALL_DIALOG = 1;
 	private static final int NO_CONNECIVITY_DIALOG = 2;
-	protected DownloadTask mDownloadTask = new DownloadTask();
+	protected DownloadApkTask mDownloadApkTask = new DownloadApkTask();
+	protected DownloadVersionsTask mDownloadVersionsTask = new DownloadVersionsTask();
 	protected ProgressDialog mProgressDialog;
-	protected String mUrlString = "http://android.qgis.org/download/";
-	protected String mFilePath = Environment.getExternalStorageDirectory()
+	protected String mUrlBaseString = "http://android.qgis.org/download/";
+	protected String mFilePathBase = Environment.getExternalStorageDirectory()
 			+ "/download/";
 	protected String mVersion = "nightly";
+	Spinner mSpinner;
+	ArrayList<String> mVersions = new ArrayList<String>();
+	ArrayAdapter<String> mSpinnerArrayAdapter;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.versions_array,
-				android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
+		if (!isOnline()) {
+			showDialog(NO_CONNECIVITY_DIALOG);
+		}
+		mSpinner = (Spinner) findViewById(R.id.spinner);
+		mSpinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, mVersions);
+		mSpinner.setAdapter(mSpinnerArrayAdapter);
+		mDownloadVersionsTask.execute(mUrlBaseString + "versions.txt");
 
 		Button installButton = (Button) this.findViewById(R.id.install);
 		installButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mVersion = spinner.getSelectedItem().toString();
+				mVersion = mSpinner.getSelectedItem().toString();
 				String fileName = "qgis-" + mVersion + ".apk";
-				mUrlString = mUrlString + fileName;
-				mFilePath = mFilePath + fileName;
-				if (isOnline()) {
-					showDialog(PROMPT_INSTALL_DIALOG);
-				} else {
-					showDialog(NO_CONNECIVITY_DIALOG);
-				}
+				mUrlBaseString = mUrlBaseString + fileName;
+				mFilePathBase = mFilePathBase + fileName;
+				showDialog(PROMPT_INSTALL_DIALOG);
 			}
 		});
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
-		mDownloadTask.cancel(true);
+		mDownloadApkTask.cancel(true);
 	}
 
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DOWNLOAD_DIALOG:
 			mProgressDialog = new ProgressDialog(QgisinstallerActivity.this);
-			mProgressDialog.setMessage(getString(R.string.downloading_dialog_message) + ": " + mUrlString);
+			mProgressDialog
+					.setMessage(getString(R.string.downloading_dialog_message)
+							+ ": " + mUrlBaseString);
 			mProgressDialog.setIndeterminate(false);
 			mProgressDialog.setMax(100);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -116,12 +121,15 @@ public class QgisinstallerActivity extends Activity {
 		case PROMPT_INSTALL_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
 					.setTitle(getString(R.string.install_dialog_title))
-					.setMessage(String.format(getString(R.string.install_dialog_message), mVersion))
+					.setMessage(
+							String.format(
+									getString(R.string.install_dialog_message),
+									mVersion))
 					.setPositiveButton(getString(android.R.string.ok),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									mDownloadTask.execute(mUrlString);
+									mDownloadApkTask.execute(mUrlBaseString);
 								}
 							})
 					.setNegativeButton(getString(android.R.string.cancel),
@@ -135,7 +143,8 @@ public class QgisinstallerActivity extends Activity {
 		case NO_CONNECIVITY_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
 					.setTitle(getString(R.string.no_connectivity_dialog_title))
-					.setMessage(getString(R.string.no_connectivity_dialog_message))
+					.setMessage(
+							getString(R.string.no_connectivity_dialog_message))
 					.setPositiveButton(getString(R.string.quit),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -157,12 +166,38 @@ public class QgisinstallerActivity extends Activity {
 		return false;
 	}
 
-	private class DownloadTask extends AsyncTask<String, Integer, String> {
+	private class DownloadVersionsTask extends AsyncTask<String, Integer, String> {
 		@Override
-		protected String doInBackground(String... mUrlString) {
+		protected String doInBackground(String... mUrlBaseString) {
+			try {
+				URL url = new URL(mUrlBaseString[0]);
+				URLConnection conexion = url.openConnection();
+				conexion.connect();
+
+				// download the file
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						url.openStream()));
+				String str;
+				while ((str = in.readLine()) != null) {
+					mVersions.add(str);
+				}
+
+				in.close();
+			} catch (Exception e) {
+			}
+			return null;
+		}
+		protected void onPostExecute(String result) {
+			mSpinnerArrayAdapter.notifyDataSetChanged();
+		}
+	}
+
+	private class DownloadApkTask extends AsyncTask<String, Integer, String> {
+		@Override
+		protected String doInBackground(String... mUrlBaseString) {
 			int count;
 			try {
-				URL url = new URL(mUrlString[0]);
+				URL url = new URL(mUrlBaseString[0]);
 				URLConnection conexion = url.openConnection();
 				conexion.connect();
 				// this will be useful so that you can show a tipical 0-100%
@@ -171,7 +206,7 @@ public class QgisinstallerActivity extends Activity {
 
 				// download the file
 				InputStream input = new BufferedInputStream(url.openStream());
-				OutputStream output = new FileOutputStream(mFilePath);
+				OutputStream output = new FileOutputStream(mFilePathBase);
 
 				byte data[] = new byte[1024];
 
@@ -204,7 +239,7 @@ public class QgisinstallerActivity extends Activity {
 
 		protected void onPostExecute(String result) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
+			intent.setDataAndType(Uri.fromFile(new File(mFilePathBase)),
 					"application/vnd.android.package-archive");
 			startActivity(intent);
 			QgisinstallerActivity.this.finish();
