@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">QGIS installeerija</string>
+    <string name="install">Lae alla ja installeeri</string>
+    <string name="quit">Loobu</string>
+	<string name="version_prompt">Vali versioon. (Versioon Nightly on poolik ja katsetamata)</string>
+    <string name="downloading_dialog_message">Laen alla</string>
+    <string name="install_dialog_title">Lae alla QGIS pakett?</string>
+    <string name="install_dialog_message">See laeb alla ja installeerib %s QGIS versiooni. Alla laetav maht on suurem kui 70MB, kas soovid jätkata?</string>
+    <string name="no_connectivity_dialog_title">Ühendust andmetega ei tuvastatud</string>
+    <string name="no_connectivity_dialog_message">Kontrolli oma ühenduse seadeid ja proovi veel</string>
+</resources>
