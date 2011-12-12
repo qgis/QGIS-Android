@@ -8,4 +8,3 @@
     <string name="done_unpacking_msg">Décompression achevée, vous pouvez démarrer QGIS depuis son lanceur.</string>
     <string name="unpacking_msg">Décompression post-installation de données. Cela va prendre un petit moment.\nDécompression:\n</string>
 </resources>
-</resources>
