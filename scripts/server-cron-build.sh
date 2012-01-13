@@ -41,5 +41,5 @@ EMAIL="marco@bernawebdesign.ch"
 EMAILMESSAGE="/tmp/emailmessage.txt"
 echo "Successfully built all in $minutes minutes and $seconds seconds"> $EMAILMESSAGE
 mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
-cp -vf $APK_DIR/bin/Qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
+cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
 
