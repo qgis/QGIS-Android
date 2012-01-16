@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   ***************************************************************************
-#     config.conf.sh - configuration for android QGIS
+#     config.conf - configuration for android QGIS
 #      --------------------------------------
 #      Date                 : 01-Jun-2011
 #      Copyright            : (C) 2011 by Marco Bernasocchi
@@ -24,9 +24,15 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #############################
   export NECESSITAS_DIR=$HOME/dev/necessitas
   export ROOT_DIR=$HOME/dev/qgis-android
+  
   #WARNING: armeabi-v7a builds usually don't work on android emulators
-  export ANDROID_TARGET_ARCH=armeabi
-  #export ANDROID_TARGET_ARCH=armeabi-v7a
+  DEFAULT_ANDROID_TARGET_ARCH=armeabi #or armeabi-v7a
+  #passing ANDROID_TARGET_ARCH=armeabi-v7a when calling a script will override the default
+  #for example ANDROID_TARGET_ARCH=armeabi-v7a ./build-all.sh
+  if [ ! -n "${ANDROID_TARGET_ARCH+x}" ]; then
+    export ANDROID_TARGET_ARCH=$DEFAULT_ANDROID_TARGET_ARCH
+  fi
+  
   export QGIS_DIR=$HOME/dev/qgis
   export ANDROID_SDK_ROOT=$NECESSITAS_DIR/android-sdk
   export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk-r6b
@@ -66,12 +72,12 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #see http://gcc.gnu.org/onlinedocs/gcc-4.4.3/gcc/ARM-Options.html
   #see http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0408f/index.html
   #see NDK docs/STANDALONE-TOOLCHAIN.html
+  #for generic MY_FPU=vfp
+  MY_FPU=vfp
   #for tegra processors (xoom, transformer, iconia, galaxy tab)
   #MY_FPU=vfpv3-d16
   #for hummingbird and neon supporting processors (galaxy phone) -mfpu=neon
   #MY_FPU=neon
-  #for others MY_FPU=vfp
-  MY_FPU=vfp
   ARMV7A_flags=" -march=armv7-a -mfloat-abi=softfp -mfpu=$MY_FPU"
 
   #TODO check ALL_FLAGS if other flags re needed
@@ -80,7 +86,8 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 -mthumb"
   if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
-  fi  
+  fi
+  export MY_STD_CXXFLAGS="$MY_STD_CFLAGS -std=gnu++0x"
   export MY_STD_LDFLAGS="-Wl,--fix-cortex-a8"
 
   #############################

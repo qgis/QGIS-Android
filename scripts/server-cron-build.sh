@@ -31,6 +31,8 @@ git reset --hard HEAD
 git pull
 $SCRIPT_DIR/build-qgis-and-apk.sh
 
+cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
+
 end_time=`date +%s`
 seconds=`expr $end_time - $start_time`
 minutes=$((seconds / 60))
@@ -41,5 +43,3 @@ EMAIL="marco@bernawebdesign.ch"
 EMAILMESSAGE="/tmp/emailmessage.txt"
 echo "Successfully built all in $minutes minutes and $seconds seconds"> $EMAILMESSAGE
 mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
-cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
-

@@ -21,6 +21,7 @@ set -e
 
 source `dirname $0`/config.conf
 
+mkdir -p $QGIS_BUILD_DIR
 cd $QGIS_BUILD_DIR
 
 MY_CMAKE_FLAGS=" \
@@ -35,6 +36,7 @@ MY_CMAKE_FLAGS=" \
 -DEXECUTABLE_OUTPUT_PATH=$INSTALL_DIR/bin \
 -DLIBRARY_OUTPUT_DIRECTORY=$INSTALL_DIR/lib \
 -DRUNTIME_OUTPUT_DIRECTORY=$INSTALL_DIR/bin \
+-DENABLE_TESTS=OFF \
 -DEXPAT_INCLUDE_DIR=$INSTALL_DIR/include \
 -DEXPAT_LIBRARY=$INSTALL_DIR/lib/libexpat.so \
 -DFLEX_EXECUTABLE=/usr/bin/flex \
@@ -92,7 +94,7 @@ if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
 else
   MY_CMAKE=ccmake
 fi
-if [ "$1" = "--configure" ]; then
+if [ ! -f CMakeCache.txt ] || [ "$1" = "--configure" ] ; then
     $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
 else
     make -j$CORES install    

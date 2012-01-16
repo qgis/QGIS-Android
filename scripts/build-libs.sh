@@ -84,14 +84,14 @@ else
 #  mkdir -p build-$ANDROID_TARGET_ARCH
 #  cd build-$ANDROID_TARGET_ARCH
 #  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CXXFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
 #  $QMAKE  ../uitools.pro 
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
 #  cp -pf $QT_ROOT/lib/libQtUiTools.so $INSTALL_DIR/lib
 #  #########END QTUITOOLS########
-#  
+  
 
   #########QWT5.2.0########
   echo "QWT5.2.0"	
@@ -101,7 +101,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   $QMAKE ../qwt.pro
   #compile
@@ -118,7 +118,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -132,7 +132,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -148,7 +148,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   gl_cv_header_working_stdint_h=yes \
   ../configure $MY_STD_CONFIGURE_FLAGS 
@@ -165,7 +165,7 @@ else
 #  cd build-$ANDROID_TARGET_ARCH
 #  #configure
 #  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CXXFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
 #  ../configure $MY_STD_CONFIGURE_FLAGS
 #  #compile
@@ -181,7 +181,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -197,7 +197,7 @@ else
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
   ../configure $MY_STD_CONFIGURE_FLAGS
@@ -215,7 +215,7 @@ else
   #cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
@@ -227,6 +227,8 @@ else
   #######openssl-android#######
   echo "openssl-android"
   cd $SRC_DIR/openssl-android
+  sed -i "/APP_ABI :=* /d" jni/Application.mk
+  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
   $ANDROID_NDK_ROOT/ndk-build
   echo "installing openssl"
   cp -rfv include/openssl $INSTALL_DIR/include/openssl

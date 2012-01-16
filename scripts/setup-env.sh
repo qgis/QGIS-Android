@@ -46,6 +46,7 @@ fi
 echo "PATH:"
 echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS
+echo "CXXFLAGS:                         " $MY_STD_CXXFLAGS
 echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
@@ -143,7 +144,7 @@ else
 
   echo "PATCHING STANDALONE TOOLCHAIN"
   cd $ANDROID_NDK_TOOLCHAIN_ROOT
-  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
+  #patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
 
   #Get Updated config.sub
@@ -268,10 +269,13 @@ else
     git clone git://github.com/mbernasocchi/openssl-android.git
   fi
   
+  cd openssl-android
+  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
+  
   #######postgresql-9.0.4#######
   echo "postgresql-9.0.4"
   cd $SRC_DIR
-  wget -c http://wwwmaster.postgresql.org/redir/376/h/source/v9.0.4/postgresql-9.0.4.tar.bz2
+  wget -c http://ftp.postgresql.org/pub/source/v9.0.4/postgresql-9.0.4.tar.bz2
   tar xjf postgresql-9.0.4.tar.bz2 
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
   cd postgresql-9.0.4/
