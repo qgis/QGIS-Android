@@ -649,6 +649,11 @@ public class QtActivity extends Activity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
+        if ( (keyCode == KeyEvent.KEYCODE_BACK) )
+        {
+            //moveTaskToBack(true); 
+            return true;
+        }
         if (QtApplication.m_delegateObject != null && QtApplication.onKeyDown != null)
             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyDown, keyCode, event);
         else
@@ -678,6 +683,11 @@ public class QtActivity extends Activity
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
+        if ( (keyCode == KeyEvent.KEYCODE_BACK) )
+        {
+            //moveTaskToBack(true); 
+            return true;
+        }
         if (QtApplication.m_delegateObject != null  && QtApplication.onKeyDown != null)
             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyUp, keyCode, event);
         else
