@@ -110,10 +110,10 @@ else
   ########CHECK IF cmake EXISTS################
   hash cmake 2>&- || { echo >&2 "cmake required to build QGIS. Aborting."; exit 1; }
   
-  ########CHECK IF cmake EXISTS################
-  hash bison 2>&- || { echo >&2 "cison build required to build QGIS. Aborting."; exit 1; }
+  ########CHECK IF bison EXISTS################
+  hash bison 2>&- || { echo >&2 "bison required to build QGIS. Aborting."; exit 1; }
   
-  ########CHECK IF cmake EXISTS################
+  ########CHECK IF flex EXISTS################
   hash flex 2>&- || { echo >&2 "flex required to build QGIS. Aborting."; exit 1; }
   
   #preparing environnement
