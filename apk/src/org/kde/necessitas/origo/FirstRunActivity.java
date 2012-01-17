@@ -126,11 +126,11 @@ public class FirstRunActivity extends Activity {
 						pm.setComponentEnabledSetting(
 								getComponentName(),
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-								PackageManager.DONT_KILL_APP);
+								0);
 
-                        Intent intent = new Intent();
-                        intent.setClass(FirstRunActivity.this, QtActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent();
+//                        intent.setClass(FirstRunActivity.this, QtActivity.class);
+//                        startActivity(intent);
 						//quit first start
                         FirstRunActivity.this.finish();
                     }
