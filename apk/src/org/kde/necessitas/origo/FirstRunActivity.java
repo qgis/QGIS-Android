@@ -55,6 +55,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
@@ -116,6 +117,41 @@ public class FirstRunActivity extends Activity {
 //            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             return progressDialog;
         case QUIT_MESSAGE_DIALOG:
+              String aliasPath = getFilesDir() + "/sdcard";
+              String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+              boolean externalStorageAvailable = false;
+              boolean externalStorageWriteable = false;
+              String state = Environment.getExternalStorageState();
+              if (Environment.MEDIA_MOUNTED.equals(state)) {
+                  externalStorageAvailable = externalStorageWriteable = true;
+              }
+              else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+                  externalStorageAvailable = true;
+                  externalStorageWriteable = false;
+              }
+              else {
+                  externalStorageAvailable = externalStorageWriteable = false;
+              }
+
+              try {
+                File alias = new File(aliasPath);
+                if (externalStorageWriteable && !alias.exists()) {
+                  try {
+                    String str = "ln -s " + storagePath + " " + aliasPath;
+                    Process process = Runtime.getRuntime().exec(str);
+                    Log.i(QtTAG, "Symlinked '" + storagePath + " to " + aliasPath + "'");
+                    }
+                  catch (IOException e) {
+                    Log.i(QtTAG, "Can't symlink '" + storagePath + " to " + aliasPath + "'", e);
+                  }
+                }
+              }
+              catch (SecurityException e) {
+                Log.i(QtTAG, "Can't load '" + aliasPath + "'", e);
+              }
+
+
             return new AlertDialog.Builder(FirstRunActivity.this)
                 .setTitle("Done unpacking, you can now start QGIS using its launcher.")
                 .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
