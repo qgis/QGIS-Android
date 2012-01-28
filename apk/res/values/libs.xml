@@ -23,14 +23,13 @@
     <array name="qt_libs">
       <item>QtCore</item>
       <item>QtGui</item>
-      <item>QtNetwork</item>
-      <item>QtSensors</item>
       <item>QtSql</item>
       <item>QtXml</item>
-      <item>QtBearer</item>
-      <item>QtLocation</item>
       <item>QtSvg</item>
-      <item>QtSystemInfo</item>
       <item>QtWebKit</item>
+      <item>QtNetwork</item>
+      <item>QtSystemInfo</item>
+      <item>QtSensors</item>
+      <item>QtLocation</item>
     </array>
 </resources>
