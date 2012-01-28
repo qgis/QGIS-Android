@@ -117,7 +117,7 @@ public class FirstRunActivity extends Activity {
 //            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             return progressDialog;
         case QUIT_MESSAGE_DIALOG:
-              String aliasPath = getFilesDir() + "/sdcard";
+              String aliasPath = getFilesDir() + "/storage";
               String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
               boolean externalStorageAvailable = false;
@@ -136,7 +136,10 @@ public class FirstRunActivity extends Activity {
 
               try {
                 File alias = new File(aliasPath);
-                if (externalStorageWriteable && !alias.exists()) {
+                if (externalStorageAvailable && !alias.exists()) {
+                  if ( ! externalStorageWriteable){
+                    aliasPath = aliasPath + "ReadOnly";
+                  }
                   try {
                     String str = "ln -s " + storagePath + " " + aliasPath;
                     Process process = Runtime.getRuntime().exec(str);
