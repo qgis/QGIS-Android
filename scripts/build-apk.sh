@@ -19,15 +19,8 @@ set -e
 
 source `dirname $0`/config.conf
 
-##keytool -genkey -v -keystore my-release-key.keystore -alias bernawebdesignKey -keyalg RSA -keysize 2048 -validity 10000
-##cd $APK_DIR
-##ant release
-###add all additional files aapt
-
-##jarsigner -verbose -keystore my-release-key.keystore -signedjar bin/Qgis-signed.apk bin/Qgis-unsigned.apk bernawebdesignKey
-##zipalign -v 4 bin/Qgis-signed.apk bin/Qgis.apk
-##adb install bin/Qgis.apk
-
 cd $APK_DIR
-ant debug
 
+#to generate a key ecc see http://developer.android.com/guide/publishing/app-signing.html 
+
+ant `echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]'`

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   ***************************************************************************
-#     config.conf - configuration for android QGIS
+#     config.conf - configuration template for android QGIS
 #      --------------------------------------
 #      Date                 : 01-Jun-2011
 #      Copyright            : (C) 2011 by Marco Bernasocchi
@@ -24,22 +24,30 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #############################
   export NECESSITAS_DIR=$HOME/dev/necessitas
   export ROOT_DIR=$HOME/dev/qgis-android
+  export QGIS_DIR=$HOME/dev/qgis
   
   #WARNING: armeabi-v7a builds usually don't work on android emulators
   DEFAULT_ANDROID_TARGET_ARCH=armeabi #or armeabi-v7a
   #passing ANDROID_TARGET_ARCH=armeabi-v7a when calling a script will override the default
   #for example ANDROID_TARGET_ARCH=armeabi-v7a ./build-all.sh
-  if [ ! -n "${ANDROID_TARGET_ARCH+x}" ]; then
-    export ANDROID_TARGET_ARCH=$DEFAULT_ANDROID_TARGET_ARCH
-  fi
   
-  export QGIS_DIR=$HOME/dev/qgis
+  DEFAULT_BUILD_TYPE=Debug #or Release
+  #passing BUILD_TYPE=Release when calling a script will override the default
+  #for example BUILD_TYPE=Release ./build-all.sh
+  
   export ANDROID_SDK_ROOT=$NECESSITAS_DIR/android-sdk
   export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk-r6b
   export QT_ROOT=$NECESSITAS_DIR/Android/Qt/480/$ANDROID_TARGET_ARCH
-  export BUILD_TYPE=Debug
-    
+  
+
   ######LIKELY UNNEEDED TO CONFIGURE FURTHER######
+  if [ ! -n "${ANDROID_TARGET_ARCH+x}" ]; then
+    export ANDROID_TARGET_ARCH=$DEFAULT_ANDROID_TARGET_ARCH
+  fi
+  if [ ! -n "${BUILD_TYPE+x}" ]; then
+    export BUILD_TYPE=$DEFAULT_BUILD_TYPE
+  fi
+  
   export QGIS_BUILD_DIR=$QGIS_DIR/build-$ANDROID_TARGET_ARCH
   export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_TARGET_ARCH
   export SCRIPT_DIR=$ROOT_DIR/scripts
