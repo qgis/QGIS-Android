@@ -5,6 +5,7 @@
       <item vesion=''>geos</item>
       <item vesion=''>geos_c</item>
       <item vesion=''>gslcblas</item>
+      <item vesion=''>QtLocation</item>
 <!--      <item vesion=''>gsl</item>-->
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item vesion=''>gdal</item>
@@ -30,6 +31,5 @@
       <item>QtNetwork</item>
       <item>QtSystemInfo</item>
       <item>QtSensors</item>
-      <item>QtLocation</item>
     </array>
 </resources>
