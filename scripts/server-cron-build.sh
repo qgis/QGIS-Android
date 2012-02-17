@@ -39,7 +39,9 @@ if [[ "$BUILD_TYPE" = "Release" ]]; then
     ANDROID_TARGET_ARCH=armeabi $SCRIPT_DIR/build-qgis.sh
     ANDROID_TARGET_ARCH=armeabi-v7a $SCRIPT_DIR/build-qgis.sh
     
+    $SCRIPT_DIR/update-apk-env.sh
     $SCRIPT_DIR/build-apk.sh
+    
     cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-master-$RELEASE_NAME.apk
     echo "master-$RELEASE_NAME" | cat - /home/mbernasocchi/www/download/versions.txt > /tmp/out && mv /tmp/out /home/mbernasocchi/www/download/versions.txt
 else 
