@@ -19,13 +19,15 @@ set -e
 
 source `dirname $0`/config.conf
 
-APK_LIBS_DIR=$APK_DIR/libs/$ANDROID_TARGET_ARCH
-
 #copy libs to apk
 mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
-cp -vrf $INSTALL_DIR/lib $APK_LIBS_DIR
-
+if [[ "$BUILD_TYPE" = "Release" ]]; then
+    cp -vrf $INSTALL_DIR/../armeabi/lib $APK_DIR/libs/armeabi/
+    cp -vrf $INSTALL_DIR/../armeabi-v7a/lib $APK_DIR/libs/armeabi-v7a/
+else
+    cp -vrf $INSTALL_DIR/lib $APK_DIR/libs/$ANDROID_TARGET_ARCH
+fi
 #copy assets to apk 
 rm -vrf $APK_DIR/assets
 cp -vrf $INSTALL_DIR/files $APK_DIR/assets
