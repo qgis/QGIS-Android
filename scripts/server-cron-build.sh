@@ -37,8 +37,8 @@ git pull
 $SCRIPT_DIR/build-qgis-and-apk.sh
 
 if [[ "$BUILD_TYPE" = "Release" ]]; then 
-    cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-$RELEASE_NAME.apk
-    echo $RELEASE_NAME >> /home/mbernasocchi/www/download/versions.txt
+    cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-master-$RELEASE_NAME.apk
+    echo "master-$RELEASE_NAME" | cat - /home/mbernasocchi/www/download/versions.txt > /tmp/out && mv /tmp/out /home/mbernasocchi/www/download/versions.txt
 else 
     cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
 fi
