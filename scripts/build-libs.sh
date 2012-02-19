@@ -190,14 +190,19 @@ else
   #########END PROJ4########
 
 
+if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+    #include is needed to fix http://hub.qgis.org/issues/4202
+    armV7aHackInclude="-I$ANDROID_NDK_TOOLCHAIN_ROOT/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
+fi
+
   #########GEOS3.2.2########
   echo "GEOS3.2.2"
   cd $SRC_DIR/geos-3.2.2/
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CXXFLAGS \
+  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
+  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
   ../configure $MY_STD_CONFIGURE_FLAGS
@@ -214,8 +219,8 @@ else
   #mkdir -p build-$ANDROID_TARGET_ARCH
   #cd build-$ANDROID_TARGET_ARCH
   #configure
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CXXFLAGS \
+  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
+  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
