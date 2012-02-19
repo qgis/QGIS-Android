@@ -41,15 +41,22 @@ $SCRIPT_DIR/update-apk-env.sh
 
 if [[ "$BUILD_TYPE" = "Release" ]]; then
     $SCRIPT_DIR/build-apk.sh
+    cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-master-$RELEASE_NAME-armeabi-v7a.apk
+    echo "master-$RELEASE_NAME-armeabi-v7a" | cat - /home/mbernasocchi/www/download/versions.txt > /tmp/out && mv /tmp/out /home/mbernasocchi/www/download/versions.txt
+    
+    #remove v7a optimized libs
+    rm -vrf $APK_DIR/libs/armeabi-v7a
+    $SCRIPT_DIR/build-apk.sh
     cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-master-$RELEASE_NAME.apk
     echo "master-$RELEASE_NAME" | cat - /home/mbernasocchi/www/download/versions.txt > /tmp/out && mv /tmp/out /home/mbernasocchi/www/download/versions.txt
 else 
     $SCRIPT_DIR/build-apk.sh
-    cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
+    cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly-armeabi-v7a.apk
     
+    #remove v7a optimized libs
     rm -vrf $APK_DIR/libs/armeabi-v7a
     $SCRIPT_DIR/build-apk.sh
-    cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly-armeabi-only.apk
+    cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
 fi
 
 end_time=`date +%s`
