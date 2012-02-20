@@ -144,7 +144,7 @@ else
 
   echo "PATCHING STANDALONE TOOLCHAIN"
   cd $ANDROID_NDK_TOOLCHAIN_ROOT
-  #patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
+  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
 
   #Get Updated config.sub
