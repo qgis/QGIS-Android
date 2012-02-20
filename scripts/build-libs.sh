@@ -215,9 +215,7 @@ fi
 
   #########GDAL1.8.0########
   echo "GDAL"
-  cd $SRC_DIR/gdal-1.8.0/
-  #mkdir -p build-$ANDROID_TARGET_ARCH
-  #cd build-$ANDROID_TARGET_ARCH
+  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
   CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
@@ -266,6 +264,7 @@ fi
   
   #simulate of make install
   echo "installing libpq"
+  cd ../
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/

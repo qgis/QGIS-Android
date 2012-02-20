@@ -216,8 +216,10 @@ else
   cp -f $TMP_DIR/config.guess ./config.guess
   wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
   patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
+  #GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
+  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
   ######END GDAL#######
-
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
