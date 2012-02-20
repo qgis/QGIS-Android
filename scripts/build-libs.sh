@@ -242,10 +242,8 @@ fi
   #########postgresql-9.0.4########
   echo "postgresql"
   cd $SRC_DIR/postgresql-9.0.4
-  #building in an other dir seems not to work
-    #  cd src/interfaces/libpq
-    #  mkdir -p build-$ANDROID_TARGET_ARCH
-    #  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
   #no ssl  
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CFLAGS" \
