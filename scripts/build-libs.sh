@@ -265,7 +265,7 @@ fi
   cd ../
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-  cp -fv src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
+  cp -fv build-$ANDROID_TARGET_ARCH/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
   #######END postgresql-9.0.4#######
   
   exit 0
