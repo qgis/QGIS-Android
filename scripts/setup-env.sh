@@ -291,6 +291,8 @@ else
   #######REPLACE ALL CONFIGURE SCRIPTS TO PRODUCE UNVERSIONED LIBS####################
   cp -rf $PATCH_DIR/replace_configure_files/* $SRC_DIR
   
+  cd $APK_DIR
+  android update project -p . -n qgis
   
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0
