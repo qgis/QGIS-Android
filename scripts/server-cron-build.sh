@@ -52,7 +52,7 @@ if [[ "$BUILD_TYPE" = "Release" ]]; then
     echo "master-$RELEASE_NAME-armeabi" | cat - /home/mbernasocchi/www/download/versions.txt > /tmp/out && mv /tmp/out /home/mbernasocchi/www/download/versions.txt
 else 
     ant release
-    cp -vf $APK_DIR/bin/qgis-debug.apk /home/mbernasocchi/www/download/qgis-nightly.apk
+    cp -vf $APK_DIR/bin/qgis-release.apk /home/mbernasocchi/www/download/qgis-nightly.apk
     
     #remove v7a optimized libs
     rm -vrf $APK_DIR/libs/armeabi-v7a
