@@ -93,7 +93,7 @@ MY_CMAKE_FLAGS=" \
 -DWITH_POSTGRESQL=ON \
 -DWITH_SPATIALITE=ON \
 -DWITH_TXT2TAGS_PDF=OFF \
--DGIT=`which git`
+-DGIT=`which git` \
 -DGIT_MARKER=$QGIS_DIR/.git/index"
 
 #unused flags
