@@ -23,4 +23,9 @@ cd $APK_DIR
 
 #to generate a key ecc see http://developer.android.com/guide/publishing/app-signing.html 
 
+if [[ "$ANDROID_TARGET_ARCH" = "armeabi" ]]; then
+    #remove v7a optimized libs
+    rm -vrf $APK_DIR/libs/armeabi-v7a
+fi
+
 ant `echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]'`

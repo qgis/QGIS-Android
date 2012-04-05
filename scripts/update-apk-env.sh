@@ -22,8 +22,10 @@ source `dirname $0`/config.conf
 #copy libs to apk
 mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
-cp -vrf $INSTALL_DIR/../armeabi/lib $APK_DIR/libs/armeabi/
-cp -vrf $INSTALL_DIR/../armeabi-v7a/lib $APK_DIR/libs/armeabi-v7a/
+mkdir -p $APK_DIR/libs/armeabi/
+mkdir -p $APK_DIR/libs/armeabi-v7a/
+cp -vrf $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
+cp -vrf $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
 #copy assets to apk 
 rm -vrf $APK_DIR/assets
 cp -vrf $INSTALL_DIR/files $APK_DIR/assets

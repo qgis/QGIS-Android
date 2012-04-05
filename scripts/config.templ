@@ -34,6 +34,10 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
   #for example BUILD_TYPE=Release ./build-all.sh
+
+  #which GUI should be build, both can be true  
+  export WITH_MOBILE=FALSE
+  export WITH_DESKTOP=TRUE
   
   export ANDROID_SDK_ROOT=$NECESSITAS_DIR/android-sdk
   export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk-r6b
