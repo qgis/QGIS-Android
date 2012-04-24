@@ -89,6 +89,7 @@ if [ "$CONTINUE" != "y" ]; then
   echo "User Abort"
   exit 1
 else
+
   
   #######QTUITOOLS#######
   #HACK temporary needed until necessitas will include qtuitools
@@ -221,6 +222,18 @@ else
   mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
   ######END GDAL#######
 
+  ######GDAL#######
+  echo "GDAL-trunk"
+  cd $SRC_DIR
+  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+  cd gdal-trunk/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  patch -i $PATCH_DIR/configure/gdal.patch 
+  GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
+  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
+
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
   cd $SRC_DIR
@@ -291,6 +304,19 @@ else
   #######REPLACE ALL CONFIGURE SCRIPTS TO PRODUCE UNVERSIONED LIBS####################
   cp -rf $PATCH_DIR/replace_configure_files/* $SRC_DIR
   
+  
+  #######PYTHON#############################
+  echo "python"
+  cd $SRC_DIR  
+  wget -c http://python-for-android.googlecode.com/files/python_r16.zip
+  wget -c http://python-for-android.googlecode.com/files/python_extras_r13.zip
+
+  unzip python_r16.zip
+  unzip python_extras_r13.zip -d pythonTMP
+  mv pythonTMP/python/* python/lib/python2.6/
+  rm -rf pythonTMP
+  
+  #######APK###############################
   cd $APK_DIR
   android update project -p . -n qgis
   
