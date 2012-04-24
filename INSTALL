@@ -15,7 +15,7 @@ QGIS android dev setup:
     - Qt 4.8-armeabi (DEFAULT)
 - get QGIS master from https://github.com/qgis/Quantum-GIS either by cloning or forking and cloning)
 - git checkout android
-- Clone git://github.com/qgis/qgis-android.git
+- Fork  git://github.com/qgis/qgis-android.git and clone your fork
 - copy and configure qgis-android/scripts/config.templ to qgis-android/scripts/config.conf
 - run scripts/build-all.sh
     OR
