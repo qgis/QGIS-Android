@@ -28,4 +28,6 @@ if [[ "$ANDROID_TARGET_ARCH" = "armeabi" ]]; then
     rm -vrf $APK_DIR/libs/armeabi-v7a
 fi
 
+android update project --name qgis --path $APK_DIR
+
 ant `echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]'`

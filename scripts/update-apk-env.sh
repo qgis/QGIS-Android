@@ -24,8 +24,12 @@ mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
 mkdir -p $APK_DIR/libs/armeabi/
 mkdir -p $APK_DIR/libs/armeabi-v7a/
-cp -vrf $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
-cp -vrf $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
+cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
+cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
 #copy assets to apk 
 rm -vrf $APK_DIR/assets
-cp -vrf $INSTALL_DIR/files $APK_DIR/assets
+cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
+cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+cd $APK_DIR/assets/share/
+zip -r9 ../share.zip *
+rm -rf $APK_DIR/assets/share/

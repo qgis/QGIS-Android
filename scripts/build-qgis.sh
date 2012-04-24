@@ -121,6 +121,6 @@ fi
 GIT_REV=$(git rev-parse HEAD)
 #update version file in share
 mkdir -p $INSTALL_DIR/files
-echo $GIT_REV > $INSTALL_DIR/files/version.txt
+#echo $GIT_REV > $INSTALL_DIR/files/version.txt
 #update apk manifest
 sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml

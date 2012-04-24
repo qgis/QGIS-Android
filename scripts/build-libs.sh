@@ -213,47 +213,65 @@ fi
   #########END GEOS3.2.2########
 
 
-  #########GDAL1.8.0########
-  echo "GDAL"
-  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
+#  #########GDAL1.8.0########
+#  echo "GDAL"
+#  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
+#  #configure
+#  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
+#  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  LIBS="-lsupc++ -lstdc++" \
+#  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END GDAL1.8.0########
+  
+
+  #########GDAL-trunk########
+  echo "GDAL trunk"
+  cd $SRC_DIR/gdal-trunk-$ANDROID_TARGET_ARCH/
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
   CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
+  ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END GDAL1.8.0########
-  
-  #######openssl-android#######
-  echo "openssl-android"
-  cd $SRC_DIR/openssl-android
-  sed -i "/APP_ABI :=* /d" jni/Application.mk
-  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
-  $ANDROID_NDK_ROOT/ndk-build
-  echo "installing openssl"
-  cp -rfv include/openssl $INSTALL_DIR/include/openssl
-  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
-  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
-  
-  
+  #########END GDAL-trunk########
+
+
+#  #######openssl-android#######
+#  echo "openssl-android"
+#  cd $SRC_DIR/openssl-android
+#  sed -i "/APP_ABI :=* /d" jni/Application.mk
+#  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
+#  $ANDROID_NDK_ROOT/ndk-build
+#  echo "installing openssl"
+#  cp -rfv include/openssl $INSTALL_DIR/include/openssl
+#  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
+#  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
+#  
+#  
   #########postgresql-9.0.4########
   echo "postgresql"
   cd $SRC_DIR/postgresql-9.0.4
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #no ssl  
+  CPPFLAGS="-I$INSTALL_DIR/include" \
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CFLAGS" \
   LDFLAGS="$MY_STD_LDFLAGS" \
   LIBS="-lsupc++ -lstdc++" \
   $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
   
-#  #configure with openssl
-#  CFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include/" \
-#  CXXFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include/" \
+  #configure with openssl
+#  CPPFLAGS="-I$INSTALL_DIR/include" \
+#  CFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include" \
+#  CXXFLAGS="$CFLAGS" \
 #  LDFLAGS="$MY_STD_LDFLAGS" \
 #  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
 #  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
@@ -267,6 +285,6 @@ fi
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   cp -fv build-$ANDROID_TARGET_ARCH/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
   #######END postgresql-9.0.4#######
-  
+#  
   exit 0
 fi

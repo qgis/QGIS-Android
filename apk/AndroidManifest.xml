@@ -18,7 +18,7 @@
             </intent-filter>
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
-            <meta-data android:name="android.app.lib_name" android:value="qgis"/>
+            <meta-data android:name="android.app.lib_name" android:value="@string/lib_name"/>
             <!--  Messages maps -->
             <meta-data android:name="android.app.ministro_not_found_msg" android:value="@string/ministro_not_found_msg"/>
             <meta-data android:name="android.app.ministro_needed_msg" android:value="@string/ministro_needed_msg"/>
@@ -28,7 +28,7 @@
             <meta-data android:name="android.app.splash_screen" android:resource="@layout/splash"/>
             <!-- Splash screen -->
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="438d5d094c6dca1e233efa1c7946d48589091f08"/>
+            <meta-data android:name="android.app.git_rev" android:value="191a229f2de14ed9d543d9f79eafdb66984b6dbd"/>
             <!-- Git Revision -->
         </activity>
     </application>
