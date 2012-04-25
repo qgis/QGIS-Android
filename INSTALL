@@ -28,17 +28,21 @@ QGIS android dev setup:
     - run scripts/run-apk.sh
 
 example copy paste code:
+ GITHUBUSERNAME="myNAME"
+ GITHUBPASSWORD="myPASS"
  cd dev
  #get necessitas
  wget http://downloads.sourceforge.net/project/necessitas/necessitas-0.3-online-sdk-installer-linux
  ./chmod +x necessitas-0.3-online-sdk-installer-linux
  ./necessitas-0.3-online-sdk-installer-linux
  # see below for adding a remote instead of cloning
- git clone git://github.com/qgis/Quantum-GIS.git
+ git clone https://github.com/mbernasocchi/Quantum-GIS #or is you only want upstream code git://github.com/qgis/Quantum-GIS.git
  cd Quantum-GIS
  git checkout android
  cd ..
- git clone git://github.com/qgis/qgis-android.git
+ #fork qqis-android
+ curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/qgis/qgis-android/fork
+ git clone git://github.com/YOURGITHUBUSERNAME/qgis-android.git
  cp qgis-android/scripts/config.templ qgis-android/scripts/config.conf
  nano qgis-android/scripts/config.conf #configure to your wishes
  ./qgis-android/scripts/build-all.sh
