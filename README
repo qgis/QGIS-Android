@@ -1,1 +1,59 @@
-infos at http://android.qgis.org
+Further infos at http://android.qgis.org
+
+In case of problem it is usefull to have a look at the adb logcat, to get it instal the android SDK on your pc (http://developer.android.com/guide/developing/tools/logcat.html) 
+an easier alternative might be free application aLogCat on the android market (https://market.android.com/details?id=org.jtb.alogcat).
+
+QGIS android APK package:
+- Install and run the QGIS installer
+- The whole installation process takes around 10min, you will be downloading around 70Mb of qgis + 25Mb of Qt libraries, so maybe doing it on a wifi is better. 
+- First QGIS is installed, then you need to manually start the "qgis first run" app this will setup some dependencies of QGIS (if this crashes, just rerun it, it will pick up where it crashed)
+- after this is done, you might be prompted to install Ministro II by BogDan Vatra via the market, this is the Qt libraries manager.
+- Once ministro is installed hit the back button twice to go back to qgis or start QGIS again and you will be asked if you want to install the Qt libraries. Say yes. 
+- Once ministro is done, QGIS should start.
+
+QGIS android dev setup:
+- Install Necessitas (http://sourceforge.net/projects/necessitas/files/)and choose at least:
+    - NDK r6b (DEFAULT)
+    - Qt 4.8-armeabi (DEFAULT)
+- get QGIS master from https://github.com/qgis/Quantum-GIS either by cloning or forking and cloning)
+- git checkout android
+- Fork  git://github.com/qgis/qgis-android.git and clone your fork
+- copy and configure qgis-android/scripts/config.templ to qgis-android/scripts/config.conf
+- run scripts/build-all.sh
+    OR
+    - run scripts/setup-env.sh
+    - run scripts/build-libs.sh
+    - run scripts/build-qgis.sh --configure
+    - run scripts/update-apk-env.sh
+    - run scripts/build-apk.sh
+    - setup the device or emulator (see http://developer.android.com/guide/developing/index.html)
+    - run scripts/run-apk.sh
+
+example copy paste code:
+ GITHUBUSERNAME="myNAME"
+ GITHUBPASSWORD="myPASS"
+ cd dev
+ #get necessitas
+ wget http://downloads.sourceforge.net/project/necessitas/necessitas-0.3-online-sdk-installer-linux
+ ./chmod +x necessitas-0.3-online-sdk-installer-linux
+ ./necessitas-0.3-online-sdk-installer-linux
+ # see below for adding a remote instead of cloning
+ git clone https://github.com/mbernasocchi/Quantum-GIS #or is you only want upstream code git://github.com/qgis/Quantum-GIS.git
+ cd Quantum-GIS
+ git checkout android
+ cd ..
+ #fork qqis-android
+ curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/qgis/qgis-android/fork
+ git clone git://github.com/YOURGITHUBUSERNAME/qgis-android.git
+ cp qgis-android/scripts/config.templ qgis-android/scripts/config.conf
+ nano qgis-android/scripts/config.conf #configure to your wishes
+ ./qgis-android/scripts/build-all.sh
+ ./qgis-android/scripts/run-apk.sh
+ 
+adding a remote
+ git remote add qgis git://github.com/qgis/Quantum-GIS.git
+ git checkout -b android
+ git pull mbernasochi android
+
+
+Enjoy touching QGIS :), marco@bernawebdesign.ch
