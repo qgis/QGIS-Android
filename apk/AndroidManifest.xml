@@ -28,7 +28,7 @@
             <meta-data android:name="android.app.splash_screen" android:resource="@layout/splash"/>
             <!-- Splash screen -->
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="191a229f2de14ed9d543d9f79eafdb66984b6dbd"/>
+            <meta-data android:name="android.app.git_rev" android:value="7db8f56f717a5b064bd23c0c53d18a504abbbb70"/>
             <!-- Git Revision -->
         </activity>
     </application>

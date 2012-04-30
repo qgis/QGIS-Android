@@ -140,7 +140,6 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   ########END GSL1.14########
 
-
   #########LIBICONV1.13.1########
   echo "LIBICONV"
   cd $SRC_DIR/libiconv-1.13.1/
@@ -157,7 +156,6 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END LIBICONV1.13.1########
 
-
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
 #  cd $SRC_DIR/sqlite-autoconf-3070400/
@@ -172,6 +170,36 @@ else
 #  make -j$CORES 2>&1 | tee make.out
 #  make -j$CORES 2>&1 install | tee makeInstall.out
 #  #########END SQLITE3.7.4########
+
+#  #########SPATIALITE3.0.1########
+#  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-3.0.1.tar.gz
+#  tar xf libspatialite-3.0.1.tar.gz
+#  echo "SPATIALITE"
+#  cd $SRC_DIR/libspatialite-3.0.1/
+#  mkdir -p build-$ANDROID_TARGET_ARCH
+#  cd build-$ANDROID_TARGET_ARCH
+#  #configure
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CXXFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  ../configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END SQLITE3.7.4########
+
+  #########SPATIALINDEX1.7.1########
+  echo "SPATIALINDEX"
+  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_TARGET_ARCH/
+  #configure
+  CFLAGS="$MY_STD_CFLAGS" \
+  CXXFLAGS="$MY_STD_CXXFLAGS" \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  LIBS="-lsupc++ -lstdc++" \
+  ./configure $MY_STD_CONFIGURE_FLAGS
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END SPATIALINDEX1.7.1########
 
 
   ##########PROJ4########

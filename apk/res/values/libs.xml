@@ -10,22 +10,24 @@
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item vesion=''>gdal</item>
       <item vesion=''>proj</item>
+      <item vesion=''>spatialindex</item>
+      <item vesion=''>spatialindex_c</item>
       <item vesion=''>qwt</item>
       <item vesion=''>iconv</item>
       <item vesion=''>charset</item>
-      <item vesion=''>crypt</item>
-      <item vesion=''>crypto</item>
-      <item vesion=''>ssl</item>
+<!--      <item vesion=''>crypt</item>-->
+<!--      <item vesion=''>crypto</item>-->
+<!--      <item vesion=''>ssl</item>-->
       <item vesion=''>pq</item>
       <item vesion=''>qgis_core</item>
       <item vesion=''>qgis_gui</item>
       <item vesion=''>qgissqlanyconnection</item>
       <item vesion=''>qgis_analysis</item>
       <item vesion=''>sqlite</item>
-      <item vesion=''>ffi</item>
-      <item vesion=''>bz</item>
-      <item vesion=''>python2.6</item>
-      <item vesion=''>qgispython</item>
+<!--      <item vesion=''>ffi</item>-->
+<!--      <item vesion=''>bz</item>-->
+<!--      <item vesion=''>python2.6</item>-->
+<!--      <item vesion=''>qgispython</item>-->
     </array>
     <array name="bundled_libs_mobile">
       <item vesion=''>expat</item>
@@ -37,6 +39,8 @@
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item vesion=''>gdal</item>
       <item vesion=''>proj</item>
+<!--      <item vesion=''>spatialindex</item>-->
+<!--      <item vesion=''>spatialindex_c</item>-->
       <item vesion=''>qwt</item>
       <item vesion=''>iconv</item>
       <item vesion=''>charset</item>

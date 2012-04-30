@@ -152,7 +152,7 @@ else
   wget -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub" -O $TMP_DIR/config.sub
   #Get Updated guess.sub
   wget -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $TMP_DIR/config.guess
-
+  chmod +x $TMP_DIR/config.*
   mkdir -p $SRC_DIR
   
   
@@ -206,21 +206,21 @@ else
   ######END EXPAT2.0.1#######
 
 
-  #######GDAL#######
-  echo "GDAL1.8.0"
-  cd $SRC_DIR
-  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
-  tar xf gdal-1.8.0.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
-  cd gdal-1.8.0/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
-  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
-  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
-  #GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
-  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
-  ######END GDAL#######
+#  #######GDAL#######
+#  echo "GDAL1.8.0"
+#  cd $SRC_DIR
+#  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
+#  tar xf gdal-1.8.0.tar.gz
+#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
+#  cd gdal-1.8.0/
+#  cp -f $TMP_DIR/config.sub ./config.sub
+#  cp -f $TMP_DIR/config.guess ./config.guess
+#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
+#  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
+#  #GDAL does not seem to support building in subdirs
+#  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
+#  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
+#  ######END GDAL#######
 
   ######GDAL#######
   echo "GDAL-trunk"
@@ -229,8 +229,8 @@ else
   cd gdal-trunk/
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
-  patch -i $PATCH_DIR/configure/gdal.patch 
-  GDAL does not seem to support building in subdirs
+  patch -i $PATCH_DIR/gdal.patch 
+#  GDAL does not seem to support building in subdirs
   cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
   mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
@@ -247,19 +247,32 @@ else
   cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
-  
-#  #######SQLITE3.7.4#######
-#  echo "SQLITE"
-#  cd $SRC_DIR
-#  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
-#  tar xf sqlite-autoconf-3070400.tar.gz
-#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
-#  cd sqlite-autoconf-3070400/
-#  cp -f $TMP_DIR/config.sub ./config.sub
-#  cp -f $TMP_DIR/config.guess ./config.guess
-#  #######END SQLITE3.7.4#######
-  
+  #######SPATIALINDEX1.7.1#######
+  echo "SPATIALINDEX"
+  cd $SRC_DIR
+  wget -c http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz
+  tar xf spatialindex-src-1.7.1.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm spatialindex-src-1.7.1.tar.gz; fi
+  cd spatialindex-src-1.7.1/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  patch -p1 -i $PATCH_DIR/spatialindex.patch
+  cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi/
+  mv -vf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
+  #######END SPATIALINDEX1.6.1#######
 
+  
+  #######SQLITE3.7.4#######
+  echo "SQLITE"
+  cd $SRC_DIR
+  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
+  tar xf sqlite-autoconf-3070400.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
+  cd sqlite-autoconf-3070400/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  #######END SQLITE3.7.4#######
+  
   #######QWT5.2.0#######
   echo "QWT"
   cd $SRC_DIR

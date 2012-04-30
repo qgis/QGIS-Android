@@ -1,0 +1,51 @@
+--- a/configure
++++ b/configure
+@@ -9846,8 +9846,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+@@ -13971,8 +13980,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+@@ -15699,7 +15717,7 @@ if test `eval echo '${'$as_ac_Header'}'` = yes; then
+   cat >>confdefs.h <<_ACEOF
+ #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+ _ACEOF
+- LIBS="$LIBS -lpthread"
++# LIBS="$LIBS -lpthread"
+ fi
+ 
+ done
