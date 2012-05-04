@@ -145,6 +145,7 @@ else
 
   echo "PATCHING STANDALONE TOOLCHAIN"
   cd $ANDROID_NDK_TOOLCHAIN_ROOT
+  #http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
   patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
 
@@ -167,20 +168,22 @@ else
   cp -f $TMP_DIR/config.guess ./config.guess
   #######END PROJ4#######
 
-  #######GEOS3.2.2#######
-  echo "GEOS3.2.2"
+  ########GEOS3.2.3#######
+  echo "GEOS-3.2.3"
   cd $SRC_DIR
-  wget -c http://download.osgeo.org/geos/geos-3.2.2.tar.bz2
-  tar xjf geos-3.2.2.tar.bz2 
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm geos-3.2.2.tar.bz2; fi
-  cd geos-3.2.2/
+  svn checkout http://svn.osgeo.org/geos/tags/3.2.3/  geos-3.2.3
+  cd geos-3.2.3/
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
+  #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
+  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
+  patch -i int64_crosscomp.patch -p1
   #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
   wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
   patch -i geos-3.2.0-ARM.bug222.patch -p0
-  #######END GEOS3.2.2#######
-
+  ./autogen.sh
+  patch -i $PATCH_DIR/geos.patch -p1
+  #######END GEOS3.2.3#######
 
   #######EXPAT2.0.1#######
   echo "EXPAT2.0.1"
@@ -246,6 +249,18 @@ else
   cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
   cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
+  
+  #######FREEXL-1.0.0b#######
+  echo "FREEXL"
+  cd $SRC_DIR
+  wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0b.tar.gz
+  tar xf freexl-1.0.0b.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm freexl-1.0.0b.tar.gz; fi
+  cd freexl-1.0.0b/
+  patch -p1 -i $PATCH_DIR/freexl.patch
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  #######END freexl-1.0.0b#######
   
   #######SPATIALINDEX1.7.1#######
   echo "SPATIALINDEX"

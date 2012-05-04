@@ -1,3 +1,4 @@
+http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
 diff --git a/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h b/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h
 index 3782c15..3330fd4 100644
 --- a/lib/gcc/arm-linux-androideabi/4.4.3/include-fixed/sys/types.h

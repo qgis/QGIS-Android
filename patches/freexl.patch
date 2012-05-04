@@ -1,32 +1,4 @@
---- a/spatialite.c
-+++ b/spatialite.c
-@@ -81,10 +81,10 @@ extern const char * locale_charset (void);
- #include <localcharset.h>
- #endif /* end localcharset */
- #else /* not WINDOWS */
--#ifdef __APPLE__
-+#if defined(__APPLE__) || defined(__ANDROID__)
- #include <iconv.h>
- #include <localcharset.h>
--#else /* not Mac OsX */
-+#else /* neither Mac OsX nor Android */
- #include <iconv.h>
- #include <langinfo.h>
- #endif
-@@ -8750,9 +8750,9 @@ gaiaGetLocaleCharset ()
- #if defined(__MINGW32__) || defined(_WIN32)
-     return locale_charset ();
- #else /* not MINGW32 - WIN32 */
--#ifdef __APPLE__
-+#if defined(__APPLE__) || defined(__ANDROID__)
-     return locale_charset ();
--#else /* not Mac OsX */
-+#else /* neither Mac OsX nor Android */
-     return nl_langinfo (CODESET);
- #endif
- #endif
- 
- diff --git a/configure b/configure
+diff --git a/configure b/configure
 index 0bca8b1..deb40a2 100755
 --- a/configure
 +++ b/configure
@@ -70,14 +42,20 @@ index 0bca8b1..deb40a2 100755
    finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
    shlibpath_var=LD_LIBRARY_PATH
    shlibpath_overrides_runpath=no
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -287,7 +287,7 @@ libspatialite_la_SOURCES = spatialite.c \
- 
- @MINGW_FALSE@libspatialite_la_LDFLAGS = -version-info 4:0:2
- @MINGW_TRUE@libspatialite_la_LDFLAGS = -version-info 4:0:2 -no-undefined
--@MINGW_FALSE@libspatialite_la_LIBADD = -lpthread -ldl
-+@MINGW_FALSE@libspatialite_la_LIBADD = -ldl
- @MINGW_TRUE@libspatialite_la_LIBADD = 
- AUTOMAKE_OPTIONS = dist-zip
- EXTRA_DIST = makefile.vc nmake.opt 
+diff --git a/src/freexl.c b/src/freexl.c
+index 6db72d4..df773d7 100644
+--- a/src/freexl.c
++++ b/src/freexl.c
+@@ -61,10 +61,10 @@ extern const char *locale_charset (void);
+ #include <localcharset.h>
+ #endif /* end localcharset */
+ #else /* not WINDOWS */
+-#ifdef __APPLE__
++#if defined(__APPLE__) || defined(__ANDROID__)
+ #include <iconv.h>
+ #include <localcharset.h>
+-#else /* not Mac OsX */
++#else /* neither Mac OsX nor Android */
+ #include <iconv.h>
+ #include <langinfo.h>
+ #endif

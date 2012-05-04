@@ -18,24 +18,27 @@
 set -e
 
 source `dirname $0`/config.conf
+ADB=$ANDROID_SDK_ROOT/platform-tools/adb
+PACKAGE=org.qgis.qgis
 
-#copy libs to apk
-mkdir -p $APK_DIR/libs/
-rm -vrf $APK_DIR/libs/*
-mkdir -p $APK_DIR/libs/armeabi/
-mkdir -p $APK_DIR/libs/armeabi-v7a/
-cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
-cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
+#$ADB kill-server
+#sudo $ADB devices
 
-#add gdb server if in Debug mode
-if [ "$BUILD_TYPE" == "Debug" ]; then
-    cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi/
-    cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi-v7a/
-fi
-#copy assets to apk 
-rm -vrf $APK_DIR/assets
-cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
-cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-cd $APK_DIR/assets/share/
-zip -r9 ../share.zip *
-rm -rf $APK_DIR/assets/share/
+echo "" > /tmp/logcat.log
+#gnome-system-log /tmp/logcat.log &
+#$ADB logcat -c
+
+$ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QtActivity
+#$ADB pull /system/bin/app_process $TMP_DIR/app_process
+#$ADB pull /system/lib/libc.so $TMP_DIR/libc.so
+
+echo `$ADB shell top -n 1 | grep $PACKAGE` > $TMP_DIR/pid.txt
+PID=`sed 's/ .*//' $TMP_DIR/pid.txt`
+rm -f $TMP_DIR/pid.txt
+$ADB forward tcp:5039 localfilesystem:/data/data/$PACKAGE/debug-pipe
+$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID
+
+
+#$ADB logcat | tee /tmp/logcat.log
+
+

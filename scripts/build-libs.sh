@@ -78,6 +78,9 @@ else
   cd $SRC_DIR
 
 
+  #adding GDBserver to libs
+  cp -vf $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $INSTALL_DIR/lib
+
 #  #########QTUITOOLS########
 #  echo "QTUITOOLS"	
 #  cd $QT_SRC/tools/designer/src/uitools
@@ -155,6 +158,21 @@ else
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END LIBICONV1.13.1########
+  
+  #########freexl1.0.0b########
+  echo "freexl"
+  cd $SRC_DIR/freexl-1.0.0b/
+  mkdir -p build-$ANDROID_TARGET_ARCH
+  cd build-$ANDROID_TARGET_ARCH
+  #configure
+  CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include"\
+  CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include"\
+  LDFLAGS="$MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
+  ./configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END freexl1.0.0b########
 
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
@@ -223,9 +241,9 @@ if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
     armV7aHackInclude="-I$ANDROID_NDK_TOOLCHAIN_ROOT/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
 
-  #########GEOS3.2.2########
-  echo "GEOS3.2.2"
-  cd $SRC_DIR/geos-3.2.2/
+  #########GEOS3.2.3########
+  echo "GEOS3.2.3"
+  cd $SRC_DIR/geos-3.2.3/
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -237,8 +255,7 @@ fi
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  
-  #########END GEOS3.2.2########
+  #########END GEOS3.2.3########
 
 
 #  #########GDAL1.8.0########
