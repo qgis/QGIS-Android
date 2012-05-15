@@ -37,18 +37,18 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -57,15 +57,42 @@ import android.util.Log;
 public class FirstRunActivity extends Activity {
 	public static final String QtTAG = "FirstRun JAVA"; // string used for Log.x
 	private static final int PROGRESS_DIALOG = 0;
-	private static final int DONE_DIALOG = 1;
 	protected UnzipTask mUnzipTask = new UnzipTask();
-	protected ProgressDialog mProgressDialog;
-
+	protected ProgressDialog mProgressDialog = null;
+	private ActivityInfo mActivityInfo = null; // activity info object, used to
+	private SharedPreferences mPrefs = null; // access the metadata
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mUnzipTask.execute("assets/share.zip");
+		// get preferences, 0 = mode private. only this app can read these
+		mPrefs = this.getApplicationContext().getSharedPreferences(
+				"myAppPrefs", 0);
+		try {
+			mActivityInfo = getPackageManager().getActivityInfo(
+					getComponentName(), PackageManager.GET_META_DATA);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			finish();
+			return;
+		}
+		
+		//get git_rev from the manifest metadata
+		String thisRev = mActivityInfo.metaData.getString("android.app.git_rev");
+		String lastRev = mPrefs.getString("lastRunGitRevision", "");
+		Log.i(QtTAG, "last git_rev:" + lastRev);
+		Log.i(QtTAG, "this git_rev:" + thisRev);
+		
+		if (lastRev.equals(thisRev)) {
+			Log.i(QtTAG, "not first run, forwarding to QGIS");
+			startQtActivity();
+		} else {
+			//this is a first run after install or update
+			mUnzipTask.execute("assets/share.zip");
+			SharedPreferences.Editor editor = mPrefs.edit();
+			editor.putString("lastRunGitRevision", thisRev);
+			editor.commit();
+		}
 	}
 
 	public void onDestroy() {
@@ -77,106 +104,96 @@ public class FirstRunActivity extends Activity {
 		switch (id) {
 		case PROGRESS_DIALOG:
 			mProgressDialog = new ProgressDialog(FirstRunActivity.this);
-			mProgressDialog.setMessage("Unpacking post install data. This might take a long time.");
-//			mProgressDialog.setIndeterminate(false);
-//			mProgressDialog.setMax(100);
-//			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog
+					.setMessage("Unpacking post install data. This might take a long time.");
+			// mProgressDialog.setIndeterminate(false);
+			// mProgressDialog.setMax(100);
+			// mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			return mProgressDialog;
 
-		case DONE_DIALOG:
-			return new AlertDialog.Builder(FirstRunActivity.this)
-					.setTitle(
-							"Done unpacking, you can now start QGIS using its launcher.")
-					.setPositiveButton(getString(android.R.string.ok),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-
-									Intent intent = new Intent();
-									intent.setClass(FirstRunActivity.this, QtActivity.class);
-									startActivity(intent);
-									// quit first start
-									// remove first run launcher
-									getApplicationContext().getPackageManager().setComponentEnabledSetting(
-											getComponentName(),
-											PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-											0);
-									FirstRunActivity.this.finish();
-
-								}
-							}).create();
 		default:
 			return null;
 		}
+	}
+	
+	private void startQtActivity(){
+		//forward to startQtActivity and finish FirstRunActivity
+		Intent intent = new Intent();
+		intent.setClass(FirstRunActivity.this, QtActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	private class UnzipTask extends AsyncTask<String, Integer, String> {
 		protected String doInBackground(String... urlString) {
 			try {
-				String apkFile = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext()
-						.getPackageName(), 0).sourceDir;
+				String apkFile = getApplicationContext().getPackageManager()
+						.getApplicationInfo(
+								getApplicationContext().getPackageName(), 0).sourceDir;
 				extractFolder(apkFile);
-//				ZipEntry entry = zipFile.getEntry(urlString[0]);
-//				InputStream myInput = zipFile.getInputStream(entry);
-//				File file = null;
-//				FileOutputStream myOutput = new FileOutputStream(file);
-//				byte[] buffer = new byte[1024 * 4];
-//				int length;
-//				int total = 0;
-//				int counter = 1;
-//				while ((length = myInput.read(buffer)) > 0) {
-//					total += length;
-//					counter++;
-//					if (counter % 32 == 0) {
-//						publishProgress(total);
-//					}
-//					myOutput.write(buffer, 0, length);
-//				}
-//
+				// ZipEntry entry = zipFile.getEntry(urlString[0]);
+				// InputStream myInput = zipFile.getInputStream(entry);
+				// File file = null;
+				// FileOutputStream myOutput = new FileOutputStream(file);
+				// byte[] buffer = new byte[1024 * 4];
+				// int length;
+				// int total = 0;
+				// int counter = 1;
+				// while ((length = myInput.read(buffer)) > 0) {
+				// total += length;
+				// counter++;
+				// if (counter % 32 == 0) {
+				// publishProgress(total);
+				// }
+				// myOutput.write(buffer, 0, length);
+				// }
+				//
 			} catch (Exception e) {
 			}
-			
+
 			return null;
 		}
-		
+
 		private void extractFolder(String zipFile) {
 			try {
 				int BUFFER = 2048;
 
 				ZipFile zip = new ZipFile(zipFile);
-				String newPath = getFilesDir().toString(); //+ "/" + zipFile.substring(0, zipFile.length() - 4);
+				String newPath = getFilesDir().toString();
 
 				new File(newPath).mkdir();
-				Enumeration zipFileEntries = zip.entries();
+				Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
 
 				// Process each entry
 				while (zipFileEntries.hasMoreElements()) {
 					// grab a zip file entry
 					ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
 					String currentEntry = entry.getName();
-					if (currentEntry.startsWith("share/", 0) || currentEntry.equals("assets/share.zip") ){
+					if (currentEntry.startsWith("share/", 0)
+							|| currentEntry.equals("assets/share.zip")) {
 						File destFile = new File(newPath, currentEntry);
-						Log.i("UNZIPPING", currentEntry);
-						Log.i("TO", destFile.getAbsolutePath());
+						Log.i(QtTAG, "UNZIPPING: " + currentEntry);
+						Log.i(QtTAG, "TO: " + destFile.getAbsolutePath());
 						// destFile = new File(newPath, destFile.getName());
 						File destinationParent = destFile.getParentFile();
-	
+
 						// create the parent directory structure if needed
 						destinationParent.mkdirs();
-	
+
 						if (!entry.isDirectory()) {
 							BufferedInputStream is = new BufferedInputStream(
 									zip.getInputStream(entry));
 							int currentByte;
 							// establish buffer for writing file
 							byte data[] = new byte[BUFFER];
-	
+
 							// write the current file to disk
-							FileOutputStream fos = new FileOutputStream(destFile);
+							FileOutputStream fos = new FileOutputStream(
+									destFile);
 							BufferedOutputStream dest = new BufferedOutputStream(
 									fos, BUFFER);
-	
+
 							// read and write until last byte is encountered
 							while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
 								dest.write(data, 0, currentByte);
@@ -185,14 +202,13 @@ public class FirstRunActivity extends Activity {
 							dest.close();
 							is.close();
 						}
-	
+
 						if (currentEntry.endsWith(".zip")) {
 							// found a zip file, try to open
 							extractFolder(destFile.getAbsolutePath());
 						}
-					}
-					else{
-						Log.i("SKIPPING", currentEntry);
+					} else {
+						Log.i(QtTAG, "SKIPPING: " + currentEntry);
 					}
 				}
 			} catch (IOException e) {
@@ -229,7 +245,7 @@ public class FirstRunActivity extends Activity {
 					}
 					try {
 						String cmd = "ln -s " + storagePath + " " + aliasPath;
-						Process process = Runtime.getRuntime().exec(cmd);
+						Runtime.getRuntime().exec(cmd);
 						Log.i(QtTAG, "Symlinked '" + storagePath + " to "
 								+ aliasPath + "'");
 					} catch (IOException e) {
@@ -248,7 +264,7 @@ public class FirstRunActivity extends Activity {
 		}
 
 		protected void onPostExecute(String result) {
-			showDialog(DONE_DIALOG);
+			startQtActivity();
 		}
 
 	}

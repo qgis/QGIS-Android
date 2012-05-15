@@ -1,21 +1,32 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest android:versionCode="2" package="org.qgis.qgis" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.9" android:installLocation="preferExternal">
-    <application android:name="org.kde.necessitas.origo.QtApplication" android:icon="@drawable/icon" android:label="@string/app_name">
-        
-        <activity android:name="org.kde.necessitas.origo.FirstRunActivity" android:noHistory="true" android:icon="@drawable/first_run_icon" android:label="@string/first_run">
+    <application android:name="org.kde.necessitas.origo.QtApplication" 
+        android:icon="@drawable/icon" 
+        android:label="@string/app_name"
+        android:debuggable="true"
+        >
+        <activity android:name="org.kde.necessitas.origo.FirstRunActivity" 
+            android:noHistory="true" 
+            android:icon="@drawable/icon" 
+            android:label="@string/app_name"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Git Revision -->
+            <meta-data android:name="android.app.git_rev" android:value="2891f4fbba562836e073f96d70dff3c2d11686db"/>
+            <!-- Git Revision -->
         </activity>
         
-        <activity android:name="org.kde.necessitas.origo.QtActivity" android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden"
-          android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name="org.kde.necessitas.origo.QtActivity" 
+            android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden"
+            >
 <!--        android:screenOrientation="landscape" see http://developer.android.com/reference/android/app/Activity.html#setRequestedOrientation(int) for more-->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.MAIN"/> -->
+<!--                 <category android:name="android.intent.category.LAUNCHER"/> -->
+<!--             </intent-filter> -->
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:name="android.app.lib_name" android:value="@string/lib_name"/>
@@ -27,9 +38,6 @@
             <!-- Splash screen -->
             <meta-data android:name="android.app.splash_screen" android:resource="@layout/splash"/>
             <!-- Splash screen -->
-            <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="2891f4fbba562836e073f96d70dff3c2d11686db"/>
-            <!-- Git Revision -->
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="8"/>

@@ -27,7 +27,6 @@
 
 package org.kde.necessitas.origo;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
