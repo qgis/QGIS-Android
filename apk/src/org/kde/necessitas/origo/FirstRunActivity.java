@@ -61,7 +61,6 @@ import android.util.Log;
 
 public class FirstRunActivity extends Activity {
 	private static final String QtTAG = "FirstRun JAVA"; // string used for
-															// Log.x
 	private static final int PROGRESS_DIALOG = 0;
 	private static final int NOEXTERNALSTORAGE_DIALOG = 1;
 	private ProgressDialog mProgressDialog = null;
@@ -278,7 +277,6 @@ public class FirstRunActivity extends Activity {
 				}
 				makeSymlink(storagePath, storagePathAlias);
 			}
-
 		}
 
 		protected void onProgressUpdate(Integer... progress) {
@@ -292,6 +290,5 @@ public class FirstRunActivity extends Activity {
 			editor.commit();
 			startQtActivity();
 		}
-
 	}
 }
