@@ -29,13 +29,9 @@ $ADB logcat -c
 if [ "$1" = "--clear" ]; then
     echo "clearing org.qgis.qgis"
     $ADB clear org.qgis.qgis
-    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
-elif [ "$1" = "--first" ]; then
-    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.FirstRunActivity
-else
-    $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QtActivity
 fi
 
+$ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QgisActivity
 $ADB logcat | tee /tmp/logcat.log
 
 

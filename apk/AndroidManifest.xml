@@ -5,7 +5,7 @@
         android:label="@string/app_name"
         android:debuggable="true"
         >
-        <activity android:name="org.kde.necessitas.origo.FirstRunActivity" 
+        <activity android:name="org.kde.necessitas.origo.QgisActivity" 
             android:noHistory="true" 
             android:icon="@drawable/icon" 
             android:label="@string/app_name"

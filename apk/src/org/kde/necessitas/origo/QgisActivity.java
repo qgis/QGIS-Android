@@ -1,5 +1,6 @@
 /**
- * FirstRunActivity.java - class needed to copy files from assets to getExternalFilesDir() before starting QtActivity
+ * QgisActivity.java - class needed to copy files from assets to getExternalFilesDir() before starting QtActivity
+ * this can be used to perform actions before QtActivity takes over.
  * @author  Marco Bernasocchi - <marco@bernawebdesign.ch>
  * @version 0.5
  */
@@ -59,7 +60,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
-public class FirstRunActivity extends Activity {
+public class QgisActivity extends Activity {
 	private static final String QtTAG = "FirstRun JAVA"; // string used for
 	private static final int PROGRESS_DIALOG = 0;
 	private static final int NOEXTERNALSTORAGE_DIALOG = 1;
@@ -111,7 +112,7 @@ public class FirstRunActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case PROGRESS_DIALOG:
-			mProgressDialog = new ProgressDialog(FirstRunActivity.this);
+			mProgressDialog = new ProgressDialog(QgisActivity.this);
 			mProgressDialog
 					.setMessage(getString(R.string.unpacking_msg));
 			mProgressDialog.setIndeterminate(false);
@@ -121,7 +122,7 @@ public class FirstRunActivity extends Activity {
 			return mProgressDialog;
 
 		case NOEXTERNALSTORAGE_DIALOG:
-			return new AlertDialog.Builder(FirstRunActivity.this)
+			return new AlertDialog.Builder(QgisActivity.this)
 					.setTitle(getString(R.string.external_storage_unavailable))
 					.setMessage(getString(R.string.noexternalstorage_dialog))
 					.setPositiveButton(getString(R.string.use_internal_storage),
@@ -163,9 +164,9 @@ public class FirstRunActivity extends Activity {
 	}
 
 	private void startQtActivity() {
-		// forward to startQtActivity and finish FirstRunActivity
+		// forward to startQtActivity and finish QgisActivity
 		Intent intent = new Intent();
-		intent.setClass(FirstRunActivity.this, QtActivity.class);
+		intent.setClass(QgisActivity.this, QtActivity.class);
 		startActivity(intent);
 		finish();
 	}
