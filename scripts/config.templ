@@ -24,7 +24,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #############################
   export NECESSITAS_DIR=$HOME/dev/necessitas
   export ROOT_DIR=$HOME/dev/qgis-android
-  export QGIS_DIR=$HOME/dev/qgis
+  export QGIS_DIR=$HOME/dev/Quantum-GIS
   
   #WARNING: armeabi-v7a builds usually don't work on android emulators
   DEFAULT_ANDROID_TARGET_ARCH=armeabi #or armeabi-v7a
@@ -51,7 +51,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
     export BUILD_TYPE=$DEFAULT_BUILD_TYPE
   fi
   
-  export QT_ROOT=$NECESSITAS_DIR/Android/Qt/480/$ANDROID_TARGET_ARCH
+  export QT_ROOT=$NECESSITAS_DIR/Android/Qt/480/$ANDROID_TARGET_ARCH  
   export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_TARGET_ARCH
   export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_TARGET_ARCH
   export SCRIPT_DIR=$ROOT_DIR/scripts
@@ -95,11 +95,14 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #TODO check ALL_FLAGS if other flags re needed
   #ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../qwt-5.2.0/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
   #export MY_STD_CFLAGS="$MY_STD_CFLAGS" #-D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -D__ARM_ARCH_7-A__"
-  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 -mthumb"
+  
+  #-std=gnu99: http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
+  #-std=c99: http://stackoverflow.com/questions/9247151/compiling-icu-for-android-uint64-t-does-not-name-a-type
+  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 -mthumb -std=c99"
   if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
   fi
-  export MY_STD_CXXFLAGS="$MY_STD_CFLAGS -std=gnu++0x"
+  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 -mthumb -std=gnu++0x"
   export MY_STD_LDFLAGS="-Wl,--fix-cortex-a8"
 
   #############################
