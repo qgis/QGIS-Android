@@ -33,7 +33,11 @@ echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
 echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
-echo "PATH:" $PATH
+echo "PATH:"
+echo $PATH
+echo "CFLAGS:                           " $MY_STD_CFLAGS
+echo "CXXFLAGS:                         " $MY_STD_CXXFLAGS
+echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
@@ -248,44 +252,42 @@ fi
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
+  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude -D__STDC_INT64__" \
   LDFLAGS=$MY_STD_LDFLAGS \
-  LIBS="-lsupc++ -lstdc++" \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END GEOS3.2.3########
 
-
-#  #########GDAL1.8.0########
-#  echo "GDAL"
-#  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
-#  #configure
-#  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-#  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lsupc++ -lstdc++" \
-#  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END GDAL1.8.0########
-  
-
-  #########GDAL-trunk########
-  echo "GDAL trunk"
-  cd $SRC_DIR/gdal-trunk-$ANDROID_TARGET_ARCH/
+  #########GDAL1.8.0########
+  echo "GDAL"
+  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
   CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END GDAL-trunk########
+  #########END GDAL1.8.0########
+  
+
+#  #########GDAL-trunk########
+#  echo "GDAL trunk"
+#  cd $SRC_DIR/gdal-trunk-$ANDROID_TARGET_ARCH/
+#  #configure
+#  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
+#  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  LIBS="-lsupc++ -lstdc++" \
+#  ./configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END GDAL-trunk########
 
 
 #  #######openssl-android#######
@@ -298,9 +300,9 @@ fi
 #  cp -rfv include/openssl $INSTALL_DIR/include/openssl
 #  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
 #  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
-#  
-#  
-  #########postgresql-9.0.4########
+  
+  
+  ########postgresql-9.0.4########
   echo "postgresql"
   cd $SRC_DIR/postgresql-9.0.4
   mkdir -p build-$ANDROID_TARGET_ARCH
@@ -313,7 +315,7 @@ fi
   LIBS="-lsupc++ -lstdc++" \
   $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
   
-  #configure with openssl
+#  #configure with openssl
 #  CPPFLAGS="-I$INSTALL_DIR/include" \
 #  CFLAGS="$MY_STD_CFLAGS -L$INSTALL_DIR/lib/ -I$INSTALL_DIR/include" \
 #  CXXFLAGS="$CFLAGS" \
@@ -325,11 +327,11 @@ fi
   
   #simulate of make install
   echo "installing libpq"
-  cd ../
+  cd $SRC_DIR/postgresql-9.0.4
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   cp -fv build-$ANDROID_TARGET_ARCH/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
-  #######END postgresql-9.0.4#######
-#  
+  ######END postgresql-9.0.4#######
+  
   exit 0
 fi
