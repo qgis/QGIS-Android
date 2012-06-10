@@ -90,10 +90,9 @@ if [ "$CONTINUE" != "y" ]; then
   exit 1
 else
 
-  
-  #######QTUITOOLS#######
-  #HACK temporary needed until necessitas will include qtuitools
-  #check if qt-src are installed
+#  #######QTUITOOLS#######
+#  #HACK temporary needed until necessitas will include qtuitools
+#  #check if qt-src are installed
 #  if [ -d $QT_SRC/tools/designer/src/lib/uilib ]; then
 #    ln -sfn $QT_SRC/tools/designer/src/lib/uilib $QT_INCLUDE/QtDesigner
 #    ln -sfn $QT_SRC/tools/designer/src/uitools $QT_INCLUDE/QtUiTools
@@ -143,10 +142,10 @@ else
   echo "CREATING STANDALONE TOOLCHAIN"
   $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
 
-  echo "PATCHING STANDALONE TOOLCHAIN"
-  cd $ANDROID_NDK_TOOLCHAIN_ROOT
-  #http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
-  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
+#  echo "PATCHING STANDALONE TOOLCHAIN"
+#  cd $ANDROID_NDK_TOOLCHAIN_ROOT
+#  #http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
+#  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 
 
   #Get Updated config.sub
@@ -164,10 +163,12 @@ else
   tar xf proj-4.7.0.tar.gz
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm proj-4.7.0.tar.gz; fi
   cd proj-4.7.0/
+  patch -p1 -i $PATCH_DIR/proj4.patch
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   #######END PROJ4#######
-
+  
+  
   ########GEOS3.2.3#######
   echo "GEOS-3.2.3"
   cd $SRC_DIR
@@ -191,9 +192,10 @@ else
   wget -c http://freefr.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
   tar xf expat-2.0.1.tar.gz
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm expat-2.0.1.tar.gz; fi
-  cd expat-2.0.1/conftools/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cd expat-2.0.1/
+  cp -f $TMP_DIR/config.sub ./conftools/config.sub
+  cp -f $TMP_DIR/config.guess ./conftools/config.guess
+  patch -i $PATCH_DIR/expat.patch -p1
   ######END EXPAT2.0.1#######
   
   
@@ -204,38 +206,40 @@ else
   tar xf gsl-1.14.tar.gz
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
   cd gsl-1.14/
+  patch -p1 -i $PATCH_DIR/gsl.patch
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   ######END EXPAT2.0.1#######
 
 
-#  #######GDAL#######
-#  echo "GDAL1.8.0"
-#  cd $SRC_DIR
-#  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
-#  tar xf gdal-1.8.0.tar.gz
-#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
-#  cd gdal-1.8.0/
-#  cp -f $TMP_DIR/config.sub ./config.sub
-#  cp -f $TMP_DIR/config.guess ./config.guess
-#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
-#  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
-#  #GDAL does not seem to support building in subdirs
-#  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
-#  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
-#  ######END GDAL#######
-
-  ######GDAL#######
-  echo "GDAL-trunk"
+  #######GDAL#######
+  echo "GDAL1.8.0"
   cd $SRC_DIR
-  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
-  cd gdal-trunk/
+  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
+  tar xf gdal-1.8.0.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
+  cd gdal-1.8.0/
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
-  patch -i $PATCH_DIR/gdal.patch 
-#  GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
+  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
+  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
+  patch -p1 -i $PATCH_DIR/gdal.patch
+  #GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
+  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
+  ######END GDAL#######
+
+#  ######GDAL#######
+#  echo "GDAL-trunk"
+#  cd $SRC_DIR
+#  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+#  cd gdal-trunk/
+#  cp -f $TMP_DIR/config.sub ./config.sub
+#  cp -f $TMP_DIR/config.guess ./config.guess
+#  patch -i $PATCH_DIR/gdal.patch 
+##  GDAL does not seem to support building in subdirs
+#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
+#  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
@@ -244,6 +248,7 @@ else
   tar xf libiconv-1.13.1.tar.gz
   if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
   cd libiconv-1.13.1/
+  patch -p1 -i $PATCH_DIR/libiconv.patch
   cp -f $TMP_DIR/config.sub ./build-aux/config.sub
   cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
   cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
@@ -301,20 +306,20 @@ else
   sed -i "s|CONFIG           += QwtDll|CONFIG     += QwtDll plugin|" qwtconfig.pri
   #######END QWT5.2.0#######
   
-  #######openssl-android#######
-  #needed for postgresssql
-  echo "openssl-android"
-  cd $SRC_DIR
-  if [ -d "openssl-android" ]; then
-    cd openssl-android
-    git pull
-  else
-    git clone git://github.com/mbernasocchi/openssl-android.git
-  fi
-  
-  cd openssl-android
-  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
-  
+#  #######openssl-android#######
+#  #needed for postgresssql
+#  echo "openssl-android"
+#  cd $SRC_DIR
+#  if [ -d "openssl-android" ]; then
+#    cd openssl-android
+#    git pull
+#  else
+#    git clone git://github.com/mbernasocchi/openssl-android.git
+#  fi
+#  
+#  cd openssl-android
+#  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
+#  
   #######postgresql-9.0.4#######
   echo "postgresql-9.0.4"
   cd $SRC_DIR
@@ -327,11 +332,6 @@ else
   
   patch -p1 -i $PATCH_DIR/libpq.patch
   #######END postgresql-9.0.4#######
-  
-  
-  #######REPLACE ALL CONFIGURE SCRIPTS TO PRODUCE UNVERSIONED LIBS####################
-  cp -rf $PATCH_DIR/replace_configure_files/* $SRC_DIR
-  
   
   #######PYTHON#############################
   echo "python"
