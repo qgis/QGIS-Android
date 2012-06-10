@@ -52,6 +52,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+//import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
@@ -259,18 +260,33 @@ public class QgisActivity extends Activity {
 				if (mExternalStorageWriteable) {
 					String pathAlias;
 					String path;
+					String externalFilesDir = getExternalFilesDir(null).getAbsolutePath();
+					String filesDir = getFilesDir().getAbsolutePath();
+
+//					PackageManager m = getPackageManager();
+//					PackageInfo p;
+//					try {
+//						p = m.getPackageInfo(getPackageName(), 0);
+//						pathAlias = p.applicationInfo.dataDir +"/lib";
+//						
+//						path = externalFilesDir + "/lib";
+//						new File(path).mkdir();
+//						makeSymlink(path, pathAlias);
+
+//					} catch (NameNotFoundException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 
 					// put the share files to externalFilesDir
-					pathAlias = getFilesDir() + "/share";
-					path = getExternalFilesDir(null).getAbsolutePath()
-							+ "/share";
+					pathAlias = filesDir + "/share";
+					path = externalFilesDir + "/share";
 					new File(path).mkdir();
 					makeSymlink(path, pathAlias);
 
 					// put .qgis to externalFilesDir
-					pathAlias = getFilesDir() + "/.qgis";
-					path = getExternalFilesDir(null).getAbsolutePath()
-							+ "/.qgis";
+					pathAlias = filesDir + "/.qgis";
+					path = externalFilesDir	+ "/.qgis";
 					new File(path).mkdir();
 					makeSymlink(path, pathAlias);
 				} else {

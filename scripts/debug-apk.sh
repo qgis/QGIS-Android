@@ -28,7 +28,7 @@ echo "" > /tmp/logcat.log
 #gnome-system-log /tmp/logcat.log &
 #$ADB logcat -c
 
-$ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QtActivity
+$ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QgisActivity
 #$ADB pull /system/bin/app_process $TMP_DIR/app_process
 #$ADB pull /system/lib/libc.so $TMP_DIR/libc.so
 
