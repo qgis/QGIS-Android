@@ -1,0 +1,90 @@
+--- a/configure
++++ b/configure
+@@ -8181,14 +8181,25 @@
+ linux*oldld* | linux*aout* | linux*coff*)
+   dynamic_linker=no
+   ;;
++  
++
+ 
+ # This must be Linux ELF.
+ linux*)
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+@@ -12147,8 +12158,17 @@
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+@@ -14734,8 +14754,17 @@
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+@@ -17333,8 +17362,17 @@
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  case $host_os in
++  # This must be Linux Android ELF.
++  linux-android*)
++    library_names_spec='$libname${shared_ext}'
++    soname_spec='${libname}${shared_ext}'
++    ;;
++  *)  
++    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
++    soname_spec='${libname}${release}${shared_ext}$major'
++    ;;
++  esac
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no

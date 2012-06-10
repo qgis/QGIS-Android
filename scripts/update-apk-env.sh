@@ -22,16 +22,26 @@ source `dirname $0`/config.conf
 #copy libs to apk
 mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
-mkdir -p $APK_DIR/libs/armeabi/
-mkdir -p $APK_DIR/libs/armeabi-v7a/
-cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
-cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
 
-#add gdb server if in Debug mode
-if [ "$BUILD_TYPE" == "Debug" ]; then
-    cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi/
-    cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi-v7a/
+if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
+  mkdir -p $APK_DIR/libs/armeabi/
+  cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
+  #add gdb server if in Debug mode
+  if [ "$BUILD_TYPE" == "Debug" ]; then
+      cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi/
+  fi
 fi
+
+if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then 
+  mkdir -p $APK_DIR/libs/armeabi-v7a/
+  cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
+  #add gdb server if in Debug mode
+  if [ "$BUILD_TYPE" == "Debug" ]; then
+      cp -vrfs $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $APK_DIR/libs/armeabi-v7a/
+  fi
+fi
+
+
 #copy assets to apk 
 rm -vrf $APK_DIR/assets
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
