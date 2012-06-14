@@ -1,5 +1,5 @@
---- /home/marco/dev/qgis-android/src/libiconv-1.13.1/libcharset/configure
-+++ /home/marco/dev/qgis-android/patches/replace_configure_files/libiconv-1.13.1/libcharset/configure
+--- a/libiconv-1.13.1/libcharset/configure
++++ b/libiconv-1.13.1/libcharset/configure
 @@ -9712,8 +9712,17 @@
    version_type=linux
    need_lib_prefix=no
@@ -24,7 +24,8 @@
  if test -n "$CONFIG_FILES"; then
  
  
--ac_cr='+ac_cr='
+-ac_cr='
++ac_cr='
  '
  ac_cs_awk_cr=`$AWK 'BEGIN { print "a\rb" }' </dev/null 2>/dev/null`
  if test "$ac_cs_awk_cr" = "a${ac_cr}b"; then
