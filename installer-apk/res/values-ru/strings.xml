@@ -3,7 +3,6 @@
   <string name="app_name">Установщик QGIS</string>
     <string name="install">Загрузить и установить</string>
     <string name="quit">Выход</string>
-  <string name="version_prompt">Выберите версию. (Версия Nightly является отладочной и может содержать ошибки)</string>
     <string name="downloading_dialog_message">Загружается</string>
     <string name="install_dialog_title">Загрузить пакет QGIS?</string>
     <string name="install_dialog_message">Эта программа загрузит и установит QGIS версии %s. Размер загружаемых файлов превышает 70MB, продолжить?</string>

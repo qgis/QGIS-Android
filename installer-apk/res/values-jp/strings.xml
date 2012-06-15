@@ -3,7 +3,6 @@
 	<string name="app_name">QGIS インストーラ</string>
     <string name="install">ダウンロードとインストール</string>
     <string name="quit">終了</string>
-	<string name="version_prompt">バージョンを選んで下さい. (Nightly はデバッグオプションが有効でビルドされテストされていません)</string>
     <string name="downloading_dialog_message">ダウンロード中</string>
     <string name="install_dialog_title">QGISパッケージをダウンロードしますか? </string>
     <string name="install_dialog_message">この作業でQGISの %s ビルドをダウンロードしてインストールします. ダウンロードするファイルは70MB以上の大きさです.作業を続けますか?</string>

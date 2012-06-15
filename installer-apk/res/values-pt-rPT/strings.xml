@@ -3,7 +3,6 @@
     <string name="app_name">Instalador do QGIS</string>
     <string name="install">Descarregar e Instalar</string>
     <string name="quit">Sair</string>
-    <string name="version_prompt">Escolha uma versão. (Nightly é uma versão em desenvolvimeto, não testada)</string>
     <string name="downloading_dialog_message">Descarregar</string>
     <string name="install_dialog_title">Descarregar o pacote QGIS?</string>
     <string name="install_dialog_message">Isto irá descarregar e instalar a versão %s do QGIS. O volume a descarregar é maior que 70Mb, quer prosseguir?</string>

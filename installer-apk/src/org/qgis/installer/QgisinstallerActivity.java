@@ -1,6 +1,6 @@
 /**
  * @author  Marco Bernasocchi - <marco@bernawebdesign.ch>
- * @version 0.1
+ * @version 0.3
  */
 /*
  Copyright (c) 2011, Marco Bernasocchi <marco@bernawebdesign.ch>
@@ -38,9 +38,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+import java.sql.Connection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,56 +50,155 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 public class QgisinstallerActivity extends Activity {
 	private static final int DOWNLOAD_DIALOG = 0;
 	private static final int PROMPT_INSTALL_DIALOG = 1;
 	private static final int NO_CONNECIVITY_DIALOG = 2;
+	private static final int ABOUT_DIALOG = 3;
+	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
+
 	protected DownloadApkTask mDownloadApkTask = new DownloadApkTask();
-	protected DownloadVersionsTask mDownloadVersionsTask = new DownloadVersionsTask();
+	protected DownloadVersionInfoTask mDownloadVersionInfoTask = new DownloadVersionInfoTask();
 	protected ProgressDialog mProgressDialog;
-	protected String mUrlBaseString = "http://android.qgis.org/download/";
-	protected String mFilePathBase = Environment.getExternalStorageDirectory()
-			+ "/download/";
-	protected String mVersion = "nightly";
-	Spinner mSpinner;
-	ArrayList<String> mVersions = new ArrayList<String>();
-	ArrayAdapter<String> mSpinnerArrayAdapter;
+
+	protected int mSize;
+	protected String mMD5;
+	protected String mVersion;
+	protected String mVersionName;
+	protected String mABI;
+	protected String mApkFileName;
+	protected String mApkUrl;
+	protected String mFilePathBase;
+	private String mLastMethod;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		if (!isOnline()) {
-			showDialog(NO_CONNECIVITY_DIALOG);
-		}
-		mSpinner = (Spinner) findViewById(R.id.spinner);
-		mSpinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, mVersions);
-		mSpinner.setAdapter(mSpinnerArrayAdapter);
-		mDownloadVersionsTask.execute(mUrlBaseString + "versions.txt");
 
-		Button installButton = (Button) this.findViewById(R.id.install);
-		installButton.setOnClickListener(new OnClickListener() {
+		final Button aboutButton = (Button) findViewById(R.id.aboutButton);
+		aboutButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				mVersion = mSpinner.getSelectedItem().toString();
-				String fileName = "qgis-" + mVersion + ".apk";
-				mUrlBaseString = mUrlBaseString + fileName;
-				mFilePathBase = mFilePathBase + fileName;
-				showDialog(PROMPT_INSTALL_DIALOG);
+				about();
 			}
 		});
+
+		final Button donateButton = (Button) findViewById(R.id.donateButton);
+		donateButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				donate();
+			}
+		});
+
+		final Button quitButton = (Button) findViewById(R.id.quitButton);
+		quitButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
+
+		final Button installButton = (Button) findViewById(R.id.installButton);
+		installButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				run();
+			}
+		});
+	}
+	//TODO:http://stackoverflow.com/questions/6879584/how-to-run-the-same-asynctask-more-than-once
+	private void run() {
+		if (isOnline("run")) {
+			initVars();
+			mDownloadVersionInfoTask.execute();
+		}
+	}
+
+	private void donate() {
+		if (isOnline("donate")) {
+			String url = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=27GAYFKF4U5EE";
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+		}
+	}
+
+	private void about() {
+		showDialog(ABOUT_DIALOG);
+	}
+
+	private void visitOpenGis() {
+		if (isOnline("visitOpenGis")) {
+			String url = "http://www.opengis.ch/android-gis/";
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+		}
+	}
+
+	private void retryLastMethod() {
+		// use reflection to recall the last method
+		java.lang.reflect.Method method = null;
+		try {
+			method = this.getClass().getDeclaredMethod(mLastMethod);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		try {
+			method.invoke(this);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isOnline(String callerMethod) {
+		mLastMethod = callerMethod;
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnected()) {
+			return true;
+		}
+		showDialog(NO_CONNECIVITY_DIALOG);
+		return false;
+	}
+
+	private void initVars() {
+		mVersion = getVersion()[0];
+		mVersionName = getVersion()[1];
+		mABI = "armeabi"; // TODO: use android.os.Build.CPU_ABI;
+
+		mApkFileName = "qgis-" + mVersion + "-" + mABI + ".apk";
+		mApkUrl = "http://android.qgis.org/download/apk/" + mApkFileName;
+		mFilePathBase = Environment.getExternalStorageDirectory()
+				+ "/download/" + mApkFileName;
+	}
+
+	private String[] getVersion() {
+		String[] v = new String[2];
+		try {
+			v[0] = Integer.toString(getPackageManager().getPackageInfo(
+					getPackageName(), 0).versionCode);
+			v[1] = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return v;
 	}
 
 	public void onDestroy() {
@@ -112,9 +212,27 @@ public class QgisinstallerActivity extends Activity {
 			mProgressDialog = new ProgressDialog(QgisinstallerActivity.this);
 			mProgressDialog
 					.setMessage(getString(R.string.downloading_dialog_message)
-							+ ": " + mUrlBaseString);
+							+ ": " + mApkUrl);
+			// add cancel button
+			mProgressDialog.setCancelable(true);
+			mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+					getString(android.R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+			// cancel download task oncancel (back button and cancel button)
+			mProgressDialog
+					.setOnCancelListener(new DialogInterface.OnCancelListener() {
+						public void onCancel(DialogInterface dialog) {
+							mDownloadApkTask.cancel(true);
+							// finish();
+						}
+					});
+
 			mProgressDialog.setIndeterminate(false);
-			mProgressDialog.setMax(100);
+			mProgressDialog.setMax(mSize / BYTE_TO_MEGABYTE);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			return mProgressDialog;
 
@@ -124,15 +242,24 @@ public class QgisinstallerActivity extends Activity {
 					.setMessage(
 							String.format(
 									getString(R.string.install_dialog_message),
-									mVersion))
-					.setPositiveButton(getString(android.R.string.ok),
+									mVersionName, mVersion,
+									Math.round(mSize / BYTE_TO_MEGABYTE)))
+					.setPositiveButton(getString(android.R.string.yes),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									mDownloadApkTask.execute(mUrlBaseString);
+									mDownloadApkTask.execute(mApkUrl);
 								}
 							})
-					.setNegativeButton(getString(android.R.string.cancel),
+					.setNegativeButton(getString(R.string.quit),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									// Action for 'NO' Button
+									finish();
+								}
+							})
+					.setNeutralButton(getString(android.R.string.no),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
@@ -140,16 +267,53 @@ public class QgisinstallerActivity extends Activity {
 									dialog.cancel();
 								}
 							}).create();
+
 		case NO_CONNECIVITY_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
 					.setTitle(getString(R.string.no_connectivity_dialog_title))
 					.setMessage(
 							getString(R.string.no_connectivity_dialog_message))
-					.setPositiveButton(getString(R.string.quit),
+					.setPositiveButton(R.string.retry,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									QgisinstallerActivity.this.finish();
+									removeDialog(NO_CONNECIVITY_DIALOG);
+									retryLastMethod();
+								}
+							})
+					.setNegativeButton(getString(android.R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.cancel();
+								}
+							})
+					.setNeutralButton(getString(R.string.wifi_settings),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									Intent openWirelessSettings = new Intent(
+											"android.settings.WIFI_SETTINGS");
+									startActivity(openWirelessSettings);
+								}
+							}).create();
+
+		case ABOUT_DIALOG:
+			return new AlertDialog.Builder(QgisinstallerActivity.this)
+					.setTitle(getString(R.string.app_name))
+					.setMessage(getString(R.string.about_dialog_message))
+					.setNegativeButton(getString(android.R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.cancel();
+								}
+							})
+					.setNeutralButton(getString(R.string.visit_dev),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									visitOpenGis();
 								}
 							}).create();
 		default:
@@ -157,39 +321,40 @@ public class QgisinstallerActivity extends Activity {
 		}
 	}
 
-	private boolean isOnline() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnected()) {
-			return true;
-		}
-		return false;
-	}
-
-	private class DownloadVersionsTask extends AsyncTask<String, Integer, String> {
-		@Override
-		protected String doInBackground(String... mUrlBaseString) {
+	private class DownloadVersionInfoTask extends
+			AsyncTask<Void, Integer, String> {
+		protected String doInBackground(Void... params) {
 			try {
-				URL url = new URL(mUrlBaseString[0]);
-				URLConnection conexion = url.openConnection();
-				conexion.connect();
+				URL apkUrl = new URL(mApkUrl);
+				URLConnection akpConnection = apkUrl.openConnection();
+				akpConnection.connect();
+				mSize = akpConnection.getContentLength();
+				Log.i("Downloader", "APK is " + String.valueOf(mSize));
+				
+				URL md5Url = new URL(mApkUrl + ".md5");
+				URLConnection md5Connection = md5Url.openConnection();
+				md5Connection.connect();
 
-				// download the file
+				// download the info file
 				BufferedReader in = new BufferedReader(new InputStreamReader(
-						url.openStream()));
+						md5Url.openStream()));
 				String str;
 				while ((str = in.readLine()) != null) {
-					mVersions.add(str);
+					mMD5 = str;
 				}
+				Log.i("Downloader", "APK MD5 is " + mMD5);
 
 				in.close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
+
 		protected void onPostExecute(String result) {
-			mSpinnerArrayAdapter.notifyDataSetChanged();
+			showDialog(PROMPT_INSTALL_DIALOG);
 		}
+
 	}
 
 	private class DownloadApkTask extends AsyncTask<String, Integer, String> {

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">QGIS installer</string>
-    <string name="install">Download and install</string>
     <string name="quit">Quit</string>
-	<string name="version_prompt">Choose a version. (Nightly is a debug enabled build and is untested)</string>
     <string name="downloading_dialog_message">Downloading</string>
     <string name="install_dialog_title">Download QGIS package?</string>
-    <string name="install_dialog_message">This will download and install the %s build of QGIS. The download is larger than 70MB, do yo want to continue?</string>
+    <string name="install_dialog_message">This will download and install QGIS %1$s (build %2$s). The download is %3$s MB big, do yo want to continue?</string>
     <string name="no_connectivity_dialog_title">No data connectivity detected</string>
     <string name="no_connectivity_dialog_message">Check your connectivity settings and try again</string>
+    <string name="retry">Retry</string>
+    <string name="about">About</string>
+    <string name="wifi_settings">Wi-Fi settings</string>
+    <string name="installer_text">QGIS for Android Installer</string>
+    <string name="donate">Donate to QGIS</string>
+    <string name="install">Download and install QGIS</string>
+    <string name="about_dialog_message">Android QGIS installer allows you to easily install and update Quantum GIS. It was developped By Marco Bernasocchi (opengis.ch)</string>
+    <string name="visit_dev">Visit opengis.ch</string>
 </resources>
