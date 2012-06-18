@@ -289,7 +289,7 @@ public class QgisinstallerActivity extends Activity {
 					});
 
 			mProgressDialog.setIndeterminate(false);
-			mProgressDialog.setMax(mSize / BYTE_TO_MEGABYTE);
+			mProgressDialog.setMax(mSize);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			return mProgressDialog;
 
@@ -471,11 +471,6 @@ public class QgisinstallerActivity extends Activity {
 				MessageDigest md = MessageDigest.getInstance("MD5");
 
 				URL url = new URL(mUrlBaseString[0]);
-				URLConnection conexion = url.openConnection();
-				conexion.connect();
-				// this will be useful so that you can show a tipical 0-100%
-				// progress bar
-				int lenghtOfFile = conexion.getContentLength();
 
 				// download the file
 				InputStream input = new BufferedInputStream(url.openStream());
@@ -485,14 +480,13 @@ public class QgisinstallerActivity extends Activity {
 
 				byte data[] = new byte[1024];
 
-				long total = 0;
+				int total = 0;
 
 				while (!isCancelled()
 						&& (count = checkedStream.read(data)) != -1) {
 					total += count;
 					// publishing the progress....
-					int progress = (int) (total * 100 / lenghtOfFile);
-					publishProgress(progress);
+					publishProgress(total);
 					output.write(data, 0, count);
 				}
 				output.flush();
