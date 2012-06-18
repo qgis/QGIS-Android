@@ -51,6 +51,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -67,6 +68,7 @@ public class QgisinstallerActivity extends Activity {
 	private static final int NO_CONNECIVITY_DIALOG = 2;
 	private static final int ABOUT_DIALOG = 3;
 	private static final int DOWNLOAD_ERROR_DIALOG = 4;
+	private static final int LATEST_IS_INSTALLED_DIALOG = 5;
 	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
 
 	protected DownloadApkTask mDownloadApkTask;
@@ -75,7 +77,7 @@ public class QgisinstallerActivity extends Activity {
 
 	protected int mSize;
 	protected String mMD5;
-	protected String mVersion;
+	protected int mVersion;
 	protected String mVersionName;
 	protected String mABI;
 	protected String mApkFileName;
@@ -136,6 +138,27 @@ public class QgisinstallerActivity extends Activity {
 		}
 	}
 
+	private boolean latestIsInstalled() {
+		Version v = getVersion("org.qgis.qgis");
+		if (v == null) {
+			Log.i("VERSION", "No org.qgis.qgis package found on device");
+			Log.i("VERSION", "Installable org.qgis.qgis package version: " + Integer.toString(mVersion));
+			return false;
+		} else {
+			if (v.value >= mVersion) {
+				Log.i("VERSION", "NO NEW org.qgis.qgis package available.");
+				Log.i("VERSION", "Installed org.qgis.qgis package version: " + Integer.toString(v.value));
+				Log.i("VERSION", "Latest org.qgis.qgis package version: " + Integer.toString(mVersion));
+				return true;
+			} else {
+				Log.i("VERSION", "NEW org.qgis.qgis package available.");
+				Log.i("VERSION", "Installable org.qgis.qgis package version: " + Integer.toString(mVersion));
+				Log.i("VERSION", "Installed org.qgis.qgis package version: " + Integer.toString(v.value));
+				return false;
+			}
+		}
+	}
+
 	private void donate() {
 		if (isOnline("donate")) {
 			String url = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=27GAYFKF4U5EE";
@@ -191,8 +214,9 @@ public class QgisinstallerActivity extends Activity {
 	}
 
 	private void initVars() {
-		mVersion = getVersion()[0];
-		mVersionName = getVersion()[1];
+		Version v = getVersion("org.qgis.installer");
+		mVersion = v.value;
+		mVersionName = v.name;
 		mABI = "armeabi"; // TODO: use android.os.Build.CPU_ABI;
 
 		mApkFileName = "qgis-" + mVersion + "-" + mABI + ".apk";
@@ -203,16 +227,25 @@ public class QgisinstallerActivity extends Activity {
 		Log.i("QGIS Downloader", "Downloading to " + mFilePath);
 	}
 
-	private String[] getVersion() {
-		String[] v = new String[2];
+	private Version getVersion(String packageName) {
 		try {
-			v[0] = Integer.toString(getPackageManager().getPackageInfo(
-					getPackageName(), 0).versionCode);
-			v[1] = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			PackageInfo pi = getPackageManager().getPackageInfo(packageName, 0);
+			Version version = new Version(pi.versionName, pi.versionCode);
+			return version;
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			Log.i("VERSION", "Package " + packageName + " NOT FOUND");
 		}
-		return v;
+		return null;
+	}
+
+	private class Version {
+		private String name;
+		private int value;
+
+		public Version(String name, int value) {
+			this.name = name;
+			this.value = value;
+		}
 	}
 
 	private String getMD5Checksum(byte[] digest) throws Exception {
@@ -252,7 +285,6 @@ public class QgisinstallerActivity extends Activity {
 					.setOnCancelListener(new DialogInterface.OnCancelListener() {
 						public void onCancel(DialogInterface dialog) {
 							mDownloadApkTask.cancel(true);
-							// finish();
 						}
 					});
 
@@ -345,7 +377,8 @@ public class QgisinstallerActivity extends Activity {
 		case DOWNLOAD_ERROR_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
 					.setTitle(getString(R.string.app_name))
-					.setMessage("MD5 ERROR")//getString(R.string.about_dialog_message))
+					.setMessage(getString(R.string.md5_error))
+					// getString(R.string.about_dialog_message))
 					.setPositiveButton(R.string.retry,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -361,6 +394,29 @@ public class QgisinstallerActivity extends Activity {
 									dialog.cancel();
 								}
 							}).create();
+
+		case LATEST_IS_INSTALLED_DIALOG:
+			return new AlertDialog.Builder(QgisinstallerActivity.this)
+					.setTitle(getString(R.string.app_name))
+					.setMessage(
+							getString(R.string.latest_is_already_installed_dialog_message))
+					.setNegativeButton(getString(android.R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.cancel();
+								}
+							})
+					.setNeutralButton(getString(R.string.start_qgis),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									Intent LaunchQGIS = getPackageManager()
+											.getLaunchIntentForPackage(
+													"org.qgis.qgis");
+									startActivity(LaunchQGIS);
+								}
+							}).create();
 		default:
 			return null;
 		}
@@ -374,7 +430,8 @@ public class QgisinstallerActivity extends Activity {
 				URLConnection akpConnection = apkUrl.openConnection();
 				akpConnection.connect();
 				mSize = akpConnection.getContentLength();
-				Log.i("QGIS Downloader", "APK is " + String.valueOf(mSize));
+				Log.i("QGIS Downloader", "APK is " + String.valueOf(mSize)
+						+ " bytes");
 
 				URL md5Url = new URL(mApkUrl + ".md5");
 				URLConnection md5Connection = md5Url.openConnection();
@@ -387,7 +444,6 @@ public class QgisinstallerActivity extends Activity {
 				while ((str = in.readLine()) != null) {
 					mMD5 = str;
 				}
-				Log.i("QGIS Downloader", "APK MD5 is " + mMD5);
 
 				in.close();
 			} catch (Exception e) {
@@ -397,7 +453,11 @@ public class QgisinstallerActivity extends Activity {
 		}
 
 		protected void onPostExecute(String result) {
-			showDialog(PROMPT_INSTALL_DIALOG);
+			if (latestIsInstalled()) {
+				showDialog(LATEST_IS_INSTALLED_DIALOG);
+			} else {
+				showDialog(PROMPT_INSTALL_DIALOG);
+			}
 		}
 	}
 
@@ -440,7 +500,6 @@ public class QgisinstallerActivity extends Activity {
 				checkedStream.close();
 				byte[] digest = md.digest();
 				mDigest = getMD5Checksum(digest);
-				Log.i("QGIS Downloader", "Digest is: " + mDigest);
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -4,7 +4,7 @@
     <string name="quit">Quit</string>
     <string name="downloading_dialog_message">Downloading</string>
     <string name="install_dialog_title">Download QGIS package?</string>
-    <string name="install_dialog_message">This will download and install QGIS %1$s (build %2$s). The download is %3$s MB big, do yo want to continue?</string>
+    <string name="install_dialog_message">This will download and install QGIS %1$s (build %2$s). The download is %3$s MB big, do you want to continue?</string>
     <string name="no_connectivity_dialog_title">No data connectivity detected</string>
     <string name="no_connectivity_dialog_message">Check your connectivity settings and try again</string>
     <string name="retry">Retry</string>
@@ -15,4 +15,7 @@
     <string name="install">Download and install QGIS</string>
     <string name="about_dialog_message">Android QGIS installer allows you to easily install and update Quantum GIS. It was developped By Marco Bernasocchi (opengis.ch)</string>
     <string name="visit_dev">Visit opengis.ch</string>
+    <string name="latest_is_already_installed_dialog_message">You already have the latest QGIS version installed.</string>
+    <string name="start_qgis">Start QGIS</string>
+    <string name="md5_error">The package didn\'t download correctly (md5 hash mismatch)</string>
 </resources>
