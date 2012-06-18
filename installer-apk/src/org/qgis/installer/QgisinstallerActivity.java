@@ -41,7 +41,6 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Connection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,7 +55,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,8 +66,8 @@ public class QgisinstallerActivity extends Activity {
 	private static final int ABOUT_DIALOG = 3;
 	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
 
-	protected DownloadApkTask mDownloadApkTask = new DownloadApkTask();
-	protected DownloadVersionInfoTask mDownloadVersionInfoTask = new DownloadVersionInfoTask();
+	protected DownloadApkTask mDownloadApkTask;
+	protected DownloadVersionInfoTask mDownloadVersionInfoTask;
 	protected ProgressDialog mProgressDialog;
 
 	protected int mSize;
@@ -79,7 +77,8 @@ public class QgisinstallerActivity extends Activity {
 	protected String mABI;
 	protected String mApkFileName;
 	protected String mApkUrl;
-	protected String mFilePathBase;
+	protected String mFilePath;
+	private String mFilePathBase;
 	private String mLastMethod;
 
 	/** Called when the activity is first created. */
@@ -116,10 +115,12 @@ public class QgisinstallerActivity extends Activity {
 			}
 		});
 	}
-	//TODO:http://stackoverflow.com/questions/6879584/how-to-run-the-same-asynctask-more-than-once
+
 	private void run() {
 		if (isOnline("run")) {
 			initVars();
+			mDownloadVersionInfoTask = null;
+			mDownloadVersionInfoTask = new DownloadVersionInfoTask();
 			mDownloadVersionInfoTask.execute();
 		}
 	}
@@ -185,8 +186,10 @@ public class QgisinstallerActivity extends Activity {
 
 		mApkFileName = "qgis-" + mVersion + "-" + mABI + ".apk";
 		mApkUrl = "http://android.qgis.org/download/apk/" + mApkFileName;
-		mFilePathBase = Environment.getExternalStorageDirectory()
-				+ "/download/" + mApkFileName;
+		mFilePathBase = getExternalFilesDir(null) + "/downloaded_apk/";
+		mFilePath = mFilePathBase + mApkFileName;
+		new File(mFilePathBase).mkdir();
+		Log.i("QGIS Downloader", "Downloading to " + mFilePath);
 	}
 
 	private String[] getVersion() {
@@ -203,6 +206,7 @@ public class QgisinstallerActivity extends Activity {
 
 	public void onDestroy() {
 		super.onDestroy();
+		mDownloadVersionInfoTask.cancel(true);
 		mDownloadApkTask.cancel(true);
 	}
 
@@ -248,6 +252,9 @@ public class QgisinstallerActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
+									if (mDownloadApkTask == null) {
+										mDownloadApkTask = new DownloadApkTask();
+									}
 									mDownloadApkTask.execute(mApkUrl);
 								}
 							})
@@ -323,14 +330,14 @@ public class QgisinstallerActivity extends Activity {
 
 	private class DownloadVersionInfoTask extends
 			AsyncTask<Void, Integer, String> {
-		protected String doInBackground(Void... params) {
+		protected String doInBackground(Void... unused) {
 			try {
 				URL apkUrl = new URL(mApkUrl);
 				URLConnection akpConnection = apkUrl.openConnection();
 				akpConnection.connect();
 				mSize = akpConnection.getContentLength();
-				Log.i("Downloader", "APK is " + String.valueOf(mSize));
-				
+				Log.i("QGIS Downloader", "APK is " + String.valueOf(mSize));
+
 				URL md5Url = new URL(mApkUrl + ".md5");
 				URLConnection md5Connection = md5Url.openConnection();
 				md5Connection.connect();
@@ -342,7 +349,7 @@ public class QgisinstallerActivity extends Activity {
 				while ((str = in.readLine()) != null) {
 					mMD5 = str;
 				}
-				Log.i("Downloader", "APK MD5 is " + mMD5);
+				Log.i("QGIS Downloader", "APK MD5 is " + mMD5);
 
 				in.close();
 			} catch (Exception e) {
@@ -354,7 +361,6 @@ public class QgisinstallerActivity extends Activity {
 		protected void onPostExecute(String result) {
 			showDialog(PROMPT_INSTALL_DIALOG);
 		}
-
 	}
 
 	private class DownloadApkTask extends AsyncTask<String, Integer, String> {
@@ -371,7 +377,7 @@ public class QgisinstallerActivity extends Activity {
 
 				// download the file
 				InputStream input = new BufferedInputStream(url.openStream());
-				OutputStream output = new FileOutputStream(mFilePathBase);
+				OutputStream output = new FileOutputStream(mFilePath);
 
 				byte data[] = new byte[1024];
 
@@ -390,6 +396,40 @@ public class QgisinstallerActivity extends Activity {
 				input.close();
 			} catch (Exception e) {
 			}
+
+			// URL url = new URL(mUrlBaseString[0]);
+			// HttpURLConnection connection = (HttpURLConnection) url
+			// .openConnection();
+			// int downloaded;
+			// if (ISSUE_DOWNLOAD_STATUS.intValue() ==
+			// ECMConstant.ECM_DOWNLOADING) {
+			// File file = new File(mFilePathBase);
+			// if (file.exists()) {
+			// downloaded = (int) file.length();
+			// connection.setRequestProperty("Range",
+			// "bytes=" + (file.length()) + "-");
+			// }
+			// } else {
+			// connection.setRequestProperty("Range", "bytes=" + downloaded
+			// + "-");
+			// }
+			// connection.setDoInput(true);
+			// connection.setDoOutput(true);
+			// //progressBar.setMax(connection.getContentLength());
+			// BufferedInputStream in = new
+			// BufferedInputStream(connection.getInputStream());
+			// FileOutputStream fos = (downloaded == 0) ? new
+			// FileOutputStream(mFilePathBase)
+			// : new FileOutputStream(mFilePathBase, true);
+			// BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+			// byte[] data = new byte[1024];
+			// int x = 0;
+			// while ((x = in.read(data, 0, 1024)) >= 0) {
+			// bout.write(data, 0, x);
+			// downloaded += x;
+			// //progressBar.setProgress(downloaded);
+			// }
+
 			return null;
 		}
 
@@ -404,11 +444,10 @@ public class QgisinstallerActivity extends Activity {
 
 		protected void onPostExecute(String result) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(new File(mFilePathBase)),
+			intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
 					"application/vnd.android.package-archive");
 			startActivity(intent);
 			QgisinstallerActivity.this.finish();
 		}
-
 	}
 }
