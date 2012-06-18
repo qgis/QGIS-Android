@@ -41,6 +41,8 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,10 +62,11 @@ import android.view.View;
 import android.widget.Button;
 
 public class QgisinstallerActivity extends Activity {
-	private static final int DOWNLOAD_DIALOG = 0;
+	private static final int PROGRESS_DIALOG = 0;
 	private static final int PROMPT_INSTALL_DIALOG = 1;
 	private static final int NO_CONNECIVITY_DIALOG = 2;
 	private static final int ABOUT_DIALOG = 3;
+	private static final int DOWNLOAD_ERROR_DIALOG = 4;
 	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
 
 	protected DownloadApkTask mDownloadApkTask;
@@ -122,6 +125,14 @@ public class QgisinstallerActivity extends Activity {
 			mDownloadVersionInfoTask = null;
 			mDownloadVersionInfoTask = new DownloadVersionInfoTask();
 			mDownloadVersionInfoTask.execute();
+		}
+	}
+
+	private void downloadApk() {
+		if (isOnline("downloadApk")) {
+			mDownloadApkTask = null;
+			mDownloadApkTask = new DownloadApkTask();
+			mDownloadApkTask.execute(mApkUrl);
 		}
 	}
 
@@ -204,6 +215,16 @@ public class QgisinstallerActivity extends Activity {
 		return v;
 	}
 
+	private String getMD5Checksum(byte[] digest) throws Exception {
+		byte[] b = digest;
+		String result = "";
+
+		for (int i = 0; i < b.length; i++) {
+			result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+		}
+		return result;
+	}
+
 	public void onDestroy() {
 		super.onDestroy();
 		mDownloadVersionInfoTask.cancel(true);
@@ -212,7 +233,7 @@ public class QgisinstallerActivity extends Activity {
 
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case DOWNLOAD_DIALOG:
+		case PROGRESS_DIALOG:
 			mProgressDialog = new ProgressDialog(QgisinstallerActivity.this);
 			mProgressDialog
 					.setMessage(getString(R.string.downloading_dialog_message)
@@ -252,10 +273,7 @@ public class QgisinstallerActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									if (mDownloadApkTask == null) {
-										mDownloadApkTask = new DownloadApkTask();
-									}
-									mDownloadApkTask.execute(mApkUrl);
+									downloadApk();
 								}
 							})
 					.setNegativeButton(getString(R.string.quit),
@@ -323,6 +341,26 @@ public class QgisinstallerActivity extends Activity {
 									visitOpenGis();
 								}
 							}).create();
+
+		case DOWNLOAD_ERROR_DIALOG:
+			return new AlertDialog.Builder(QgisinstallerActivity.this)
+					.setTitle(getString(R.string.app_name))
+					.setMessage("MD5 ERROR")//getString(R.string.about_dialog_message))
+					.setPositiveButton(R.string.retry,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									removeDialog(DOWNLOAD_ERROR_DIALOG);
+									downloadApk();
+								}
+							})
+					.setNegativeButton(getString(android.R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.cancel();
+								}
+							}).create();
 		default:
 			return null;
 		}
@@ -364,10 +402,14 @@ public class QgisinstallerActivity extends Activity {
 	}
 
 	private class DownloadApkTask extends AsyncTask<String, Integer, String> {
+		private String mDigest;
+
 		@Override
 		protected String doInBackground(String... mUrlBaseString) {
 			int count;
 			try {
+				MessageDigest md = MessageDigest.getInstance("MD5");
+
 				URL url = new URL(mUrlBaseString[0]);
 				URLConnection conexion = url.openConnection();
 				conexion.connect();
@@ -378,23 +420,30 @@ public class QgisinstallerActivity extends Activity {
 				// download the file
 				InputStream input = new BufferedInputStream(url.openStream());
 				OutputStream output = new FileOutputStream(mFilePath);
+				DigestInputStream checkedStream = new DigestInputStream(input,
+						md);
 
 				byte data[] = new byte[1024];
 
 				long total = 0;
 
-				while (!isCancelled() && (count = input.read(data)) != -1) {
+				while (!isCancelled()
+						&& (count = checkedStream.read(data)) != -1) {
 					total += count;
 					// publishing the progress....
 					int progress = (int) (total * 100 / lenghtOfFile);
 					publishProgress(progress);
 					output.write(data, 0, count);
 				}
-
 				output.flush();
 				output.close();
-				input.close();
+				checkedStream.close();
+				byte[] digest = md.digest();
+				mDigest = getMD5Checksum(digest);
+				Log.i("QGIS Downloader", "Digest is: " + mDigest);
+
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 			// URL url = new URL(mUrlBaseString[0]);
@@ -434,7 +483,7 @@ public class QgisinstallerActivity extends Activity {
 		}
 
 		protected void onPreExecute() {
-			showDialog(DOWNLOAD_DIALOG);
+			showDialog(PROGRESS_DIALOG);
 		}
 
 		protected void onProgressUpdate(Integer... progress) {
@@ -443,11 +492,17 @@ public class QgisinstallerActivity extends Activity {
 		}
 
 		protected void onPostExecute(String result) {
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
-					"application/vnd.android.package-archive");
-			startActivity(intent);
-			QgisinstallerActivity.this.finish();
+			removeDialog(PROGRESS_DIALOG);
+			Log.i("MD5 check", "correct MD5: " + mMD5);
+			Log.i("MD5 check", "calculated MD5: " + mDigest);
+			if (mMD5.equals(mDigest)) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
+						"application/vnd.android.package-archive");
+				startActivity(intent);
+			} else {
+				showDialog(DOWNLOAD_ERROR_DIALOG);
+			}
 		}
 	}
 }
