@@ -1,6 +1,6 @@
 /**
  * @author  Marco Bernasocchi - <marco@bernawebdesign.ch>
- * @version 0.3
+ * @version 0.5
  */
 /*
  Copyright (c) 2011, Marco Bernasocchi <marco@bernawebdesign.ch>
@@ -32,17 +32,22 @@
 package org.qgis.installer;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -69,6 +74,7 @@ public class QgisinstallerActivity extends Activity {
 	private static final int ABOUT_DIALOG = 3;
 	private static final int DOWNLOAD_ERROR_DIALOG = 4;
 	private static final int LATEST_IS_INSTALLED_DIALOG = 5;
+	private static final int LOADING_INFO_DIALOG = 6;
 	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
 
 	protected DownloadApkTask mDownloadApkTask;
@@ -142,18 +148,23 @@ public class QgisinstallerActivity extends Activity {
 		Version v = getVersion("org.qgis.qgis");
 		if (v == null) {
 			Log.i("VERSION", "No org.qgis.qgis package found on device");
-			Log.i("VERSION", "Installable org.qgis.qgis package version: " + Integer.toString(mVersion));
+			Log.i("VERSION", "Installable org.qgis.qgis package version: "
+					+ Integer.toString(mVersion));
 			return false;
 		} else {
 			if (v.value >= mVersion) {
 				Log.i("VERSION", "NO NEW org.qgis.qgis package available.");
-				Log.i("VERSION", "Installed org.qgis.qgis package version: " + Integer.toString(v.value));
-				Log.i("VERSION", "Latest org.qgis.qgis package version: " + Integer.toString(mVersion));
+				Log.i("VERSION", "Installed org.qgis.qgis package version: "
+						+ Integer.toString(v.value));
+				Log.i("VERSION", "Latest org.qgis.qgis package version: "
+						+ Integer.toString(mVersion));
 				return true;
 			} else {
 				Log.i("VERSION", "NEW org.qgis.qgis package available.");
-				Log.i("VERSION", "Installable org.qgis.qgis package version: " + Integer.toString(mVersion));
-				Log.i("VERSION", "Installed org.qgis.qgis package version: " + Integer.toString(v.value));
+				Log.i("VERSION", "Installable org.qgis.qgis package version: "
+						+ Integer.toString(mVersion));
+				Log.i("VERSION", "Installed org.qgis.qgis package version: "
+						+ Integer.toString(v.value));
 				return false;
 			}
 		}
@@ -248,20 +259,41 @@ public class QgisinstallerActivity extends Activity {
 		}
 	}
 
-	private String getMD5Checksum(byte[] digest) throws Exception {
-		byte[] b = digest;
-		String result = "";
+	private final static String getMD5(File f) throws Exception {
+		MessageDigest m = MessageDigest.getInstance("MD5");
 
-		for (int i = 0; i < b.length; i++) {
-			result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+		byte[] buf = new byte[65536];
+		int num_read;
+
+		InputStream in = new BufferedInputStream(new FileInputStream(f));
+
+		while ((num_read = in.read(buf)) != -1) {
+			m.update(buf, 0, num_read);
 		}
+
+		String result = new BigInteger(1, m.digest()).toString(16);
+
+		// pad with zeros if until it's 32 chars long.
+		if (result.length() < 32) {
+			StringBuffer padding = new StringBuffer();
+			int paddingSize = 32 - result.length();
+			for (int i = 0; i < paddingSize; i++)
+				padding.append("0");
+
+			result = padding.toString() + result;
+		}
+
 		return result;
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
-		mDownloadVersionInfoTask.cancel(true);
-		mDownloadApkTask.cancel(true);
+		if (mDownloadVersionInfoTask != null) {
+			mDownloadVersionInfoTask.cancel(true);
+		}
+		if (mDownloadApkTask != null) {
+			mDownloadApkTask.cancel(true);
+		}
 	}
 
 	protected Dialog onCreateDialog(int id) {
@@ -324,6 +356,14 @@ public class QgisinstallerActivity extends Activity {
 									dialog.cancel();
 								}
 							}).create();
+		case LOADING_INFO_DIALOG:
+			ProgressDialog d;
+			d = new ProgressDialog(QgisinstallerActivity.this);
+			d.setTitle(getString(R.string.please_wait) );
+			d.setMessage(getString(R.string.loading_info_dialog_message) );
+			d.setIndeterminate(false);
+			d.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			return d;
 
 		case NO_CONNECIVITY_DIALOG:
 			return new AlertDialog.Builder(QgisinstallerActivity.this)
@@ -442,7 +482,7 @@ public class QgisinstallerActivity extends Activity {
 						md5Url.openStream()));
 				String str;
 				while ((str = in.readLine()) != null) {
-					mMD5 = str;
+					mMD5 = str.substring(0, 32);
 				}
 
 				in.close();
@@ -452,7 +492,12 @@ public class QgisinstallerActivity extends Activity {
 			return null;
 		}
 
+		protected void onPreExecute() {
+			showDialog(LOADING_INFO_DIALOG);
+		}
+
 		protected void onPostExecute(String result) {
+			removeDialog(LOADING_INFO_DIALOG);
 			if (latestIsInstalled()) {
 				showDialog(LATEST_IS_INSTALLED_DIALOG);
 			} else {
@@ -463,74 +508,54 @@ public class QgisinstallerActivity extends Activity {
 
 	private class DownloadApkTask extends AsyncTask<String, Integer, String> {
 		private String mDigest;
+		private String mLastModified;
 
 		@Override
 		protected String doInBackground(String... mUrlBaseString) {
-			int count;
 			try {
-				MessageDigest md = MessageDigest.getInstance("MD5");
-
+				int downloaded = 0;
 				URL url = new URL(mUrlBaseString[0]);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
 
-				// download the file
-				InputStream input = new BufferedInputStream(url.openStream());
-				OutputStream output = new FileOutputStream(mFilePath);
-				DigestInputStream checkedStream = new DigestInputStream(input,
-						md);
+				connection.setDoInput(true);
+				connection.setDoOutput(true);
 
+				File file = new File(mFilePath);
+				if (file.exists()) {
+					downloaded = (int) file.length();
+					connection.setRequestProperty("Range", "bytes="
+							+ downloaded + "-");
+
+					connection.setRequestProperty("If-Range", mLastModified);
+					Log.d("AsyncDownloadFile", "new download seek: "
+							+ downloaded + "; lengthFile: " + mSize);
+				}
+
+				Map<String, List<String>> map = connection.getHeaderFields();
+				Log.d("AsyncDownloadFile", "header fields: " + map.toString());
+
+				BufferedInputStream in = new BufferedInputStream(
+						connection.getInputStream());
+				FileOutputStream fos = (downloaded == 0) ? new FileOutputStream(
+						mFilePath) : new FileOutputStream(mFilePath, true);
+				BufferedOutputStream output = new BufferedOutputStream(fos,
+						1024);
 				byte data[] = new byte[1024];
 
-				int total = 0;
-
-				while (!isCancelled()
-						&& (count = checkedStream.read(data)) != -1) {
-					total += count;
+				int count;
+				while (!isCancelled() && (count = in.read(data)) != -1) {
+					downloaded += count;
 					// publishing the progress....
-					publishProgress(total);
+					publishProgress(downloaded);
 					output.write(data, 0, count);
 				}
 				output.flush();
 				output.close();
-				checkedStream.close();
-				byte[] digest = md.digest();
-				mDigest = getMD5Checksum(digest);
-
-			} catch (Exception e) {
+				in.close();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			// URL url = new URL(mUrlBaseString[0]);
-			// HttpURLConnection connection = (HttpURLConnection) url
-			// .openConnection();
-			// int downloaded;
-			// if (ISSUE_DOWNLOAD_STATUS.intValue() ==
-			// ECMConstant.ECM_DOWNLOADING) {
-			// File file = new File(mFilePathBase);
-			// if (file.exists()) {
-			// downloaded = (int) file.length();
-			// connection.setRequestProperty("Range",
-			// "bytes=" + (file.length()) + "-");
-			// }
-			// } else {
-			// connection.setRequestProperty("Range", "bytes=" + downloaded
-			// + "-");
-			// }
-			// connection.setDoInput(true);
-			// connection.setDoOutput(true);
-			// //progressBar.setMax(connection.getContentLength());
-			// BufferedInputStream in = new
-			// BufferedInputStream(connection.getInputStream());
-			// FileOutputStream fos = (downloaded == 0) ? new
-			// FileOutputStream(mFilePathBase)
-			// : new FileOutputStream(mFilePathBase, true);
-			// BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
-			// byte[] data = new byte[1024];
-			// int x = 0;
-			// while ((x = in.read(data, 0, 1024)) >= 0) {
-			// bout.write(data, 0, x);
-			// downloaded += x;
-			// //progressBar.setProgress(downloaded);
-			// }
 
 			return null;
 		}
@@ -546,6 +571,12 @@ public class QgisinstallerActivity extends Activity {
 
 		protected void onPostExecute(String result) {
 			removeDialog(PROGRESS_DIALOG);
+			try {
+				mDigest = getMD5(new File(mFilePath));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Log.i("MD5 check", "correct MD5: " + mMD5);
 			Log.i("MD5 check", "calculated MD5: " + mDigest);
 			if (mMD5.equals(mDigest)) {
