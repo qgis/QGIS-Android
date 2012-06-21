@@ -15,9 +15,30 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
-#pass -configure as first parameter to perform cmake (configure step)
+#pass -c as first parameter to perform cmake (configure step)
 
 set -e
+
+EXPERIMENTAL=0
+CONFIGURE=0
+
+while getopts ":ec" opt; do
+  case $opt in
+    e)
+      echo "will make Experimental" >&2
+      EXPERIMENTAL=1
+      ;;
+    c)
+      echo "Will reconfigure" >&2
+      CONFIGURE=1
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
+
+
 
 source `dirname $0`/config.conf
 
@@ -112,11 +133,16 @@ if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
 else
   MY_CMAKE=ccmake
 fi
-if [ ! -f CMakeCache.txt ] || [ "$1" = "--configure" ] ; then
-    $MY_CMAKE $MY_CMAKE_FLAGS .. && make -j$CORES install
-else
-    make -j$CORES install    
+
+if [ ! -f CMakeCache.txt ] || [ $CONFIGURE -eq 1 ] ; then
+    $MY_CMAKE $MY_CMAKE_FLAGS ..
 fi
+
+if [ $EXPERIMENTAL -eq 1 ] ; then
+    make -j$CORES Experimental
+fi
+
+make -j$CORES install 
 
 
 GIT_REV=$(git rev-parse HEAD)
