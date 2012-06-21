@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <array name="bundled_libs">
+    <array name="bundled_libs"/>
+    <array name="bundled_libs_fixBug106">
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>

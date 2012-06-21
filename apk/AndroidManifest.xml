@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="88eb8df078bdd8ecdd60c848eb9cd026530fa4f2"/>
+            <meta-data android:name="android.app.git_rev" android:value="094d8d58d4bd2f3fcb7a32e37758d1bc65d38f40"/>
             <!-- Git Revision -->
         </activity>
         
@@ -29,7 +29,7 @@
 <!--                 <category android:name="android.intent.category.LAUNCHER"/> -->
 <!--             </intent-filter> -->
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
-            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
+            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs_fixBug106"/>
             <meta-data android:name="android.app.lib_name" android:value="@string/lib_name"/>
             <!--  Messages maps -->
             <meta-data android:name="android.app.ministro_not_found_msg" android:value="@string/ministro_not_found_msg"/>
@@ -41,7 +41,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <uses-sdk android:minSdkVersion="8"/>
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
