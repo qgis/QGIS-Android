@@ -52,15 +52,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-//import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-//import android.os.storage.OnObbStateChangeListener;
-//import android.os.storage.StorageManager;
 import android.util.Log;
 
 public class QgisActivity extends Activity {
@@ -75,9 +72,6 @@ public class QgisActivity extends Activity {
 	private boolean mExternalStorageAvailable = false;
 	private boolean mExternalStorageWriteable = false;
 	
-//	private StorageManager mSm = null;
-//	private String mObbPath = null;
-
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -190,20 +184,6 @@ public class QgisActivity extends Activity {
 		}
 	}
 	
-	
-//	OnObbStateChangeListener mEventListener = new OnObbStateChangeListener() {
-//        @Override
-//        public void onObbStateChange(String path, int state) {
-//            Log.d("OBB", "path=" + path + "; state=" + state);
-//            Log.d("OBB", String.valueOf(state));
-//            if (state == OnObbStateChangeListener.MOUNTED) {
-//            	Log.d("OBB", mSm.getMountedObbPath(mObbPath));
-//            } else {
-//            	Log.d("OBB", "nada");
-//            }
-//        }
-//    };
-
 	private class UnzipTask extends AsyncTask<String, Integer, String> {
 		protected String doInBackground(String... urlString) {
 			extractFolder(urlString[0]);
@@ -291,21 +271,11 @@ public class QgisActivity extends Activity {
 					new File(path).mkdir();
 					makeSymlink(path, pathAlias);
 					
-//					// put the lib files to externalFilesDir
-//					pathAlias = filesDir + "/lib";
-//					path = externalFilesDir + "/lib/";
-//					new File(path).mkdir();
-//					makeSymlink(path, pathAlias);
-
 					// put .qgis to externalFilesDir
 					pathAlias = filesDir + "/.qgis";
 					path = externalFilesDir + "/.qgis";
 					new File(path).mkdir();
 					makeSymlink(path, pathAlias);
-					
-//					mSm = (StorageManager) getSystemService(STORAGE_SERVICE);
-//					mObbPath = "/sdcard/test.obb";
-//					if(mSm.mountObb(mObbPath, null, mEventListener)) Log.d("OBB", "Mounting");
 					
 				} else {
 					storagePathAlias = storagePathAlias + "ReadOnly";
@@ -314,30 +284,12 @@ public class QgisActivity extends Activity {
 			}
 		}
 		
-		
 		protected void onProgressUpdate(Integer... progress) {
 			super.onProgressUpdate(progress);
 			mProgressDialog.setProgress(progress[0]);
 		}
 
 		protected void onPostExecute(String result) {
-//			//symlink lib folder
-//			PackageManager m = getPackageManager();
-//			PackageInfo p;
-//			try {
-//				p = m.getPackageInfo(getPackageName(), 0);
-//				String pathAlias = p.applicationInfo.dataDir + "/lib";
-//				
-//				String abi = android.os.Build.CPU_ABI;
-//				String path = getFilesDir().getAbsolutePath() + "/lib/" + "armeabi";//abi;
-//				new File(path).mkdir();
-//				makeSymlink(path, pathAlias);
-//				
-//			} catch (NameNotFoundException e) {
-//				// Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
 			SharedPreferences.Editor editor = mPrefs.edit();
 			editor.putString("lastRunGitRevision", mThisRev);
 			editor.commit();
