@@ -1,6 +1,7 @@
 *.out
 *.class
 *local.properties
+*ant.properties
 /src/
 /tmp/
 /out/
