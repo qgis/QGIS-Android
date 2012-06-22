@@ -47,5 +47,5 @@ rm -vrf $APK_DIR/assets
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
 cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
 cd $APK_DIR/assets/
-zip -r9 share.zip share
+zip -r9 assets.zip share
 rm -rf $APK_DIR/assets/share/
