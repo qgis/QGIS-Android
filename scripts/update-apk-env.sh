@@ -28,7 +28,7 @@ if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then
   cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
   #add gdb server if in Debug mode
   if [ "$BUILD_TYPE" == "Debug" ]; then
-      cp -vrfs $ANDROID_NDK_ROOT/prebuilt/android-arm/gdbserver/gdbserver $APK_DIR/libs/armeabi/
+      cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
   fi
 fi
 
@@ -37,7 +37,7 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
   cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
   #add gdb server if in Debug mode
   if [ "$BUILD_TYPE" == "Debug" ]; then
-      cp -vrfs $ANDROID_NDK_ROOT/prebuilt/android-arm/gdbserver/gdbserver $APK_DIR/libs/armeabi-v7a/
+      cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
   fi
 fi
 

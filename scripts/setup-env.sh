@@ -257,7 +257,7 @@ else
   cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
-  #######FREEXL-1.0.0b#######
+  #######FREEXL-1.0.0d#######
   echo "FREEXL"
   cd $SRC_DIR
   wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0d.tar.gz
@@ -267,7 +267,7 @@ else
   patch -p1 -i $PATCH_DIR/freexl.patch
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
-  #######END freexl-1.0.0b#######
+  #######END freexl-1.0.0d#######
   
   #######SPATIALINDEX1.7.1#######
   echo "SPATIALINDEX"
