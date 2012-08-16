@@ -12,7 +12,6 @@
       <item>gdal</item>
       <item>proj</item>
       <item>spatialindex</item>
-      <item>spatialindex_c</item>
       <item>qwt</item>
       <item>iconv</item>
       <item>charset</item>

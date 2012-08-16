@@ -35,11 +35,11 @@ $ADB pull /system/bin/app_process $TMP_DIR/app_process
 echo `$ADB shell top -n 1 | grep $PACKAGE` > $TMP_DIR/pid.txt
 PID=`sed 's/ .*//' $TMP_DIR/pid.txt`
 rm -f $TMP_DIR/pid.txt
-$ADB forward tcp:5039 tcp:5039
-$ADB shell /data/data/$PACKAGE/lib/gdbserver :5039 --attach $PID
-#$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver :5039 --attach $PID
 
-#$ANDROID_NDK_TOOLCHAIN_ROOT/bin/arm-linux-androideabi-gdb
+$ADB forward tcp:5039 localfilesystem:/data/data/$PACKAGE/debug-pipe
+$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID &
+
+$ANDROID_NDK_TOOLCHAIN_ROOT/bin/arm-linux-androideabi-gdb
 
 #$ADB logcat | tee /tmp/logcat.log
 
