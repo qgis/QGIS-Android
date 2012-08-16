@@ -42,20 +42,3 @@ index 0bca8b1..deb40a2 100755
    finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
    shlibpath_var=LD_LIBRARY_PATH
    shlibpath_overrides_runpath=no
-diff --git a/src/freexl.c b/src/freexl.c
-index 6db72d4..df773d7 100644
---- a/src/freexl.c
-+++ b/src/freexl.c
-@@ -61,10 +61,10 @@ extern const char *locale_charset (void);
- #include <localcharset.h>
- #endif /* end localcharset */
- #else /* not WINDOWS */
--#ifdef __APPLE__
-+#if defined(__APPLE__) || defined(__ANDROID__)
- #include <iconv.h>
- #include <localcharset.h>
--#else /* not Mac OsX */
-+#else /* neither Mac OsX nor Android */
- #include <iconv.h>
- #include <langinfo.h>
- #endif
