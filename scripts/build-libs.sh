@@ -83,7 +83,7 @@ else
 
 
   #adding GDBserver to libs
-  cp -vf $ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/gdbserver $INSTALL_DIR/lib
+  cp -vf $GDB_SERVER $INSTALL_DIR/lib
 
 #  #########QTUITOOLS########
 #  echo "QTUITOOLS"	
@@ -163,7 +163,7 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END LIBICONV1.13.1########
   
-  #########freexl1.0.0b########
+  #########freexl1.0.0d########
   echo "freexl"
   cd $SRC_DIR/freexl-1.0.0d/
   mkdir -p build-$ANDROID_TARGET_ARCH
@@ -176,7 +176,7 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END freexl1.0.0b########
+  #########END freexl1.0.0d########
 
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
@@ -217,7 +217,6 @@ else
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
   LDFLAGS=$MY_STD_LDFLAGS \
-  LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -252,7 +251,7 @@ fi
   cd build-$ANDROID_TARGET_ARCH
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude -D__STDC_INT64__" \
+  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -312,7 +311,6 @@ fi
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CFLAGS" \
   LDFLAGS="$MY_STD_LDFLAGS" \
-  LIBS="-lsupc++ -lstdc++" \
   $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
   
 #  #configure with openssl
