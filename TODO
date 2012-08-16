@@ -1,9 +1,1 @@
 http://hub.qgis.org/projects/android-qgis/issues
-
-	#	Tracker	Status	Priority	Subject	Assigned to	Updated
-	4231	Bug	New	Normal	SSL support for libpb	Marco Bernasocchi	08/29/2011 09:36 pm
-	4226	Bug	In Progress	High	Load bar in syncronous task	Marco Bernasocchi	08/31/2011 03:05 pm
-	4225	Bug	New	Low	cannot Load libgsl.so	Marco Bernasocchi	08/26/2011 12:44 pm
-	4224	Bug	New	High	No wmf, wfs, zonalstatistics plugins - too many libraries when loading	Marco Bernasocchi	08/26/2011 12:36 pm
-	4204	Bug	New	Normal	Text renders as squares	Marco Bernasocchi	08/24/2011 11:13 am
-	4196	Bug	In Progress	High	shape files suport	Marco Bernasocchi	08/24/2011 01:24 am
