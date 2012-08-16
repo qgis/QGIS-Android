@@ -15,7 +15,7 @@ QGIS android dev setup:
 - Install Necessitas (http://sourceforge.net/projects/necessitas/files/)and choose at least:
     - NDK r6b (DEFAULT)
     - Qt 4.8-armeabi (DEFAULT)
-- get QGIS master from https://github.com/qgis/Quantum-GIS either by cloning or forking and cloning)
+- get QGIS master from https://github.com/mbernasocchi/Quantum-GIS #or is you only want upstream code git://github.com/qgis/Quantum-GIS.git either by cloning or forking and cloning)
 - git checkout android
 - Fork  git://github.com/qgis/qgis-android.git and clone your fork
 - copy and configure qgis-android/scripts/config.templ to qgis-android/scripts/config.conf
@@ -38,13 +38,15 @@ example copy paste code:
  ./chmod +x necessitas-0.3-online-sdk-installer-linux
  ./necessitas-0.3-online-sdk-installer-linux
  # see below for adding a remote instead of cloning
- git clone https://github.com/mbernasocchi/Quantum-GIS #or is you only want upstream code git://github.com/qgis/Quantum-GIS.git
+ #fork Quantum-GIS
+ curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/mbernasocchi/Quantum-GIS/fork
+ git clone git@github.com:$GITHUBUSERNAME/Quantum-GIS.git
  cd Quantum-GIS
  git checkout android
  cd ..
  #fork qqis-android
  curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/qgis/qgis-android/fork
- git clone git://github.com/YOURGITHUBUSERNAME/qgis-android.git
+ git clone git@github.com:$GITHUBUSERNAME/qgis-android.git
  cp qgis-android/scripts/config.templ qgis-android/scripts/config.conf
  nano qgis-android/scripts/config.conf #configure to your wishes
  ./qgis-android/scripts/build-all.sh
