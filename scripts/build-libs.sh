@@ -165,7 +165,7 @@ else
   
   #########freexl1.0.0b########
   echo "freexl"
-  cd $SRC_DIR/freexl-1.0.0b/
+  cd $SRC_DIR/freexl-1.0.0d/
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -245,9 +245,9 @@ if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
     armV7aHackInclude="-I$ANDROID_NDK_TOOLCHAIN_ROOT/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
 
-  #########GEOS3.2.3########
-  echo "GEOS3.2.3"
-  cd $SRC_DIR/geos-3.2.3/
+  #########GEOS3.2.5########
+  echo "GEOS3.2.5"
+  cd $SRC_DIR/geos-3.3.5/
   mkdir -p build-$ANDROID_TARGET_ARCH
   cd build-$ANDROID_TARGET_ARCH
   #configure
@@ -258,7 +258,7 @@ fi
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END GEOS3.2.3########
+  #########END GEOS3.2.5########
 
   #########GDAL1.8.0########
   echo "GDAL"

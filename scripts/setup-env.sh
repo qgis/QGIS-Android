@@ -170,19 +170,21 @@ else
   
   
   ########GEOS3.2.3#######
-  echo "GEOS-3.2.3"
+  echo "GEOS-3.3.5"
   cd $SRC_DIR
-  svn checkout http://svn.osgeo.org/geos/tags/3.2.3/  geos-3.2.3
-  cd geos-3.2.3/
+#  svn checkout http://svn.osgeo.org/geos/tags/3.2.3/  geos-3.2.3
+  wget -c http://download.osgeo.org/geos/geos-3.3.5.tar.bz2
+  tar xjf geos-3.3.5.tar.bz2
+  cd geos-3.3.5/
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
-  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
-  patch -i int64_crosscomp.patch -p1
-  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
-  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
-  patch -i geos-3.2.0-ARM.bug222.patch -p0
-  ./autogen.sh
+#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
+#  patch -i int64_crosscomp.patch -p1
+#  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
+#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
+#  patch -i geos-3.2.0-ARM.bug222.patch -p0
+#  ./autogen.sh
   patch -i $PATCH_DIR/geos.patch -p1
   #######END GEOS3.2.3#######
 
@@ -258,10 +260,10 @@ else
   #######FREEXL-1.0.0b#######
   echo "FREEXL"
   cd $SRC_DIR
-  wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0b.tar.gz
-  tar xf freexl-1.0.0b.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm freexl-1.0.0b.tar.gz; fi
-  cd freexl-1.0.0b/
+  wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0d.tar.gz
+  tar xf freexl-1.0.0d.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm freexl-1.0.0d.tar.gz; fi
+  cd freexl-1.0.0d/
   patch -p1 -i $PATCH_DIR/freexl.patch
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
