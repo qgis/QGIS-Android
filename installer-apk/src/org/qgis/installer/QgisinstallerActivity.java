@@ -172,7 +172,7 @@ public class QgisinstallerActivity extends Activity {
 
 	private void donate() {
 		if (isOnline("donate")) {
-			String url = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=27GAYFKF4U5EE";
+			String url = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WPQHFA6UP3PS8";
 			Intent i = new Intent(Intent.ACTION_VIEW);
 			i.setData(Uri.parse(url));
 			startActivity(i);
