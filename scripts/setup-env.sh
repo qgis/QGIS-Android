@@ -140,6 +140,9 @@ else
   
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
+  echo "REPLACING STANDALONE TOOLCHAIN generator script"
+  #fix for http://code.google.com/p/android/issues/detail?id=35279
+  cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
   $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
 
 #  echo "PATCHING STANDALONE TOOLCHAIN"
@@ -214,34 +217,34 @@ else
   ######END EXPAT2.0.1#######
 
 
-  #######GDAL#######
-  echo "GDAL1.8.0"
-  cd $SRC_DIR
-  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
-  tar xf gdal-1.8.0.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
-  cd gdal-1.8.0/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
-  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
-  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
-  patch -p1 -i $PATCH_DIR/gdal.patch
-  #GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
-  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
-  ######END GDAL#######
-
-#  ######GDAL#######
-#  echo "GDAL-trunk"
+#  #######GDAL#######
+#  echo "GDAL1.8.0"
 #  cd $SRC_DIR
-#  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
-#  cd gdal-trunk/
+#  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
+#  tar xf gdal-1.8.0.tar.gz
+#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
+#  cd gdal-1.8.0/
 #  cp -f $TMP_DIR/config.sub ./config.sub
 #  cp -f $TMP_DIR/config.guess ./config.guess
-#  patch -i $PATCH_DIR/gdal.patch 
-##  GDAL does not seem to support building in subdirs
-#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-#  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
+#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
+#  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
+#  patch -p1 -i $PATCH_DIR/gdal.patch
+#  #GDAL does not seem to support building in subdirs
+#  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
+#  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
+  ######END GDAL#######
+
+  ######GDAL#######
+  echo "GDAL-trunk"
+  cd $SRC_DIR
+  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+  cd gdal-trunk/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  patch -i $PATCH_DIR/gdal.patch 
+#  GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
+  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
@@ -281,19 +284,29 @@ else
   patch -p1 -i $PATCH_DIR/spatialindex.patch
   cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi/
   mv -vf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
-  #######END SPATIALINDEX1.6.1#######
+  #######END SPATIALINDEX1.7.1#######
 
-  
-  #######SQLITE3.7.4#######
-  echo "SQLITE"
+  #########SPATIALITE3.0.1########
+  echo "SPATIALITE"
   cd $SRC_DIR
-  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
-  tar xf sqlite-autoconf-3070400.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
-  cd sqlite-autoconf-3070400/
+  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-amalgamation-3.0.1.tar.gz
+  tar xf libspatialite-amalgamation-3.0.1.tar.gz
+  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libspatialite-amalgamation-3.0.1.tar.gz; fi
+  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
+  patch -p1 -i $PATCH_DIR/spatialite.patch
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
-  #######END SQLITE3.7.4#######
+
+#  #######SQLITE3.7.4#######
+#  echo "SQLITE"
+#  cd $SRC_DIR
+#  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
+#  tar xf sqlite-autoconf-3070400.tar.gz
+#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
+#  cd sqlite-autoconf-3070400/
+#  cp -f $TMP_DIR/config.sub ./config.sub
+#  cp -f $TMP_DIR/config.guess ./config.guess
+#  #######END SQLITE3.7.4#######
   
   #######QWT5.2.0#######
   echo "QWT"

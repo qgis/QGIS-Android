@@ -98,7 +98,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   
 #build mthumb instructions only in release mode
   doMthumb=""
-  if [ "$BUILD_TYPE" -ne "Debug" ]; then
+  if [ "$BUILD_TYPE" != "Debug" ]; then
     #include is needed to fix   
     doMthumb="-mthumb"
   fi

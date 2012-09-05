@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="cb1e7d3f6b0864d1b448b52e7ccb49faaad20f63"/>
+            <meta-data android:name="android.app.git_rev" android:value="7b05793b5433250b51bfe534e5d3b4bc08a92a6e"/>
             <!-- Git Revision -->
         </activity>
         
@@ -29,7 +29,7 @@
 <!--                 <category android:name="android.intent.category.LAUNCHER"/> -->
 <!--             </intent-filter> -->
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
-            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs_fixBug106"/>
+            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:name="android.app.lib_name" android:value="@string/lib_name"/>
             <!--  Messages maps -->
             <meta-data android:name="android.app.ministro_not_found_msg" android:value="@string/ministro_not_found_msg"/>

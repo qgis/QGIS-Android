@@ -118,12 +118,9 @@ MY_CMAKE_FLAGS=" \
 -DWITH_SPATIALITE=ON \
 -DWITH_TXT2TAGS_PDF=OFF \
 -DGITCOMMAND=`which git` \
--DGIT_MARKER=$QGIS_DIR/.git/index"
-
-#unused flags
-#-DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
-#-DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so \
-
+-DGIT_MARKER=$QGIS_DIR/.git/index \
+-DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
+-DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so "
 #uncomment the next 2 lines to only get the needed cmake flags echoed
 #echo $MY_CMAKE_FLAGS
 #exit 0

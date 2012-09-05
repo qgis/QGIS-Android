@@ -1,12 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <array name="bundled_libs"/>
-    <array name="bundled_libs_fixBug106">
+    <array name="bundled_libs">
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>
       <item>gslcblas</item>
-      <item>QtLocation</item>
 <!--      <item>gsl</item>-->
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item>gdal</item>
@@ -36,7 +34,6 @@
       <item>geos</item>
       <item>geos_c</item>
       <item>gslcblas</item>
-      <item>QtLocation</item>
 <!--      <item>gsl</item>-->
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item>gdal</item>
@@ -64,6 +61,7 @@
       <item>QtNetwork</item>
       <item>QtSystemInfo</item>
       <item>QtSensors</item>
+      <item>QtLocation</item>
       <item>QtDeclarative</item>
     </array>
     <array name="qt_libs_mobile">
@@ -76,6 +74,7 @@
       <item>QtNetwork</item>
       <item>QtSystemInfo</item>
       <item>QtSensors</item>
+      <item>QtLocation</item>
       <item>QtDeclarative</item>
     </array>
 </resources>
