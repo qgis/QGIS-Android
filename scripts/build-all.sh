@@ -24,7 +24,7 @@ export QGIS_ANDROID_BUILD_ALL=1
 
 $SCRIPT_DIR/setup-env.sh
 $SCRIPT_DIR/build-libs.sh
-$SCRIPT_DIR/build-qgis.sh --configure
+$SCRIPT_DIR/build-qgis.sh -c
 $SCRIPT_DIR/update-apk-env.sh
 $SCRIPT_DIR/build-apk.sh
 
