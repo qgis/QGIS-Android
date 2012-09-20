@@ -140,9 +140,9 @@ else
   
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
-  echo "REPLACING STANDALONE TOOLCHAIN generator script"
+  #echo "REPLACING STANDALONE TOOLCHAIN generator script"
   #fix for http://code.google.com/p/android/issues/detail?id=35279
-  cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
+  #cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
   $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
 
 #  echo "PATCHING STANDALONE TOOLCHAIN"
@@ -164,7 +164,7 @@ else
   cd $SRC_DIR
   wget -c http://download.osgeo.org/proj/proj-4.7.0.tar.gz
   tar xf proj-4.7.0.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm proj-4.7.0.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm proj-4.7.0.tar.gz; fi
   cd proj-4.7.0/
   patch -p1 -i $PATCH_DIR/proj4.patch
   cp -f $TMP_DIR/config.sub ./config.sub
@@ -196,7 +196,7 @@ else
   cd $SRC_DIR
   wget -c http://freefr.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
   tar xf expat-2.0.1.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm expat-2.0.1.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm expat-2.0.1.tar.gz; fi
   cd expat-2.0.1/
   cp -f $TMP_DIR/config.sub ./conftools/config.sub
   cp -f $TMP_DIR/config.guess ./conftools/config.guess
@@ -209,7 +209,7 @@ else
   cd $SRC_DIR
   wget -c http://ftp.gnu.org/gnu/gsl/gsl-1.14.tar.gz
   tar xf gsl-1.14.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
   cd gsl-1.14/
   patch -p1 -i $PATCH_DIR/gsl.patch
   cp -f $TMP_DIR/config.sub ./config.sub
@@ -222,7 +222,7 @@ else
 #  cd $SRC_DIR
 #  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
 #  tar xf gdal-1.8.0.tar.gz
-#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
+#  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
 #  cd gdal-1.8.0/
 #  cp -f $TMP_DIR/config.sub ./config.sub
 #  cp -f $TMP_DIR/config.guess ./config.guess
@@ -251,7 +251,7 @@ else
   cd $SRC_DIR
   wget -c http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
   tar xf libiconv-1.13.1.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
   cd libiconv-1.13.1/
   patch -p1 -i $PATCH_DIR/libiconv.patch
   cp -f $TMP_DIR/config.sub ./build-aux/config.sub
@@ -265,7 +265,7 @@ else
   cd $SRC_DIR
   wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0d.tar.gz
   tar xf freexl-1.0.0d.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm freexl-1.0.0d.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm freexl-1.0.0d.tar.gz; fi
   cd freexl-1.0.0d/
   patch -p1 -i $PATCH_DIR/freexl.patch
   cp -f $TMP_DIR/config.sub ./config.sub
@@ -277,7 +277,7 @@ else
   cd $SRC_DIR
   wget -c http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz
   tar xf spatialindex-src-1.7.1.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm spatialindex-src-1.7.1.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm spatialindex-src-1.7.1.tar.gz; fi
   cd spatialindex-src-1.7.1/
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
@@ -291,7 +291,7 @@ else
   cd $SRC_DIR
   wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-amalgamation-3.0.1.tar.gz
   tar xf libspatialite-amalgamation-3.0.1.tar.gz
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm libspatialite-amalgamation-3.0.1.tar.gz; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libspatialite-amalgamation-3.0.1.tar.gz; fi
   cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
   patch -p1 -i $PATCH_DIR/spatialite.patch
   cp -f $TMP_DIR/config.sub ./config.sub
@@ -302,7 +302,7 @@ else
 #  cd $SRC_DIR
 #  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
 #  tar xf sqlite-autoconf-3070400.tar.gz
-#  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
+#  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
 #  cd sqlite-autoconf-3070400/
 #  cp -f $TMP_DIR/config.sub ./config.sub
 #  cp -f $TMP_DIR/config.guess ./config.guess
@@ -313,7 +313,7 @@ else
   cd $SRC_DIR
   wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
   tar xjf qwt-5.2.0.tar.bz2
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
   cd qwt-5.2.0/
 
   #edit qwtconfig.pri
@@ -340,7 +340,7 @@ else
   cd $SRC_DIR
   wget -c http://ftp.postgresql.org/pub/source/v9.0.4/postgresql-9.0.4.tar.bz2
   tar xjf postgresql-9.0.4.tar.bz2 
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
   cd postgresql-9.0.4/
   cp -f $TMP_DIR/config.sub ./config/config.sub
   cp -f $TMP_DIR/config.guess ./config/config.guess  
@@ -363,6 +363,6 @@ else
   cd $APK_DIR
   android update project -p . -n qgis
   
-  if [ $REMOVE_DOWNLOADS -eq 1 ] ; then rm -rf $TMP_DIR; fi
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0
 fi
