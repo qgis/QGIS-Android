@@ -251,7 +251,6 @@ else
   cd $SRC_DIR
   svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
   cd gdal-trunk/
-  svn revert --recursive
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   patch -i $PATCH_DIR/gdal.patch 
@@ -324,7 +323,7 @@ else
   #######QWT5.2.0#######
   echo "QWT"
   cd $SRC_DIR
-#  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
+  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
   tar xjf qwt-5.2.0.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
   cd qwt-5.2.0/
