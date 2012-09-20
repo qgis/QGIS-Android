@@ -152,7 +152,7 @@ else
   #echo "REPLACING STANDALONE TOOLCHAIN generator script"
   #fix for http://code.google.com/p/android/issues/detail?id=35279
   #cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
-  $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN
+  $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN --toolchain=arm-linux-androideabi-$ANDROID_NDK_TOOLCHAIN_VERSION
 
 #  echo "PATCHING STANDALONE TOOLCHAIN"
 #  cd $ANDROID_STANDALONE_TOOLCHAIN
