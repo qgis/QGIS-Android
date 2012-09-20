@@ -26,10 +26,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ROOT_DIR=$HOME/dev/qgis-android
   export QGIS_DIR=$HOME/dev/Quantum-GIS
   
-  #WARNING: armeabi-v7a builds usually don't work on android emulators
+  #WARNING: armeabi-v7a builds don't work on android emulators pre api 14
   DEFAULT_ANDROID_ABI=armeabi #or armeabi-v7a
   #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
   #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
+  #   ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
   
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
@@ -61,7 +62,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_NDK_PLATFORM=android-$ANDROID_LEVEL
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
-  export ANDROID_NDK_TOOLCHAIN_VERSION=4.6
+  export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
   export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
   export QT_INCLUDE=$QT_ROOT/include
@@ -109,11 +110,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #-std=gnu99: http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
   #-std=c99: http://stackoverflow.com/questions/9247151/compiling-icu-for-android-uint64-t-does-not-name-a-type
   #http://stackoverflow.com/questions/5135734/whats-the-difference-in-gcc-between-std-gnu0x-and-std-c0x-and-which-one-s
-  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumb -std=c99"
+  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=c99"
   if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
   fi
-  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumb -std=gnu++0x"
+  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=gnu++0x"
   export MY_STD_LDFLAGS="-Wl,--fix-cortex-a8"
 
   #############################

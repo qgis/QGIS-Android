@@ -23,11 +23,12 @@ source `dirname $0`/config.conf
 ########START SCRIPT########
 usage(){
  echo "Usage:"
- echo " setup-libs.sh 
+ echo " setup-env.sh 
         --removedownloads (-r)  removes the downloaded archives after unpacking
         --help (-h)
         --version (-v)
-        --echo <text> (-e)      this option does noting"
+        --echo <text> (-e)      this option does noting
+        --non-interactive (-n)  Will not prompt for confirmation"
 }
 
 echo "SETTING UP ANDROID QGIS ENVIRONEMENT"
@@ -51,6 +52,7 @@ echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
+NO_CONFIRMATION=0
 
 while test "$1" != "" ; do
         case $1 in
@@ -61,6 +63,10 @@ while test "$1" != "" ; do
                 --removedownloads|-r)
                         echo "$TMP_DIR and the downloaded packages will be deleted"
                         export REMOVE_DOWNLOADS=1
+                ;;
+                --non-interactive|-n)
+                        echo "--non-interactiveset, not prompting for confirmation"
+                        export NO_CONFIRMATION=1
                 ;;
                 --help|-h)
                         usage
@@ -81,15 +87,18 @@ done
 
 #confirm settings
 CONTINUE="n"
-echo "OK? [y, n*]:"
-read CONTINUE
+if [ "$NO_CONFIRMATION" == 1 ]; then
+  CONTINUE="y"
+else
+  echo "OK? [y, n*]:"
+  read CONTINUE
+fi
 CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
 
 if [ "$CONTINUE" != "y" ]; then
   echo "User Abort"
   exit 1
 else
-
 #  #######QTUITOOLS#######
 #  #HACK temporary needed until necessitas will include qtuitools
 #  #check if qt-src are installed
@@ -157,6 +166,9 @@ else
   wget -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $TMP_DIR/config.guess
   chmod +x $TMP_DIR/config.*
   mkdir -p $SRC_DIR
+  cd $SRC_DIR
+  echo "Removing all build folders"
+  rm -rvf expat-2.0.1 geos-3.3.5 libspatialite-amalgamation-3.0.1 python spatialindex-src-1.7.1-armeabi-v7a freexl-1.0.0d gsl-1.14 postgresql-9.0.4 qwt-5.2.0 gdal-trunk-armeabi libiconv-1.13.1 proj-4.7.0  gdal-trunk-armeabi-v7a spatialindex-src-1.7.1-armeabi
   
   
   #######PROJ4#######
@@ -239,12 +251,13 @@ else
   cd $SRC_DIR
   svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
   cd gdal-trunk/
+  svn revert --recursive
   cp -f $TMP_DIR/config.sub ./config.sub
   cp -f $TMP_DIR/config.guess ./config.guess
   patch -i $PATCH_DIR/gdal.patch 
 #  GDAL does not seem to support building in subdirs
   cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
+  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
@@ -283,7 +296,7 @@ else
   cp -f $TMP_DIR/config.guess ./config.guess
   patch -p1 -i $PATCH_DIR/spatialindex.patch
   cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi/
-  mv -vf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
+  cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
   #######END SPATIALINDEX1.7.1#######
 
   #########SPATIALITE3.0.1########
@@ -311,7 +324,7 @@ else
   #######QWT5.2.0#######
   echo "QWT"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
+#  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
   tar xjf qwt-5.2.0.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
   cd qwt-5.2.0/
