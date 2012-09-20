@@ -12,10 +12,11 @@ QGIS android APK package:
 - Once ministro is done, QGIS should start.
 
 QGIS android dev setup:
-- Install Necessitas (http://sourceforge.net/projects/necessitas/files/)and choose at least:
-    - NDK r6b (DEFAULT)
+- Install Necessitas (http://files.kde.org/necessitas/installer/release/linux-online-necessitas-alpha4-sdk-installer)and choose at least:
+    - NDK r8b (DEFAULT)
     - Qt 4.8-armeabi (DEFAULT)
 - get QGIS master from https://github.com/mbernasocchi/Quantum-GIS #or is you only want upstream code git://github.com/qgis/Quantum-GIS.git either by cloning or forking and cloning)
+    - Android api 15
 - git checkout android
 - Fork  git://github.com/qgis/qgis-android.git and clone your fork
 - copy and configure qgis-android/scripts/config.templ to qgis-android/scripts/config.conf
@@ -34,9 +35,9 @@ example copy paste code:
  GITHUBPASSWORD="myPASS"
  cd dev
  #get necessitas
- wget http://downloads.sourceforge.net/project/necessitas/necessitas-0.3-online-sdk-installer-linux
- ./chmod +x necessitas-0.3-online-sdk-installer-linux
- ./necessitas-0.3-online-sdk-installer-linux
+ wget http://files.kde.org/necessitas/installer/release/linux-online-necessitas-alpha4-sdk-installer
+ ./chmod +x linux-online-necessitas-alpha4-sdk-installer
+ ./linux-online-necessitas-alpha4-sdk-installer
  # see below for adding a remote instead of cloning
  #fork Quantum-GIS
  curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/mbernasocchi/Quantum-GIS/fork
