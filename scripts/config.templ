@@ -27,9 +27,9 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export QGIS_DIR=$HOME/dev/Quantum-GIS
   
   #WARNING: armeabi-v7a builds usually don't work on android emulators
-  DEFAULT_ANDROID_TARGET_ARCH=armeabi #or armeabi-v7a
-  #passing ANDROID_TARGET_ARCH=armeabi-v7a when calling a script will override the default
-  #for example ANDROID_TARGET_ARCH=armeabi-v7a ./build-all.sh
+  DEFAULT_ANDROID_ABI=armeabi #or armeabi-v7a
+  #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
+  #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
   
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
@@ -43,16 +43,16 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk
 
   ######LIKELY UNNEEDED TO CONFIGURE FURTHER######
-  if [ ! -n "${ANDROID_TARGET_ARCH+x}" ]; then
-    export ANDROID_TARGET_ARCH=$DEFAULT_ANDROID_TARGET_ARCH
+  if [ ! -n "${ANDROID_ABI+x}" ]; then
+    export ANDROID_ABI=$DEFAULT_ANDROID_ABI
   fi
   if [ ! -n "${BUILD_TYPE+x}" ]; then
     export BUILD_TYPE=$DEFAULT_BUILD_TYPE
   fi
   
-  export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_TARGET_ARCH  
-  export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_TARGET_ARCH
-  export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_TARGET_ARCH
+  export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI  
+  export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_ABI
+  export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_ABI
   export SCRIPT_DIR=$ROOT_DIR/scripts
   export PATCH_DIR=$ROOT_DIR/patches
   export SRC_DIR=$ROOT_DIR/src
@@ -110,7 +110,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #-std=c99: http://stackoverflow.com/questions/9247151/compiling-icu-for-android-uint64-t-does-not-name-a-type
   #http://stackoverflow.com/questions/5135734/whats-the-difference-in-gcc-between-std-gnu0x-and-std-c0x-and-which-one-s
   export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumb -std=c99"
-  if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+  if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
   fi
   export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumb -std=gnu++0x"

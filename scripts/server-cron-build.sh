@@ -38,8 +38,8 @@ git pull
 
 rm -Rf $APK_DIR/bin/*
 
-BUILD_TYPE=$BUILD_TYPE ANDROID_TARGET_ARCH=armeabi $SCRIPT_DIR/build-qgis.sh
-BUILD_TYPE=$BUILD_TYPE ANDROID_TARGET_ARCH=armeabi-v7a $SCRIPT_DIR/build-qgis.sh
+BUILD_TYPE=$BUILD_TYPE ANDROID_ABI=armeabi $SCRIPT_DIR/build-qgis.sh
+BUILD_TYPE=$BUILD_TYPE ANDROID_ABI=armeabi-v7a $SCRIPT_DIR/build-qgis.sh
 $SCRIPT_DIR/update-apk-env.sh
 
 cd $APK_DIR

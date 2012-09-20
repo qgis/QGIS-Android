@@ -20,12 +20,22 @@ set -e
 source `dirname $0`/config.conf
 
 
-if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     #include is needed to fix http://hub.qgis.org/issues/4202
-    armV7aHackInclude="-I$ANDROID_NDK_TOOLCHAIN_ROOT/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
+    armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
 
-
+  ######GDAL#######
+  echo "GDAL-trunk"
+  cd $SRC_DIR
+  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+  cd gdal-trunk/
+  cp -f $TMP_DIR/config.sub ./config.sub
+  cp -f $TMP_DIR/config.guess ./config.guess
+  patch -i $PATCH_DIR/gdal.patch 
+#  GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
+  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
 #  #########SPATIALITE3.0.1########
 #  cd /home/marco/dev/qgis-android/src
@@ -35,8 +45,8 @@ fi
 #  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
 ##  cp -f $TMP_DIR/config.sub ./config.sub
 ##  cp -f $TMP_DIR/config.guess ./config.guess
-##  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
+##  mkdir -p build-$ANDROID_ABI
+#  cd build-$ANDROID_ABI
 #  #configure
 #  CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include" \
 #  CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
@@ -49,7 +59,7 @@ fi
 
 ##  #########GDAL-trunk########
 #  echo "GDAL trunk"
-#  cd $SRC_DIR/gdal-trunk-$ANDROID_TARGET_ARCH/
+#  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
 #  #configure
 #  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
 #  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
@@ -62,15 +72,15 @@ fi
 ##  #########END GDAL-trunk########
 
 
- #########SPATIALINDEX1.7.1########
-  echo "SPATIALINDEX"
-  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_TARGET_ARCH/
-  #configure
-  CFLAGS="$MY_STD_CFLAGS" \
-  CXXFLAGS="$MY_STD_CXXFLAGS" \
-  LDFLAGS=$MY_STD_LDFLAGS \
-  LIBS="-lgcc -lc -lm -lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS
-  make -j$CORES 2>&1 | tee make.out
-  make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END SPATIALINDEX1.7.1########
+# #########SPATIALINDEX1.7.1########
+#  echo "SPATIALINDEX"
+#  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_ABI/
+#  #configure
+#  CFLAGS="$MY_STD_CFLAGS" \
+#  CXXFLAGS="$MY_STD_CXXFLAGS" \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  LIBS="-lgcc -lc -lm -lsupc++ -lstdc++" \
+#  ./configure $MY_STD_CONFIGURE_FLAGS
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END SPATIALINDEX1.7.1########

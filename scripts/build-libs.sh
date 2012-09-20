@@ -89,8 +89,8 @@ else
 #  #########QTUITOOLS########
 #  echo "QTUITOOLS"	
 #  cd $QT_SRC/tools/designer/src/uitools
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
+#  mkdir -p build-$ANDROID_ABI
+#  cd build-$ANDROID_ABI
 #  CFLAGS=$MY_STD_CFLAGS \
 #  CXXFLAGS=$MY_STD_CXXFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
@@ -105,8 +105,8 @@ else
   echo "QWT5.2.0"	
   cd $SRC_DIR/qwt-5.2.0/
   sed -i "s|    INSTALLBASE    =.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -114,7 +114,7 @@ else
   $QMAKE ../qwt.pro
   #compile
   make -j$CORES 2>&1 | tee make.out
-  sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_TARGET_ARCH/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_ABI/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END EXPAT2.0.1########
 
@@ -122,8 +122,8 @@ else
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
   cd $SRC_DIR/expat-2.0.1/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -136,8 +136,8 @@ else
   #########GSL1.14########
   echo "GSL1.14"
   cd $SRC_DIR/gsl-1.14/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -151,8 +151,8 @@ else
   #########LIBICONV1.13.1########
   echo "LIBICONV"
   cd $SRC_DIR/libiconv-1.13.1/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -167,8 +167,8 @@ else
   #########freexl1.0.0d########
   echo "freexl"
   cd $SRC_DIR/freexl-1.0.0d/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include"\
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include"\
@@ -182,8 +182,8 @@ else
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
 #  cd $SRC_DIR/sqlite-autoconf-3070400/
-#  mkdir -p build-$ANDROID_TARGET_ARCH
-#  cd build-$ANDROID_TARGET_ARCH
+#  mkdir -p build-$ANDROID_ABI
+#  cd build-$ANDROID_ABI
 #  #configure
 #  CFLAGS=$MY_STD_CFLAGS \
 #  CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -197,7 +197,7 @@ else
 
   #########SPATIALINDEX1.7.1########
   echo "SPATIALINDEX"
-  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_TARGET_ARCH/
+  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_ABI/
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
@@ -211,8 +211,8 @@ else
   ##########PROJ4########
   echo "PROJ4"
   cd $SRC_DIR/proj-4.7.0/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -224,7 +224,7 @@ else
   #########END PROJ4########
 
 
-if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     #include is needed to fix http://hub.qgis.org/issues/4202
     armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
@@ -232,8 +232,8 @@ fi
   #########GEOS3.2.5########
   echo "GEOS3.2.5"
   cd $SRC_DIR/geos-3.3.5/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
   CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
@@ -247,8 +247,8 @@ fi
   #########SPATIALITE3.0.1########
   echo "SPATIALITE"
   cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #configure
   CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include" \
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
@@ -261,7 +261,7 @@ fi
 
 #  #########GDAL1.8.0########
 #  echo "GDAL"
-#  cd $SRC_DIR/gdal-1.8.0-$ANDROID_TARGET_ARCH/
+#  cd $SRC_DIR/gdal-1.8.0-$ANDROID_ABI/
 #  #configure
 #  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
 #  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
@@ -276,7 +276,7 @@ fi
 
   #########GDAL-trunk########
   echo "GDAL trunk"
-  cd $SRC_DIR/gdal-trunk-$ANDROID_TARGET_ARCH/
+  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -293,19 +293,19 @@ fi
 #  echo "openssl-android"
 #  cd $SRC_DIR/openssl-android
 #  sed -i "/APP_ABI :=* /d" jni/Application.mk
-#  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
+#  echo "APP_ABI := $ANDROID_ABI" >> jni/Application.mk
 #  $ANDROID_NDK_ROOT/ndk-build
 #  echo "installing openssl"
 #  cp -rfv include/openssl $INSTALL_DIR/include/openssl
-#  cp -fv libs/$ANDROID_TARGET_ARCH/libcrypto.so $INSTALL_DIR/lib/
-#  cp -fv libs/$ANDROID_TARGET_ARCH/libssl.so $INSTALL_DIR/lib/
+#  cp -fv libs/$ANDROID_ABI/libcrypto.so $INSTALL_DIR/lib/
+#  cp -fv libs/$ANDROID_ABI/libssl.so $INSTALL_DIR/lib/
   
   
   ########postgresql-9.0.4########
   echo "postgresql"
   cd $SRC_DIR/postgresql-9.0.4
-  mkdir -p build-$ANDROID_TARGET_ARCH
-  cd build-$ANDROID_TARGET_ARCH
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
   #no ssl  
   CPPFLAGS="-I$INSTALL_DIR/include" \
   CFLAGS="$MY_STD_CFLAGS" \
@@ -328,7 +328,7 @@ fi
   cd $SRC_DIR/postgresql-9.0.4
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-  cp -fv build-$ANDROID_TARGET_ARCH/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
+  cp -fv build-$ANDROID_ABI/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
   ######END postgresql-9.0.4#######
   
   exit 0

@@ -47,7 +47,7 @@ echo "Pulled libc.so from device/emulator."
 # Now launch the appropriate gdb client with the right init commands
 #
 GDBCLIENT=$ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/arm-linux-androideabi-gdb
-GDBSETUP_INIT=$APK_DIR/libs/$ANDROID_TARGET_ARCH/gdb.setup
+GDBSETUP_INIT=$APK_DIR/libs/$ANDROID_ABI/gdb.setup
 GDBSETUP=$TMP_DIR/gdb.setup
 #uncomment the following to debug the remote connection only
 #echo "set debug remote 1" >> $GDBSETUP

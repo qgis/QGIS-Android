@@ -36,7 +36,7 @@ echo "NDK dir:                          " $ANDROID_NDK_ROOT
 echo "Standalone toolchain dir:         " $ANDROID_STANDALONE_TOOLCHAIN
 echo "Downloading src to:               " $SRC_DIR
 echo "Installing to:                    " $INSTALL_DIR
-if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
+if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
   echo "WARNING: armeabi-v7a builds usually don't work on android emulators"
 else
   echo "NOTICE: if you build for a newer device (hummingbird, tegra,... processors)\
@@ -333,7 +333,7 @@ else
 #  fi
 #  
 #  cd openssl-android
-#  echo "APP_ABI := $ANDROID_TARGET_ARCH" >> jni/Application.mk
+#  echo "APP_ABI := $ANDROID_ABI" >> jni/Application.mk
 #  
   #######postgresql-9.0.4#######
   echo "postgresql-9.0.4"
