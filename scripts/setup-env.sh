@@ -168,7 +168,7 @@ else
   mkdir -p $SRC_DIR
   cd $SRC_DIR
   echo "Removing all build folders"
-  rm -rvf expat-2.0.1 geos-3.3.5 libspatialite-amalgamation-3.0.1 python spatialindex-src-1.7.1-armeabi-v7a freexl-1.0.0d gsl-1.14 postgresql-9.0.4 qwt-5.2.0 gdal-trunk-armeabi libiconv-1.13.1 proj-4.7.0  gdal-trunk-armeabi-v7a spatialindex-src-1.7.1-armeabi
+  rm -rvf expat-2.0.1 geos-3.3.5 libspatialite-amalgamation-3.0.1 python spatialindex-src-1.7.1-armeabi spatialindex-src-1.7.1-armeabi-v7a freexl-1.0.0d gsl-1.14 postgresql-9.0.4 qwt-5.2.0 libiconv-1.13.1 proj-4.7.0  gdal-trunk-armeabi gdal-trunk-armeabi-v7a 
   
   
   #######PROJ4#######
@@ -179,8 +179,8 @@ else
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm proj-4.7.0.tar.gz; fi
   cd proj-4.7.0/
   patch -p1 -i $PATCH_DIR/proj4.patch
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   #######END PROJ4#######
   
   
@@ -191,8 +191,8 @@ else
   wget -c http://download.osgeo.org/geos/geos-3.3.5.tar.bz2
   tar xjf geos-3.3.5.tar.bz2
   cd geos-3.3.5/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
 #  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
 #  patch -i int64_crosscomp.patch -p1
@@ -210,8 +210,8 @@ else
   tar xf expat-2.0.1.tar.gz
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm expat-2.0.1.tar.gz; fi
   cd expat-2.0.1/
-  cp -f $TMP_DIR/config.sub ./conftools/config.sub
-  cp -f $TMP_DIR/config.guess ./conftools/config.guess
+  cp -vf $TMP_DIR/config.sub ./conftools/config.sub
+  cp -vf $TMP_DIR/config.guess ./conftools/config.guess
   patch -i $PATCH_DIR/expat.patch -p1
   ######END EXPAT2.0.1#######
   
@@ -224,8 +224,8 @@ else
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
   cd gsl-1.14/
   patch -p1 -i $PATCH_DIR/gsl.patch
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   ######END EXPAT2.0.1#######
 
 
@@ -236,8 +236,8 @@ else
 #  tar xf gdal-1.8.0.tar.gz
 #  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
 #  cd gdal-1.8.0/
-#  cp -f $TMP_DIR/config.sub ./config.sub
-#  cp -f $TMP_DIR/config.guess ./config.guess
+#  cp -vf $TMP_DIR/config.sub ./config.sub
+#  cp -vf $TMP_DIR/config.guess ./config.guess
 #  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
 #  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
 #  patch -p1 -i $PATCH_DIR/gdal.patch
@@ -249,10 +249,15 @@ else
   ######GDAL#######
   echo "GDAL-trunk"
   cd $SRC_DIR
-  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+  if [ -d 'gdal-trunk' ]; then
+    svn revert --recursive gdal-trunk
+    svn up gdal-trunk
+  else 
+    svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+  fi
   cd gdal-trunk/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   patch -i $PATCH_DIR/gdal.patch 
 #  GDAL does not seem to support building in subdirs
   cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
@@ -266,10 +271,10 @@ else
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
   cd libiconv-1.13.1/
   patch -p1 -i $PATCH_DIR/libiconv.patch
-  cp -f $TMP_DIR/config.sub ./build-aux/config.sub
-  cp -f $TMP_DIR/config.guess ./build-aux/config.guess  
-  cp -f $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
-  cp -f $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
+  cp -vf $TMP_DIR/config.sub ./build-aux/config.sub
+  cp -vf $TMP_DIR/config.guess ./build-aux/config.guess  
+  cp -vf $TMP_DIR/config.sub ./libcharset/build-aux/config.sub
+  cp -vf $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
   #######FREEXL-1.0.0d#######
@@ -280,8 +285,8 @@ else
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm freexl-1.0.0d.tar.gz; fi
   cd freexl-1.0.0d/
   patch -p1 -i $PATCH_DIR/freexl.patch
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   #######END freexl-1.0.0d#######
   
   #######SPATIALINDEX1.7.1#######
@@ -291,11 +296,11 @@ else
   tar xf spatialindex-src-1.7.1.tar.gz
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm spatialindex-src-1.7.1.tar.gz; fi
   cd spatialindex-src-1.7.1/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   patch -p1 -i $PATCH_DIR/spatialindex.patch
   cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi/
-  cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
+  mv -vf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
   #######END SPATIALINDEX1.7.1#######
 
   #########SPATIALITE3.0.1########
@@ -306,8 +311,8 @@ else
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libspatialite-amalgamation-3.0.1.tar.gz; fi
   cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
   patch -p1 -i $PATCH_DIR/spatialite.patch
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
 
 #  #######SQLITE3.7.4#######
 #  echo "SQLITE"
@@ -316,8 +321,8 @@ else
 #  tar xf sqlite-autoconf-3070400.tar.gz
 #  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
 #  cd sqlite-autoconf-3070400/
-#  cp -f $TMP_DIR/config.sub ./config.sub
-#  cp -f $TMP_DIR/config.guess ./config.guess
+#  cp -vf $TMP_DIR/config.sub ./config.sub
+#  cp -vf $TMP_DIR/config.guess ./config.guess
 #  #######END SQLITE3.7.4#######
   
   #######QWT5.2.0#######
@@ -354,8 +359,8 @@ else
   tar xjf postgresql-9.0.4.tar.bz2 
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
   cd postgresql-9.0.4/
-  cp -f $TMP_DIR/config.sub ./config/config.sub
-  cp -f $TMP_DIR/config.guess ./config/config.guess  
+  cp -vf $TMP_DIR/config.sub ./config/config.sub
+  cp -vf $TMP_DIR/config.guess ./config/config.guess  
   
   patch -p1 -i $PATCH_DIR/libpq.patch
   #######END postgresql-9.0.4#######
