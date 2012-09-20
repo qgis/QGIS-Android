@@ -62,7 +62,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
   export ANDROID_NDK_TOOLCHAIN_VERSION=4.6
-  export ANDROID_NDK_TOOLCHAIN_ROOT=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
+  export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
   export QT_INCLUDE=$QT_ROOT/include
   export QMAKE=$QT_ROOT/bin/qmake
@@ -71,7 +71,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   
   #setting compilers names
   #see https://groups.google.com/forum/?hl=en#!topic/android-ndk/DVNS_mQHxdA
-  export PATH=$ANDROID_NDK_TOOLCHAIN_ROOT/bin:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH
+  export PATH=$ANDROID_STANDALONE_TOOLCHAIN/bin:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH
   export CC=arm-linux-androideabi-gcc
   export CXX=arm-linux-androideabi-g++
   export LD=arm-linux-androideabi-ld

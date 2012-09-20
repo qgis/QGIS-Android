@@ -33,7 +33,7 @@ usage(){
 echo "SETTING UP ANDROID QGIS ENVIRONEMENT"
 echo "QGIS build dir (WILL BE EMPTIED): " $QGIS_BUILD_DIR
 echo "NDK dir:                          " $ANDROID_NDK_ROOT
-echo "Standalone toolchain dir:         " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "Standalone toolchain dir:         " $ANDROID_STANDALONE_TOOLCHAIN
 echo "Downloading src to:               " $SRC_DIR
 echo "Installing to:                    " $INSTALL_DIR
 if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
@@ -143,10 +143,10 @@ else
   #echo "REPLACING STANDALONE TOOLCHAIN generator script"
   #fix for http://code.google.com/p/android/issues/detail?id=35279
   #cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
-  $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT
+  $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN
 
 #  echo "PATCHING STANDALONE TOOLCHAIN"
-#  cd $ANDROID_NDK_TOOLCHAIN_ROOT
+#  cd $ANDROID_STANDALONE_TOOLCHAIN
 #  #http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
 #  patch -p1 -i $PATCH_DIR/ndk_toolchain_uint64_t.patch
 

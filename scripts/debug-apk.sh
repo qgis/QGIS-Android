@@ -39,7 +39,7 @@ rm -f $TMP_DIR/pid.txt
 $ADB forward tcp:5039 localfilesystem:/data/data/$PACKAGE/debug-pipe
 $ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID &
 
-$ANDROID_NDK_TOOLCHAIN_ROOT/bin/arm-linux-androideabi-gdb
+$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb
 
 #$ADB logcat | tee /tmp/logcat.log
 

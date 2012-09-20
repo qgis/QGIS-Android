@@ -32,7 +32,7 @@ echo "BUILDING ANDROID QGIS LIBS"
 echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
-echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "Standalone toolchain location: " $ANDROID_STANDALONE_TOOLCHAIN
 echo "PATH:"
 echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS

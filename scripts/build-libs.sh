@@ -32,7 +32,7 @@ echo "BUILDING ANDROID QGIS LIBS"
 echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
 echo "NDK location: " $ANDROID_NDK_ROOT
-echo "Standalone toolchain location: " $ANDROID_NDK_TOOLCHAIN_ROOT
+echo "Standalone toolchain location: " $ANDROID_STANDALONE_TOOLCHAIN
 echo "PATH:"
 echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS
@@ -226,7 +226,7 @@ else
 
 if [ "$ANDROID_TARGET_ARCH" = "armeabi-v7a" ]; then
     #include is needed to fix http://hub.qgis.org/issues/4202
-    armV7aHackInclude="-I$ANDROID_NDK_TOOLCHAIN_ROOT/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
+    armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
 
   #########GEOS3.2.5########
