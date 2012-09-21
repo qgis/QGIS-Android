@@ -42,6 +42,16 @@ done
 
 source `dirname $0`/config.conf
 
+
+echo "USING FOLLOWING TOOLCHAIN"
+echo "CC:                               " `which $CC`
+echo "CXX:                              " `which $CXX`
+echo "LD:                               " `which $LD`
+echo "AR:                               " `which $AR`
+echo "RANLIB:                           " `which $RANLIB`
+echo "AS:                               " `which $AS`
+
+
 mkdir -p $QGIS_BUILD_DIR
 cd $QGIS_BUILD_DIR
 

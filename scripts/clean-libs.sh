@@ -20,14 +20,6 @@ set -e
 source `dirname $0`/config.conf
 
 ########START SCRIPT########
-usage(){
- echo "Usage:"
- echo " build-libs.sh 
-        --help (-h)
-        --version (-v)
-        --echo <text> (-e)      this option does noting"
-}
-
 echo "BUILDING ANDROID QGIS LIBS"
 echo "SRC location: " $SRC_DIR
 echo "INSTALL location: " $INSTALL_DIR
@@ -40,45 +32,6 @@ echo "CXXFLAGS:                         " $MY_STD_CXXFLAGS
 echo "LDFLAGS:                          " $MY_STD_LDFLAGS
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
-export REMOVE_DOWNLOADS=0
-
-while test "$1" != "" ; do
-        case $1 in
-                --echo|-e)
-                        echo "$2"
-                        shift
-                ;;
-                --help|-h)
-                        usage
-                        exit 0
-                ;;
-                --version|-v)
-                        echo "build.sh version 0.0.1"
-                        exit 0
-                ;;
-                -*)
-                        echo "Error: no such option $1"
-                        usage
-                        exit 1
-                ;;
-        esac
-        shift
-done
-
-#confirm settings if not running build_all.sh
-if [ ! -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
-  CONTINUE="n"
-  echo "OK? [y, n*]:"
-  read CONTINUE
-else
-  CONTINUE="y"
-fi
-  
-CONTINUE=$(echo $CONTINUE | tr "[:upper:]" "[:lower:]")
-if [ "$CONTINUE" != "y" ]; then
-  echo "Abort"
-  exit 1
-else
   cd $SRC_DIR
 
   #########QWT5.2.0########
@@ -164,4 +117,3 @@ else
   ######END postgresql-9.0.4#######
   
   exit 0
-fi
