@@ -62,7 +62,9 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_NDK_PLATFORM=android-$ANDROID_LEVEL
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
-  export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
+  if [ ! -n "${ANDROID_NDK_TOOLCHAIN_VERSION+x}" ]; then
+    export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
+  fi
   export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
   export QT_INCLUDE=$QT_ROOT/include
