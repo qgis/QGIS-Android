@@ -49,6 +49,7 @@ echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS
 echo "CXXFLAGS:                         " $MY_STD_CXXFLAGS
 echo "LDFLAGS:                          " $MY_STD_LDFLAGS
+
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
@@ -149,9 +150,6 @@ else
   
   ########CREATE STANDALONE TOOLCHAIN########
   echo "CREATING STANDALONE TOOLCHAIN"
-  #echo "REPLACING STANDALONE TOOLCHAIN generator script"
-  #fix for http://code.google.com/p/android/issues/detail?id=35279
-  #cp -vf $PATCH_DIR/make-standalone-toolchain.sh $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh
   $ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN --toolchain=arm-linux-androideabi-$ANDROID_NDK_TOOLCHAIN_VERSION
 
 #  echo "PATCHING STANDALONE TOOLCHAIN"
@@ -328,7 +326,7 @@ else
   #######QWT5.2.0#######
   echo "QWT"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
+#  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
   tar xjf qwt-5.2.0.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
   cd qwt-5.2.0/

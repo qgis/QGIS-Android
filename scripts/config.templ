@@ -52,18 +52,20 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   fi
   
   export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI  
-  export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_ABI
-  export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_ABI
-  export SCRIPT_DIR=$ROOT_DIR/scripts
-  export PATCH_DIR=$ROOT_DIR/patches
-  export SRC_DIR=$ROOT_DIR/src
-  export TMP_DIR=$ROOT_DIR/tmp
   export ANDROID_LEVEL=9
   export ANDROID_NDK_PLATFORM=android-$ANDROID_LEVEL
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
-  export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
-  export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
+  if [ ! -n "${ANDROID_NDK_TOOLCHAIN_VERSION+x}" ]; then
+    export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
+  fi
+  export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_NDK_TOOLCHAIN_VERSION/$ANDROID_ABI
+  export QGIS_BUILD_DIR=$QGIS_DIR/build-$ANDROID_NDK_TOOLCHAIN_VERSION/$BUILD_TYPE-$ANDROID_ABI
+  export SCRIPT_DIR=$ROOT_DIR/scripts
+  export PATCH_DIR=$ROOT_DIR/patches
+  export SRC_DIR=$ROOT_DIR/src/$ANDROID_NDK_TOOLCHAIN_VERSION
+  export TMP_DIR=$ROOT_DIR/tmp
+  export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain-$ANDROID_NDK_TOOLCHAIN_VERSION
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
   export QT_INCLUDE=$QT_ROOT/include
   export QMAKE=$QT_ROOT/bin/qmake
@@ -110,11 +112,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #-std=gnu99: http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
   #-std=c99: http://stackoverflow.com/questions/9247151/compiling-icu-for-android-uint64-t-does-not-name-a-type
   #http://stackoverflow.com/questions/5135734/whats-the-difference-in-gcc-between-std-gnu0x-and-std-c0x-and-which-one-s
-  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=c99"
+  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag"
   if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
   fi
-  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=gnu++0x"
+  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag"
   export MY_STD_LDFLAGS="-Wl,--fix-cortex-a8"
 
   #############################
