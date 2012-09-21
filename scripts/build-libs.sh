@@ -38,15 +38,6 @@ echo $PATH
 echo "CFLAGS:                           " $MY_STD_CFLAGS
 echo "CXXFLAGS:                         " $MY_STD_CXXFLAGS
 echo "LDFLAGS:                          " $MY_STD_LDFLAGS
-
-echo "USING FOLLOWING TOOLCHAIN"
-echo "CC:                               " `which $CC`
-echo "CXX:                              " `which $CXX`
-echo "LD:                               " `which $LD`
-echo "AR:                               " `which $AR`
-echo "RANLIB:                           " `which $RANLIB`
-echo "AS:                               " `which $AS`
-
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
 export REMOVE_DOWNLOADS=0
@@ -65,11 +56,6 @@ while test "$1" != "" ; do
                         echo "build.sh version 0.0.1"
                         exit 0
                 ;;
-                --clean|-c)
-                        echo "cleaning up"
-                        $SCRIPT_DIR/clean-libs.sh
-                        FORCE_CONTINUE=1
-                ;;
                 -*)
                         echo "Error: no such option $1"
                         usage
@@ -80,7 +66,7 @@ while test "$1" != "" ; do
 done
 
 #confirm settings if not running build_all.sh
-if [ ! -n "${QGIS_ANDROID_BUILD_ALL+x}" || $FORCE_CONTINUE != 1 ]; then
+if [ ! -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   CONTINUE="n"
   echo "OK? [y, n*]:"
   read CONTINUE
@@ -93,7 +79,6 @@ if [ "$CONTINUE" != "y" ]; then
   echo "Abort"
   exit 1
 else
-  
   cd $SRC_DIR
 
   mkdir -p $INSTALL_DIR/lib
