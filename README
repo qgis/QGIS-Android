@@ -6,8 +6,7 @@ an easier alternative might be free application aLogCat on the android market (h
 QGIS android APK package:
 - Install and run the QGIS installer
 - The whole installation process takes around 10min, you will be downloading around 70Mb of qgis + 25Mb of Qt libraries, so maybe doing it on a wifi is better. 
-- First QGIS is installed, then you need to manually start the "qgis first run" app this will setup some dependencies of QGIS (if this crashes, just rerun it, it will pick up where it crashed)
-- after this is done, you might be prompted to install Ministro II by BogDan Vatra via the market, this is the Qt libraries manager.
+- you might be prompted to install Ministro II by BogDan Vatra via the market, this is the Qt libraries manager.
 - Once ministro is installed hit the back button twice to go back to qgis or start QGIS again and you will be asked if you want to install the Qt libraries. Say yes. 
 - Once ministro is done, QGIS should start.
 
