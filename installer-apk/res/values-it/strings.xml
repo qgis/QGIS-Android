@@ -11,7 +11,7 @@
   <string name="about">Dettagli</string>
   <string name="wifi_settings">Impostazioni Wi-Fi</string>
   <string name="donate">Dona a QGIS</string>
-  <string name="install">Scarica e installa</string>
+  <string name="install">Scarica e installa QGIS (raccomandato)</string>
   <string name="about_dialog_message">L\'installer di QGIS vi permette di installare e mantenere aggiornato facilmente QGIS. É stato sviluppato da Marco Bernasocchi (opengis.ch)</string>
   <string name="visit_dev">Visita opengis.ch</string>
   <string name="latest_is_already_installed_dialog_message">Hai gia la versione più attuale di QGIS.</string>
