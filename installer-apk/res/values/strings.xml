@@ -10,7 +10,6 @@
     <string name="retry">Retry</string>
     <string name="about">About</string>
     <string name="wifi_settings">Wi-Fi settings</string>
-    <string name="installer_text">QGIS for Android Installer</string>
     <string name="donate">Donate to QGIS</string>
     <string name="install">Download and install QGIS</string>
     <string name="about_dialog_message">Android QGIS installer allows you to easily install and update Quantum GIS. It was developped By Marco Bernasocchi (opengis.ch)</string>
@@ -20,4 +19,6 @@
     <string name="md5_error">The package didn\'t download correctly (md5 hash mismatch)</string>
     <string name="loading_info_dialog_message">QGIS installer is downloading informations about the latest available release</string>
     <string name="please_wait">Please wait</string>
+    <string name="install_nightly">Download and install QGIS nightly</string>
+    <string name="logo">QGIS Logo</string>
 </resources>

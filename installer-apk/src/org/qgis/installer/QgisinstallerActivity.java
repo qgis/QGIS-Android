@@ -46,8 +46,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -85,6 +89,7 @@ public class QgisinstallerActivity extends Activity {
 	protected String mMD5;
 	protected int mVersion;
 	protected String mVersionName;
+	protected Boolean mUseNightly = false;
 	protected String mABI;
 	protected String mApkFileName;
 	protected String mApkUrl;
@@ -122,6 +127,15 @@ public class QgisinstallerActivity extends Activity {
 		final Button installButton = (Button) findViewById(R.id.installButton);
 		installButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				mUseNightly = false;
+				run();
+			}
+		});
+		
+		final Button installNightlyButton = (Button) findViewById(R.id.installNightlyButton);
+		installNightlyButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				mUseNightly = true;
 				run();
 			}
 		});
@@ -129,6 +143,7 @@ public class QgisinstallerActivity extends Activity {
 
 	private void run() {
 		if (isOnline("run")) {
+			Log.i("HERE", mUseNightly.toString());
 			initVars();
 			mDownloadVersionInfoTask = null;
 			mDownloadVersionInfoTask = new DownloadVersionInfoTask();
@@ -226,12 +241,30 @@ public class QgisinstallerActivity extends Activity {
 
 	private void initVars() {
 		Version v = getVersion("org.qgis.installer");
-		mVersion = v.value;
-		mVersionName = v.name;
+		String prefix = "qgis-";
+		String dir = "release/";
+		if (mUseNightly == true){
+			mVersionName = v.name + " Nightly";
+			prefix += "nightly-";
+			dir = "nightly/";
+			
+			//get the current date at the build server
+			Calendar cal = Calendar.getInstance();
+			TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
+			cal.setTimeZone(tz);
+			Date date = cal.getTime();
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+			String s = df.format(date);
+			mVersion = Integer.valueOf(s);
+		}
+		else{
+			mVersionName = v.name;
+			mVersion = v.value;
+		}
 		mABI = "armeabi"; // TODO: use android.os.Build.CPU_ABI;
 
-		mApkFileName = "qgis-" + mVersion + "-" + mABI + ".apk";
-		mApkUrl = "http://android.qgis.org/download/apk/" + mApkFileName;
+		mApkFileName = prefix + mVersion + "-" + mABI + ".apk";
+		mApkUrl = "http://android.qgis.org/download/apk/" + dir + mApkFileName;
 		mFilePathBase = getExternalFilesDir(null) + "/downloaded_apk/";
 		mFilePath = mFilePathBase + mApkFileName;
 		new File(mFilePathBase).mkdir();
@@ -282,6 +315,7 @@ public class QgisinstallerActivity extends Activity {
 
 			result = padding.toString() + result;
 		}
+		in.close();
 
 		return result;
 	}
@@ -466,11 +500,12 @@ public class QgisinstallerActivity extends Activity {
 			AsyncTask<Void, Integer, String> {
 		protected String doInBackground(Void... unused) {
 			try {
+				
 				URL apkUrl = new URL(mApkUrl);
 				URLConnection akpConnection = apkUrl.openConnection();
 				akpConnection.connect();
 				mSize = akpConnection.getContentLength();
-				Log.i("QGIS Downloader", "APK is " + String.valueOf(mSize)
+				Log.i("QGIS Downloader", mApkUrl + " is " + String.valueOf(mSize)
 						+ " bytes");
 
 				URL md5Url = new URL(mApkUrl + ".md5");
@@ -493,6 +528,7 @@ public class QgisinstallerActivity extends Activity {
 		}
 
 		protected void onPreExecute() {
+			removeDialog(PROMPT_INSTALL_DIALOG);
 			showDialog(LOADING_INFO_DIALOG);
 		}
 
@@ -573,18 +609,20 @@ public class QgisinstallerActivity extends Activity {
 			removeDialog(PROGRESS_DIALOG);
 			try {
 				mDigest = getMD5(new File(mFilePath));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.i("MD5 check", "correct MD5: " + mMD5);
+				Log.i("MD5 check", "calculated MD5: " + mDigest);
+				if (mMD5.equals(mDigest)) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
+							"application/vnd.android.package-archive");
+					startActivity(intent);
+				}
+				else{
+					showDialog(DOWNLOAD_ERROR_DIALOG);
+				}
 			}
-			Log.i("MD5 check", "correct MD5: " + mMD5);
-			Log.i("MD5 check", "calculated MD5: " + mDigest);
-			if (mMD5.equals(mDigest)) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
-						"application/vnd.android.package-archive");
-				startActivity(intent);
-			} else {
+			catch (Exception e) {
+				e.printStackTrace();
 				showDialog(DOWNLOAD_ERROR_DIALOG);
 			}
 		}
