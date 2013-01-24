@@ -36,6 +36,13 @@
             android:text="@string/install_nightly" />
 
         <Button
+            android:id="@+id/clearDownloadsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="@string/clear_downloads" />
+
+        <Button
             android:id="@+id/donateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

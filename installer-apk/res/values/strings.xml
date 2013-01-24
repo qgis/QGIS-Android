@@ -21,4 +21,7 @@
     <string name="please_wait">Please wait</string>
     <string name="install_nightly">Download and install QGIS nightly</string>
     <string name="logo">QGIS Logo</string>
+    <string name="clear_downloads">Clear download cache</string>
+    <string name="clear_downloads_dialog_message">This will remove all previously downloaded QGIS packages. It will NOT remove QGIS nor the installer. Removing the packages will free space on your device, but to reinstall QGIS you will have to redownload the packages.</string>
+    <string name="clear_downloads_dialog_title">Clear QGIS download cache</string>
 </resources>

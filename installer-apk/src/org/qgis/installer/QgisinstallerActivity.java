@@ -79,6 +79,7 @@ public class QgisinstallerActivity extends Activity {
 	private static final int DOWNLOAD_ERROR_DIALOG = 4;
 	private static final int LATEST_IS_INSTALLED_DIALOG = 5;
 	private static final int LOADING_INFO_DIALOG = 6;
+	private static final int PROMPT_CLEARDOWNLOADS_DIALOG = 7;
 	private static final int BYTE_TO_MEGABYTE = 1024 * 1024;
 
 	protected DownloadApkTask mDownloadApkTask;
@@ -131,12 +132,19 @@ public class QgisinstallerActivity extends Activity {
 				run();
 			}
 		});
-		
+
 		final Button installNightlyButton = (Button) findViewById(R.id.installNightlyButton);
 		installNightlyButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				mUseNightly = true;
 				run();
+			}
+		});
+
+		final Button clearDownloadsButton = (Button) findViewById(R.id.clearDownloadsButton);
+		clearDownloadsButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				showDialog(PROMPT_CLEARDOWNLOADS_DIALOG);
 			}
 		});
 	}
@@ -156,6 +164,17 @@ public class QgisinstallerActivity extends Activity {
 			mDownloadApkTask = null;
 			mDownloadApkTask = new DownloadApkTask();
 			mDownloadApkTask.execute(mApkUrl);
+		}
+	}
+
+	private void clearDownloads() {
+		mFilePathBase = getExternalFilesDir(null) + "/downloaded_apk/";
+		File folder = new File(mFilePathBase);
+		File[] files = folder.listFiles();
+		if (files != null) { // some JVMs return null for empty dirs
+			for (File f : files) {
+				f.delete();
+			}
 		}
 	}
 
@@ -243,12 +262,12 @@ public class QgisinstallerActivity extends Activity {
 		Version v = getVersion("org.qgis.installer");
 		String prefix = "qgis-";
 		String dir = "release/";
-		if (mUseNightly == true){
+		if (mUseNightly == true) {
 			mVersionName = v.name + " Nightly";
 			prefix += "nightly-";
 			dir = "nightly/";
-			
-			//get the current date at the build server
+
+			// get the current date at the build server
 			Calendar cal = Calendar.getInstance();
 			TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
 			cal.setTimeZone(tz);
@@ -256,8 +275,7 @@ public class QgisinstallerActivity extends Activity {
 			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 			String s = df.format(date);
 			mVersion = Integer.valueOf(s);
-		}
-		else{
+		} else {
 			mVersionName = v.name;
 			mVersion = v.value;
 		}
@@ -390,11 +408,31 @@ public class QgisinstallerActivity extends Activity {
 									dialog.cancel();
 								}
 							}).create();
+		case PROMPT_CLEARDOWNLOADS_DIALOG:
+			return new AlertDialog.Builder(QgisinstallerActivity.this)
+					.setTitle(getString(R.string.clear_downloads_dialog_title))
+					.setMessage(R.string.clear_downloads_dialog_message)									
+					.setPositiveButton(getString(android.R.string.yes),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									clearDownloads();
+									dialog.dismiss();
+								}
+							})
+					.setNegativeButton(getString(android.R.string.no),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									// Action for 'NO' Button
+									dialog.cancel();
+								}
+							}).create();
 		case LOADING_INFO_DIALOG:
 			ProgressDialog d;
 			d = new ProgressDialog(QgisinstallerActivity.this);
-			d.setTitle(getString(R.string.please_wait) );
-			d.setMessage(getString(R.string.loading_info_dialog_message) );
+			d.setTitle(getString(R.string.please_wait));
+			d.setMessage(getString(R.string.loading_info_dialog_message));
 			d.setIndeterminate(false);
 			d.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			return d;
@@ -500,13 +538,13 @@ public class QgisinstallerActivity extends Activity {
 			AsyncTask<Void, Integer, String> {
 		protected String doInBackground(Void... unused) {
 			try {
-				
+
 				URL apkUrl = new URL(mApkUrl);
 				URLConnection akpConnection = apkUrl.openConnection();
 				akpConnection.connect();
 				mSize = akpConnection.getContentLength();
-				Log.i("QGIS Downloader", mApkUrl + " is " + String.valueOf(mSize)
-						+ " bytes");
+				Log.i("QGIS Downloader",
+						mApkUrl + " is " + String.valueOf(mSize) + " bytes");
 
 				URL md5Url = new URL(mApkUrl + ".md5");
 				URLConnection md5Connection = md5Url.openConnection();
@@ -616,12 +654,10 @@ public class QgisinstallerActivity extends Activity {
 					intent.setDataAndType(Uri.fromFile(new File(mFilePath)),
 							"application/vnd.android.package-archive");
 					startActivity(intent);
-				}
-				else{
+				} else {
 					showDialog(DOWNLOAD_ERROR_DIALOG);
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				showDialog(DOWNLOAD_ERROR_DIALOG);
 			}
