@@ -21,12 +21,25 @@ start_time=`date +%s`
 #######Load config#######
 source `dirname $0`/config.conf
 export QGIS_ANDROID_BUILD_ALL=1
-export DOWNLOAD_DIR=/home/mbernasocchi/www/download
+export DOWNLOAD_DIR=/home/mbernasocchi/www/download/apk
 
 if [[ "$BUILD_TYPE" = "Release" && ! -n "${RELEASE_NUMBER+x}" ]]; then
     echo "script aborted, SET: BUILD_TYPE=Release RELEASE_NUMBER=value_from_installer_manifest ./server-cron-build.sh";
     exit 0;
 fi 
+
+
+############################
+### TEMPORARY WORKAROUND ###
+############################
+DATE=`date +%Y%m%d`
+#Fake nightly
+ln -s $DOWNLOAD_DIR/nightly/qgis-nightly-bug304240-workaround-armeabi.apk $DOWNLOAD_DIR/nightly/qgis-nightly-$DATE-armeabi.apk
+ln -s $DOWNLOAD_DIR/nightly/qgis-nightly-bug304240-workaround-armeabi.apk.md5 $DOWNLOAD_DIR/nightly/qgis-nightly-$DATE-armeabi.apk.md5
+exit
+################################
+### END TEMPORARY WORKAROUND ###
+################################
 
 cd $QGIS_DIR
 git reset --hard HEAD
@@ -48,15 +61,15 @@ if [[ "$BUILD_TYPE" = "Release" ]]; then
     #remove armeabi-v7a optimized libs to generate armeabi only package
     rm -vrf $APK_DIR/libs/armeabi-v7a
     ant release
-    cp -vf $APK_DIR/bin/qgis-release.apk $DOWNLOAD_DIR/qgis-$RELEASE_NUMBER-armeabi.apk
+    cp -vf $APK_DIR/bin/qgis-release.apk $DOWNLOAD_DIR/release/qgis-$RELEASE_NUMBER-armeabi.apk
     
-    #re add all necessary files
+    #re add all necessary -v7a files
     $SCRIPT_DIR/update-apk-env.sh
     
     #remove armeabi libs to generate armeabi-v7a only package
     rm -vrf $APK_DIR/libs/armeabi
     ant release
-    cp -vf $APK_DIR/bin/qgis-release.apk $DOWNLOAD_DIR/qgis-$RELEASE_NUMBER-armeabi-v7a.apk
+    cp -vf $APK_DIR/bin/qgis-release.apk $DOWNLOAD_DIR/release/qgis-$RELEASE_NUMBER-armeabi-v7a.apk
     
 else 
     DATE=`date +%Y%m%d`
@@ -74,8 +87,8 @@ else
     #remove armeabi libs to generate armeabi-v7a only package
     rm -vrf $APK_DIR/libs/armeabi
     ant release
-    #clear old nightly
-    rm -rf $DOWNLOAD_DIR/nightly/qgis-nightly-*-armeabi.apk
+    #clear old nightly-v7a
+    rm -rf $DOWNLOAD_DIR/nightly/qgis-nightly-*-armeabi-v7a.apk
     cp -vf $APK_DIR/bin/qgis-release.apk $DOWNLOAD_DIR/nightly/qgis-nightly-$DATE-armeabi-v7a.apk
 fi
 
