@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_name">Установщик QGIS</string>
-    <string name="install">Загрузить и установить</string>
-    <string name="quit">Выход</string>
-    <string name="downloading_dialog_message">Загружается</string>
-    <string name="install_dialog_title">Загрузить пакет QGIS?</string>
-    <string name="install_dialog_message">Эта программа загрузит и установит QGIS версии %s. Размер загружаемых файлов превышает 70MB, продолжить?</string>
-    <string name="no_connectivity_dialog_title">Отсутствует канал передачи данных</string>
-    <string name="no_connectivity_dialog_message">Проверьте настройки соединения и повторите попытку</string>
+  <string name="quit">Выход</string>
+  <string name="downloading_dialog_message">Загружается</string>
+  <string name="install_dialog_title">Загрузить пакет QGIS?</string>
+  <string name="install_dialog_message">Эта программа загрузит и установит QGIS версии %s. Размер загружаемых файлов превышает 70MB, продолжить?</string>
+  <string name="no_connectivity_dialog_title">Отсутствует канал передачи данных</string>
+  <string name="no_connectivity_dialog_message">Проверьте настройки соединения и повторите попытку</string>
+  <string name="install">Загрузить и установить</string>
 </resources>

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_name">QGIS installatiepakket</string>
-    <string name="install">Download en installeren</string>
-    <string name="quit">Afsluiten</string>
-    <string name="downloading_dialog_message">Bezig met downloaden</string>
-    <string name="install_dialog_title">Download QGIS installatiepakket?</string>
-    <string name="install_dialog_message">Dit zal de %s build van QGIS downloaden en installeren. The download is groter dan 70MB, wilt u hiermee doorgaan?</string>
-    <string name="no_connectivity_dialog_title">Geen netwerkverbinding gevonden</string>
-    <string name="no_connectivity_dialog_message">Controleer uw netwerkverbindingsinstellingen en probeer het nogmaals</string>
+  <string name="app_name">QGIS installatiepakket</string>
+  <string name="quit">Afsluiten</string>
+  <string name="downloading_dialog_message">Bezig met downloaden</string>
+  <string name="install_dialog_title">Download QGIS installatiepakket?</string>
+  <string name="install_dialog_message">Dit zal de %s build van QGIS downloaden en installeren. The download is groter dan 70MB, wilt u hiermee doorgaan?</string>
+  <string name="no_connectivity_dialog_title">Geen netwerkverbinding gevonden</string>
+  <string name="no_connectivity_dialog_message">Controleer uw netwerkverbindingsinstellingen en probeer het nogmaals</string>
+  <string name="install">Download en installeren</string>
 </resources>

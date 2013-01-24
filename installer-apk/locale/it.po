@@ -1,0 +1,104 @@
+# Italian translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-01-24 14:38+0100\n"
+"PO-Revision-Date: 2013-01-24 14:48+0100\n"
+"Last-Translator: Marco Bernasocchi <marco@opengis.ch>\n"
+"Language-Team: it <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=((n == 1) ? 0 : 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.0dev\n"
+
+msgctxt "app_name"
+msgid "QGIS installer"
+msgstr "QGIS installer"
+
+msgctxt "quit"
+msgid "Quit"
+msgstr "Esci"
+
+msgctxt "downloading_dialog_message"
+msgid "Downloading"
+msgstr "Scaricando"
+
+msgctxt "install_dialog_title"
+msgid "Download QGIS package?"
+msgstr "Scaricare il pacchetto QGIS?"
+
+#, c-format
+msgctxt "install_dialog_message"
+msgid "This will download and install QGIS %1$s (build %2$s). The download is %3$s MB big, do you want to continue?"
+msgstr "Questo scaricherà e installerà la versione %1$s (rev. %2$s)  di QGIS. Il download é di %3$s MB, vuoi davvero continuare?"
+
+msgctxt "no_connectivity_dialog_title"
+msgid "No data connectivity detected"
+msgstr "Nessuna connettività"
+
+msgctxt "no_connectivity_dialog_message"
+msgid "Check your connectivity settings and try again"
+msgstr "Controlla le tue impostazioni riprova"
+
+msgctxt "retry"
+msgid "Retry"
+msgstr "Riprova"
+
+msgctxt "about"
+msgid "About"
+msgstr "Dettagli"
+
+msgctxt "wifi_settings"
+msgid "Wi-Fi settings"
+msgstr "Impostazioni Wi-Fi"
+
+msgctxt "donate"
+msgid "Donate to QGIS"
+msgstr "Dona a QGIS"
+
+msgctxt "install"
+msgid "Download and install QGIS"
+msgstr "Scarica e installa"
+
+msgctxt "about_dialog_message"
+msgid "Android QGIS installer allows you to easily install and update Quantum GIS. It was developped By Marco Bernasocchi (opengis.ch)"
+msgstr "L'installer di QGIS vi permette di installare e mantenere aggiornato facilmente QGIS. É stato sviluppato da Marco Bernasocchi (opengis.ch)"
+
+msgctxt "visit_dev"
+msgid "Visit opengis.ch"
+msgstr "Visita opengis.ch"
+
+msgctxt "latest_is_already_installed_dialog_message"
+msgid "You already have the latest QGIS version installed."
+msgstr "Hai gia la versione più attuale di QGIS."
+
+msgctxt "start_qgis"
+msgid "Start QGIS"
+msgstr "Avvia QGIS"
+
+msgctxt "md5_error"
+msgid "The package didn't download correctly (md5 hash mismatch)"
+msgstr "Il pacchetto non é stato scaricato correttamente"
+
+msgctxt "loading_info_dialog_message"
+msgid "QGIS installer is downloading informations about the latest available release"
+msgstr "L'installer di QGIS sta scaricando le informazioni su possibili aggiornamenti"
+
+msgctxt "please_wait"
+msgid "Please wait"
+msgstr "Attendere prego"
+
+msgctxt "install_nightly"
+msgid "Download and install QGIS nightly"
+msgstr "Scarica ed installa QGIS nightly"
+
+msgctxt "logo"
+msgid "QGIS Logo"
+msgstr "Logo QGIS"
+

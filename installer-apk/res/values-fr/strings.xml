@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_name">Installateur QGIS</string>
-    <string name="install">Télécharger et installer</string>
-    <string name="quit">Quitter</string>
-    <string name="downloading_dialog_message">Téléchargement en cours&#8230;</string>
-    <string name="install_dialog_title">Télécharger le paquet QGIS ?</string>
-    <string name="install_dialog_message">Cela téléchargeraet installera la version %s de QGIS. Le téléchargement est supérieur à 70Mo, voulez-vous continuer ?</string>
-    <string name="no_connectivity_dialog_title">Pas de connexion détectée</string>
-    <string name="no_connectivity_dialog_message">Vérifiez vos paramètres de connexion et retentez</string>
+  <string name="app_name">Installateur QGIS</string>
+  <string name="quit">Quitter</string>
+  <string name="downloading_dialog_message">Téléchargement en cours…</string>
+  <string name="install_dialog_title">Télécharger le paquet QGIS ?</string>
+  <string name="install_dialog_message">Cela téléchargeraet installera la version %s de QGIS. Le téléchargement est supérieur à 70Mo, voulez-vous continuer ?</string>
+  <string name="no_connectivity_dialog_title">Pas de connexion détectée</string>
+  <string name="no_connectivity_dialog_message">Vérifiez vos paramètres de connexion et retentez</string>
+  <string name="install">Télécharger et installer</string>
 </resources>
