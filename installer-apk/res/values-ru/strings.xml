@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">QGIS installer</string>
+    <string name="app_name">QGIS installer</string>
     <string name="quit">Quit</string>
     <string name="downloading_dialog_message">Downloading</string>
     <string name="install_dialog_title">Download QGIS package?</string>
