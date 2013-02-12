@@ -43,6 +43,22 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_SDK_ROOT=$NECESSITAS_DIR/android-sdk
   export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk
 
+  ######LIBS VERSIONS########
+  export FREEXL_NAME=freexl-1.0.0e
+  export SPATIALITE_NAME=libspatialite-amalgamation-3.0.1
+  export EXPAT_NAME=expat-2.0.1
+  export EXPAT_VERSION=2.0.1
+  export GEOS_NAME=geos-3.3.7
+  export GSL_NAME=gsl-1.14
+  export GDAL_NAME=gdal-1.9.2
+  export PROJ_NAME=proj-4.7.0
+  export SPATIALINDEX_NAME=spatialindex-src-1.7.1  
+  export QWT_NAME=qwt-5.2.0
+  export QWT_VERSION=5.2.0
+  export ICONV_NAME=libiconv-1.13.1
+  export PQ_NAME=postgresql-9.0.4
+  export PQ_VERSION=9.0.4
+
   ######LIKELY UNNEEDED TO CONFIGURE FURTHER######
   if [ ! -n "${ANDROID_ABI+x}" ]; then
     export ANDROID_ABI=$DEFAULT_ANDROID_ABI
@@ -63,7 +79,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
   if [ ! -n "${ANDROID_NDK_TOOLCHAIN_VERSION+x}" ]; then
-    export ANDROID_NDK_TOOLCHAIN_VERSION=4.4.3
+    export ANDROID_NDK_TOOLCHAIN_VERSION=4.6
   fi
   export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
@@ -96,7 +112,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   ARMV7A_flags=" -march=armv7-a -mfloat-abi=softfp -mfpu=$MY_FPU"
 
   #TODO check ALL_FLAGS if other flags re needed
-  #ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../qwt-5.2.0/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
+  #ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../$QWT_NAME/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
   #export MY_STD_CFLAGS="$MY_STD_CFLAGS" #-D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -D__ARM_ARCH_7-A__"
   
   #build mthumb instructions only in non Debug mode

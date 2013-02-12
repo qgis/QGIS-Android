@@ -46,6 +46,7 @@ echo "LD:                               " `which $LD`
 echo "AR:                               " `which $AR`
 echo "RANLIB:                           " `which $RANLIB`
 echo "AS:                               " `which $AS`
+echo "GCC -v:                           " `$CC -v`
 
 echo "You can configure all this and more in `dirname $0`/config.conf"
 
@@ -118,7 +119,7 @@ else
 
   #########QWT5.2.0########
   echo "QWT5.2.0"	
-  cd $SRC_DIR/qwt-5.2.0/
+  cd $SRC_DIR/$QWT_NAME/
   sed -i "s|    INSTALLBASE    =.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
@@ -131,12 +132,12 @@ else
   make -j$CORES 2>&1 | tee make.out
   sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_ABI/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END EXPAT2.0.1########
+  #########END QWT########
 
 
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
-  cd $SRC_DIR/expat-2.0.1/
+  cd $SRC_DIR/$EXPAT_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -150,7 +151,7 @@ else
   
   #########GSL1.14########
   echo "GSL1.14"
-  cd $SRC_DIR/gsl-1.14/
+  cd $SRC_DIR/$GSL_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -165,7 +166,7 @@ else
 
   #########LIBICONV1.13.1########
   echo "LIBICONV"
-  cd $SRC_DIR/libiconv-1.13.1/
+  cd $SRC_DIR/$ICONV_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -179,9 +180,9 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END LIBICONV1.13.1########
   
-  #########freexl1.0.0d########
-  echo "freexl"
-  cd $SRC_DIR/freexl-1.0.0d/
+  #########freexl########
+  echo "$FREEXL_NAME"
+  cd $SRC_DIR/$FREEXL_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -192,7 +193,7 @@ else
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END freexl1.0.0d########
+  #########END freexl########
 
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
@@ -212,7 +213,7 @@ else
 
   #########SPATIALINDEX1.7.1########
   echo "SPATIALINDEX"
-  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_ABI/
+  cd $SRC_DIR/$SPATIALINDEX_NAME-$ANDROID_ABI/
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
@@ -224,8 +225,8 @@ else
   #########END SPATIALINDEX1.7.1########
 
   ##########PROJ4########
-  echo "PROJ4"
-  cd $SRC_DIR/proj-4.7.0/
+  echo "$PROJ_NAME"
+  cd $SRC_DIR/$PROJ_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -244,9 +245,9 @@ if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
 fi
 
-  #########GEOS3.2.5########
-  echo "GEOS3.2.5"
-  cd $SRC_DIR/geos-3.3.5/
+  #########GEOS########
+  echo "$GEOS_NAME"
+  cd $SRC_DIR/$GEOS_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -257,11 +258,11 @@ fi
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END GEOS3.2.5########
+  #########END GEOS########
   
-  #########SPATIALITE3.0.1########
-  echo "SPATIALITE"
-  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
+  #########SPATIALITE########
+  echo "$SPATIALITE_NAME"
+  cd $SRC_DIR/$SPATIALITE_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -272,36 +273,36 @@ fi
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END SPATIALITE3.0.1########
+  #########END SPATIALITE########
 
-#  #########GDAL1.8.0########
-#  echo "GDAL"
-#  cd $SRC_DIR/gdal-1.8.0-$ANDROID_ABI/
-#  #configure
-#  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-#  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lsupc++ -lstdc++" \
-#  ./configure $MY_STD_CONFIGURE_FLAGS --without-grib
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END GDAL1.8.0########
-  
-
-  #########GDAL-trunk########
-  echo "GDAL trunk"
-  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
+  #########GDAL########
+  echo "$GDAL_NAME"
+  cd $SRC_DIR/$GDAL_NAME-$ANDROID_ABI/
   #configure
-  CFLAGS=$MY_STD_CFLAGS \
-  CXXFLAGS=$MY_STD_CXXFLAGS \
+  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
+  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
   LDFLAGS=$MY_STD_LDFLAGS \
-  LIBS="-lgcc -lsupc++ -lstdc++" \
+  LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END GDAL-trunk########
+  #########END GDAL########
+  
+
+#  #########GDAL-trunk########
+#  echo "GDAL trunk"
+#  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
+#  #configure
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CXXFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  LIBS="-lgcc -lsupc++ -lstdc++" \
+#  ./configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END GDAL-trunk########
 
 
 #  #######openssl-android#######
@@ -316,9 +317,9 @@ fi
 #  cp -fv libs/$ANDROID_ABI/libssl.so $INSTALL_DIR/lib/
   
   
-  ########postgresql-9.0.4########
+  ########$PQ_NAME########
   echo "postgresql"
-  cd $SRC_DIR/postgresql-9.0.4
+  cd $SRC_DIR/$PQ_NAME
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #no ssl  
@@ -326,7 +327,7 @@ fi
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CFLAGS" \
   LDFLAGS="$MY_STD_LDFLAGS" \
-  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline
+  $SRC_DIR/$PQ_NAME/configure $MY_STD_CONFIGURE_FLAGS --without-readline
   
 #  #configure with openssl
 #  CPPFLAGS="-I$INSTALL_DIR/include" \
@@ -334,17 +335,17 @@ fi
 #  CXXFLAGS="$CFLAGS" \
 #  LDFLAGS="$MY_STD_LDFLAGS" \
 #  LIBS="-lcrypto -lssl -lsupc++ -lstdc++" \
-#  $SRC_DIR/postgresql-9.0.4/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
+#  $SRC_DIR/$PQ_NAME/configure $MY_STD_CONFIGURE_FLAGS --without-readline --with-openssl
   
   make -j$CORES 2>&1 -C src/interfaces/libpq | tee make.out    
   
   #simulate of make install
   echo "installing libpq"
-  cd $SRC_DIR/postgresql-9.0.4
+  cd $SRC_DIR/$PQ_NAME
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
   cp -fv build-$ANDROID_ABI/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
-  ######END postgresql-9.0.4#######
+  ######END $PQ_NAME#######
   
   exit 0
 fi

@@ -168,48 +168,47 @@ else
   mkdir -p $SRC_DIR
   cd $SRC_DIR
   echo "Removing all build folders"
-  rm -rvf expat-2.0.1 geos-3.3.5 libspatialite-amalgamation-3.0.1 python spatialindex-src-1.7.1-armeabi spatialindex-src-1.7.1-armeabi-v7a freexl-1.0.0d gsl-1.14 postgresql-9.0.4 qwt-5.2.0 libiconv-1.13.1 proj-4.7.0  gdal-trunk-armeabi gdal-trunk-armeabi-v7a 
+  rm -rvf  geos-3.3.5 $SPATIALITE_NAME python $SPATIALINDEX_NAME-armeabi $SPATIALINDEX_NAME-armeabi-v7a $FREEXL_NAME $GSL_NAME $PQ_NAME $QWT_NAME $ICONV_NAME $PROJ_NAME  $GDAL_NAME-armeabi $GDAL_NAME-armeabi-v7a 
   
   
   #######PROJ4#######
   echo "PROJ4"
   cd $SRC_DIR
-  wget -c http://download.osgeo.org/proj/proj-4.7.0.tar.gz
-  tar xf proj-4.7.0.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm proj-4.7.0.tar.gz; fi
-  cd proj-4.7.0/
+  wget -c http://download.osgeo.org/proj/$PROJ_NAME.tar.gz
+  tar xf $PROJ_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $PROJ_NAME.tar.gz; fi
+  cd $PROJ_NAME/
   patch -p1 -i $PATCH_DIR/proj4.patch
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   #######END PROJ4#######
   
   
-  ########GEOS3.2.3#######
-  echo "GEOS-3.3.5"
+  ########GEOS#######
+  echo "$GEOS_NAME"
   cd $SRC_DIR
-#  svn checkout http://svn.osgeo.org/geos/tags/3.2.3/  geos-3.2.3
-  wget -c http://download.osgeo.org/geos/geos-3.3.5.tar.bz2
-  tar xjf geos-3.3.5.tar.bz2
-  cd geos-3.3.5/
+  wget -c http://download.osgeo.org/geos/$GEOS_NAME.tar.bz2
+  tar xjf $GEOS_NAME.tar.bz2
+  cd $GEOS_NAME/
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
 #  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
 #  patch -i int64_crosscomp.patch -p1
 #  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
-#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/geos-3.2.0-ARM.patch -O geos-3.2.0-ARM.bug222.patch
-#  patch -i geos-3.2.0-ARM.bug222.patch -p0
+#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/$GEOS_NAME0-ARM.patch -O $GEOS_NAME0-ARM.bug222.patch
+#  patch -i $GEOS_NAME0-ARM.bug222.patch -p0
 #  ./autogen.sh
   patch -i $PATCH_DIR/geos.patch -p1
-  #######END GEOS3.2.3#######
+  #######END GEOS#######
 
-  #######EXPAT2.0.1#######
-  echo "EXPAT2.0.1"
+  #######EXPAT#######
+  echo "$EXPAT_NAME"
   cd $SRC_DIR
-  wget -c http://freefr.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
-  tar xf expat-2.0.1.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm expat-2.0.1.tar.gz; fi
-  cd expat-2.0.1/
+  wget -c http://freefr.dl.sourceforge.net/project/expat/expat/$EXPAT_VERSION/$EXPAT_NAME.tar.gz
+  tar xf $EXPAT_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $EXPAT_NAME.tar.gz; fi
+  cd $EXPAT_NAME
   cp -vf $TMP_DIR/config.sub ./conftools/config.sub
   cp -vf $TMP_DIR/config.guess ./conftools/config.guess
   patch -i $PATCH_DIR/expat.patch -p1
@@ -217,59 +216,59 @@ else
   
   
   #######GSL1.14#######
-  echo "GSL1.14"
+  echo "GSL"
   cd $SRC_DIR
-  wget -c http://ftp.gnu.org/gnu/gsl/gsl-1.14.tar.gz
-  tar xf gsl-1.14.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gsl-1.14.tar.gz; fi
-  cd gsl-1.14/
+  wget -c http://ftp.gnu.org/gnu/gsl/$GSL_NAME.tar.gz
+  tar xf $GSL_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $GSL_NAME.tar.gz; fi
+  cd $GSL_NAME/
   patch -p1 -i $PATCH_DIR/gsl.patch
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   ######END EXPAT2.0.1#######
 
 
-#  #######GDAL#######
-#  echo "GDAL1.8.0"
-#  cd $SRC_DIR
-#  wget -c http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz
-#  tar xf gdal-1.8.0.tar.gz
-#  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm gdal-1.8.0.tar.gz; fi
-#  cd gdal-1.8.0/
-#  cp -vf $TMP_DIR/config.sub ./config.sub
-#  cp -vf $TMP_DIR/config.guess ./config.guess
-#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O gdal-1.8.0-ANDROID.bug3952.patch
-#  patch -i gdal-1.8.0-ANDROID.bug3952.patch -p0
-#  patch -p1 -i $PATCH_DIR/gdal.patch
-#  #GDAL does not seem to support building in subdirs
-#  cp -vrf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi/
-#  mv -vf $SRC_DIR/gdal-1.8.0/ $SRC_DIR/gdal-1.8.0-armeabi-v7a/
-  ######END GDAL#######
-
-  ######GDAL#######
-  echo "GDAL-trunk"
+  #######GDAL#######
+  echo "$GDAL_NAME"
   cd $SRC_DIR
-  if [ -d 'gdal-trunk' ]; then
-    svn revert --recursive gdal-trunk
-    svn up gdal-trunk
-  else 
-    svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
-  fi
-  cd gdal-trunk/
+  wget -c http://download.osgeo.org/gdal/$GDAL_NAME.tar.gz
+  tar xf $GDAL_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $GDAL_NAME.tar.gz; fi
+  cd $GDAL_NAME/
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
-  patch -i $PATCH_DIR/gdal.patch 
-#  GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
+#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O $GDAL_NAME-ANDROID.bug3952.patch
+#  patch -i $GDAL_NAME-ANDROID.bug3952.patch -p0
+  patch -p1 -i $PATCH_DIR/gdal.patch
+  #GDAL does not seem to support building in subdirs
+  cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi/
+  mv -vf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi-v7a/
+  #####END GDAL#######
+
+#  ######GDAL#######
+#  echo "GDAL-trunk"
+#  cd $SRC_DIR
+#  if [ -d 'gdal-trunk' ]; then
+#    svn revert --recursive gdal-trunk
+#    svn up gdal-trunk
+#  else 
+#    svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
+#  fi
+#  cd gdal-trunk/
+#  cp -vf $TMP_DIR/config.sub ./config.sub
+#  cp -vf $TMP_DIR/config.guess ./config.guess
+#  patch -i $PATCH_DIR/gdal.patch 
+##  GDAL does not seem to support building in subdirs
+#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
+#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
   cd $SRC_DIR
-  wget -c http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
-  tar xf libiconv-1.13.1.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libiconv-1.13.1.tar.gz; fi
-  cd libiconv-1.13.1/
+  wget -c http://ftp.gnu.org/pub/gnu/libiconv/$ICONV_NAME.tar.gz
+  tar xf $ICONV_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $ICONV_NAME.tar.gz; fi
+  cd $ICONV_NAME/
   patch -p1 -i $PATCH_DIR/libiconv.patch
   cp -vf $TMP_DIR/config.sub ./build-aux/config.sub
   cp -vf $TMP_DIR/config.guess ./build-aux/config.guess  
@@ -277,39 +276,39 @@ else
   cp -vf $TMP_DIR/config.guess ./libcharset/build-aux/config.guess
   #######END LIBICONV1.13.1#######
   
-  #######FREEXL-1.0.0d#######
-  echo "FREEXL"
+  #######$FREEXL_NAME#######
+  echo "$FREEXL_NAME"
   cd $SRC_DIR
-  wget -c http://www.gaia-gis.it/gaia-sins/freexl-1.0.0d.tar.gz
-  tar xf freexl-1.0.0d.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm freexl-1.0.0d.tar.gz; fi
-  cd freexl-1.0.0d/
+  wget -c http://www.gaia-gis.it/gaia-sins/freexl-sources/$FREEXL_NAME.tar.gz
+  tar xf $FREEXL_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $FREEXL_NAME.tar.gz; fi
+  cd $FREEXL_NAME/
   patch -p1 -i $PATCH_DIR/freexl.patch
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
-  #######END freexl-1.0.0d#######
+  #######END $FREEXL_NAME#######
   
   #######SPATIALINDEX1.7.1#######
   echo "SPATIALINDEX"
   cd $SRC_DIR
-  wget -c http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz
-  tar xf spatialindex-src-1.7.1.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm spatialindex-src-1.7.1.tar.gz; fi
-  cd spatialindex-src-1.7.1/
+  wget -c http://download.osgeo.org/libspatialindex/$SPATIALINDEX_NAME.tar.gz
+  tar xf $SPATIALINDEX_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SPATIALINDEX_NAME.tar.gz; fi
+  cd $SPATIALINDEX_NAME/
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   patch -p1 -i $PATCH_DIR/spatialindex.patch
-  cp -vrf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi/
-  mv -vf $SRC_DIR/spatialindex-src-1.7.1/ $SRC_DIR/spatialindex-src-1.7.1-armeabi-v7a/
+  cp -vrf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-armeabi/
+  mv -vf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-armeabi-v7a/
   #######END SPATIALINDEX1.7.1#######
 
-  #########SPATIALITE3.0.1########
+  #########SPATIALITE########
   echo "SPATIALITE"
   cd $SRC_DIR
-  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-amalgamation-3.0.1.tar.gz
-  tar xf libspatialite-amalgamation-3.0.1.tar.gz
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm libspatialite-amalgamation-3.0.1.tar.gz; fi
-  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
+  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-sources/$SPATIALITE_NAME.tar.gz
+  tar xf $SPATIALITE_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SPATIALITE_NAME.tar.gz; fi
+  cd $SRC_DIR/$SPATIALITE_NAME/
   patch -p1 -i $PATCH_DIR/spatialite.patch
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
@@ -328,10 +327,10 @@ else
   #######QWT5.2.0#######
   echo "QWT"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwt/qwt/5.2.0/qwt-5.2.0.tar.bz2
-  tar xjf qwt-5.2.0.tar.bz2
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm qwt-5.2.0.tar.bz2; fi
-  cd qwt-5.2.0/
+  wget -c http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
+  tar xjf $QWT_NAME.tar.bz2
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWT_NAME.tar.bz2; fi
+  cd $QWT_NAME/
 
   #edit qwtconfig.pri
   sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
@@ -352,18 +351,18 @@ else
 #  cd openssl-android
 #  echo "APP_ABI := $ANDROID_ABI" >> jni/Application.mk
 #  
-  #######postgresql-9.0.4#######
-  echo "postgresql-9.0.4"
+  #######$PQ_NAME#######
+  echo "$PQ_NAME"
   cd $SRC_DIR
-  wget -c http://ftp.postgresql.org/pub/source/v9.0.4/postgresql-9.0.4.tar.bz2
-  tar xjf postgresql-9.0.4.tar.bz2 
-  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm postgresql-9.0.4.tar.bz2; fi
-  cd postgresql-9.0.4/
+  wget -c http://ftp.postgresql.org/pub/source/v$PQ_VERSION/$PQ_NAME.tar.bz2
+  tar xjf $PQ_NAME.tar.bz2 
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $PQ_NAME.tar.bz2; fi
+  cd $PQ_NAME/
   cp -vf $TMP_DIR/config.sub ./config/config.sub
   cp -vf $TMP_DIR/config.guess ./config/config.guess  
   
   patch -p1 -i $PATCH_DIR/libpq.patch
-  #######END postgresql-9.0.4#######
+  #######END $PQ_NAME#######
   
   #######PYTHON#############################
   echo "python"

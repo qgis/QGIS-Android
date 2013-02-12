@@ -36,38 +36,38 @@ echo "You can configure all this and more in `dirname $0`/config.conf"
 
   #########QWT5.2.0########
   echo "QWT5.2.0"	
-  cd $SRC_DIR/qwt-5.2.0/
+  cd $SRC_DIR/$QWT_NAME/
   cd build-$ANDROID_ABI
   make clean
   #########END EXPAT2.0.1########
 
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
-  cd $SRC_DIR/expat-2.0.1/
+  cd $SRC_DIR/$EXPAT_NAME/
   cd build-$ANDROID_ABI
   make clean
   #########END EXPAT2.0.1########
   
   #########GSL1.14########
   echo "GSL1.14"
-  cd $SRC_DIR/gsl-1.14/
+  cd $SRC_DIR/$GSL_NAME/
   cd build-$ANDROID_ABI
   make clean
   ########END GSL1.14########
 
   #########LIBICONV1.13.1########
   echo "LIBICONV"
-  cd $SRC_DIR/libiconv-1.13.1/
+  cd $SRC_DIR/$ICONV_NAME/
   cd build-$ANDROID_ABI
   make clean
   #########END LIBICONV1.13.1########
   
-  #########freexl1.0.0d########
-  echo "freexl"
-  cd $SRC_DIR/freexl-1.0.0d/
+  #########freexl########
+  echo "$FREEXL_NAME"
+  cd $SRC_DIR/$FREEXL_NAME/
   cd build-$ANDROID_ABI
   make clean
-  #########END freexl1.0.0d########
+  #########END freexl########
 
 #  #########SQLITE3.7.4########
 #  echo "SQLITE"
@@ -78,42 +78,48 @@ echo "You can configure all this and more in `dirname $0`/config.conf"
 
   #########SPATIALINDEX1.7.1########
   echo "SPATIALINDEX"
-  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_ABI/
+  cd $SRC_DIR/$SPATIALINDEX_NAME-$ANDROID_ABI/
   make clean
   #########END SPATIALINDEX1.7.1########
 
   ##########PROJ4########
   echo "PROJ4"
-  cd $SRC_DIR/proj-4.7.0/
+  cd $SRC_DIR/$PROJ_NAME/
   cd build-$ANDROID_ABI
   make clean
   #########END PROJ4########
 
-  #########GEOS3.2.5########
-  echo "GEOS3.2.5"
-  cd $SRC_DIR/geos-3.3.5/
+  #########GEOS########
+  echo "$GEOS_NAME"
+  cd $SRC_DIR/$GEOS_NAME/
   cd build-$ANDROID_ABI
   make clean
-  #########END GEOS3.2.5########
+  #########END GEOS########
   
-  #########SPATIALITE3.0.1########
+  #########SPATIALITE########
   echo "SPATIALITE"
-  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
+  cd $SRC_DIR/$SPATIALITE_NAME/
   cd build-$ANDROID_ABI
   make clean
-  #########END SPATIALITE3.0.1########
+  #########END SPATIALITE########
 
-  #########GDAL-trunk########
-  echo "GDAL trunk"
-  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
+  #########GDAL########
+  echo "$GDAL_NAME"
+  cd $SRC_DIR/$GDAL_NAME-$ANDROID_ABI/
   make clean
-  #########END GDAL-trunk########
+  #########END GDAL########
 
-  ########postgresql-9.0.4########
+#  #########GDAL-trunk########
+#  echo "GDAL trunk"
+#  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
+#  make clean
+#  #########END GDAL-trunk########
+
+  ########$PQ_NAME########
   echo "postgresql"
-  cd $SRC_DIR/postgresql-9.0.4
+  cd $SRC_DIR/$PQ_NAME
   cd build-$ANDROID_ABI
   make clean
-  ######END postgresql-9.0.4#######
+  ######END $PQ_NAME#######
   
   exit 0
