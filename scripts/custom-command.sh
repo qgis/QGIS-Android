@@ -19,68 +19,44 @@ set -e
 
 source `dirname $0`/config.conf
 
+#$ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN --toolchain=arm-linux-androideabi-$ANDROID_NDK_TOOLCHAIN_VERSION
 
-if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
-    #include is needed to fix http://hub.qgis.org/issues/4202
-    armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
-fi
-
-  ######GDAL#######
-  echo "GDAL-trunk"
-  cd $SRC_DIR
-  svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
-  cd gdal-trunk/
-  cp -f $TMP_DIR/config.sub ./config.sub
-  cp -f $TMP_DIR/config.guess ./config.guess
-  patch -i $PATCH_DIR/gdal.patch 
-#  GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-  mv -vf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
-
-#  #########SPATIALITE3.0.1########
-#  cd /home/marco/dev/qgis-android/src
-##  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-amalgamation-3.0.1.tar.gz # http://www.gaia-gis.it/gaia-sins/libspatialite-3.0.1.tar.gz
-##  tar xf libspatialite-amalgamation-3.0.1.tar.gz
-##  echo "SPATIALITE"
-#  cd $SRC_DIR/libspatialite-amalgamation-3.0.1/
-##  cp -f $TMP_DIR/config.sub ./config.sub
-##  cp -f $TMP_DIR/config.guess ./config.guess
-##  mkdir -p build-$ANDROID_ABI
-#  cd build-$ANDROID_ABI
-#  #configure
-#  CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include" \
-#  CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
-#  LDFLAGS="$MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
-#  ../configure $MY_STD_CONFIGURE_FLAGS 
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-##  #########END SQLITE3.7.4########
-
-##  #########GDAL-trunk########
-#  echo "GDAL trunk"
-#  cd $SRC_DIR/gdal-trunk-$ANDROID_ABI/
-#  #configure
-#  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-#  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lgcc -lsupc++ -lstdc++" \
-#  ./configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-##  #########END GDAL-trunk########
-
-
-# #########SPATIALINDEX1.7.1########
-#  echo "SPATIALINDEX"
-#  cd $SRC_DIR/spatialindex-src-1.7.1-$ANDROID_ABI/
-#  #configure
-#  CFLAGS="$MY_STD_CFLAGS" \
-#  CXXFLAGS="$MY_STD_CXXFLAGS" \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  LIBS="-lgcc -lc -lm -lsupc++ -lstdc++" \
-#  ./configure $MY_STD_CONFIGURE_FLAGS
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END SPATIALINDEX1.7.1########
+ ########GEOS#######
+#  echo "$GEOS_NAME"
+#  cd $SRC_DIR
+#  svn checkout http://svn.osgeo.org/geos/tags/$GEOS_VERSION/  $GEOS_NAME
+#  wget -c http://download.osgeo.org/geos/$GEOS_NAME.tar.bz2
+#  tar xjf $GEOS_NAME.tar.bz2
+#  cd libgeos/
+#  cp -vf $TMP_DIR/config.sub ./config.sub
+#  cp -vf $TMP_DIR/config.guess ./config.guess
+#  #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
+##  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
+##  patch -i int64_crosscomp.patch -p1
+##  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
+##  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/$GEOS_NAME-ARM.patch -O $GEOS_NAME-ARM.bug222.patch
+##  patch -i $GEOS_NAME-ARM.bug222.patch -p0
+##  ./autogen.sh
+##  patch -i $PATCH_DIR/geos.patch -p1
+#  #######END GEOS#######
+#  exit
+  
+#########GEO####
+#echo "$GEOS_NAME"
+#cd $SRC_DIR/
+#wget -c http://download.osgeo.org/geos/$GEOS_NAME.tar.bz2
+#tar xjf $GEOS_NAME.tar.bz2
+#cd $GEOS_NAME/
+#cp -vf $TMP_DIR/config.sub ./config.sub
+#cp -vf $TMP_DIR/config.guess ./config.guess
+#patch -i $PATCH_DIR/geos.patch
+#mkdir -p build-$ANDROID_ABI
+#cd build-$ANDROID_ABI
+##configure
+#CFLAGS="$MY_STD_CFLAGS" \
+#CXXFLAGS="$MY_STD_CXXFLAGS" \
+#LDFLAGS=$MY_STD_LDFLAGS \
+#../configure $MY_STD_CONFIGURE_FLAGS
+##compile
+#make -j$CORES 2>&1 | tee make.out
+#make -j$CORES 2>&1 install | tee makeInstall.out
