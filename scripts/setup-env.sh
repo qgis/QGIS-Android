@@ -168,11 +168,11 @@ else
   mkdir -p $SRC_DIR
   cd $SRC_DIR
   echo "Removing all build folders"
-  rm -rvf  geos-3.3.5 $SPATIALITE_NAME python $SPATIALINDEX_NAME-armeabi $SPATIALINDEX_NAME-armeabi-v7a $FREEXL_NAME $GSL_NAME $PQ_NAME $QWT_NAME $ICONV_NAME $PROJ_NAME  $GDAL_NAME-armeabi $GDAL_NAME-armeabi-v7a 
+  rm -rvf  $GEOS_NAME $SPATIALITE_NAME python $SPATIALINDEX_NAME-armeabi $SPATIALINDEX_NAME-armeabi-v7a $FREEXL_NAME $GSL_NAME $PQ_NAME $QWT_NAME $ICONV_NAME $PROJ_NAME  $GDAL_NAME-armeabi $GDAL_NAME-armeabi-v7a 
   
   
   #######PROJ4#######
-  echo "PROJ4"
+  echo "$PROJ_NAME"
   cd $SRC_DIR
   wget -c http://download.osgeo.org/proj/$PROJ_NAME.tar.gz
   tar xf $PROJ_NAME.tar.gz

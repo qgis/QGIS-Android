@@ -19,18 +19,18 @@ echo ""
 set -e
 #######check if config was already loaded#######
 if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
+
   #############################
   #######CONFIGURE HERE########
   #############################
   export NECESSITAS_DIR=$HOME/dev/necessitas
-  export ROOT_DIR=$HOME/dev/qgis-android
   export QGIS_DIR=$HOME/dev/Quantum-GIS
   
   #WARNING: armeabi-v7a builds don't work on android emulators pre api 14
   DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
   #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
   #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
-  #   ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
+  #ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
   
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
@@ -58,8 +58,13 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ICONV_NAME=libiconv-1.13.1
   export PQ_NAME=postgresql-9.0.4
   export PQ_VERSION=9.0.4
-
+  
+  ################################################
   ######LIKELY UNNEEDED TO CONFIGURE FURTHER######
+  ################################################
+   if [ ! -n "${ROOT_DIR+x}" ]; then
+    export ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+  fi
   if [ ! -n "${ANDROID_ABI+x}" ]; then
     export ANDROID_ABI=$DEFAULT_ANDROID_ABI
   fi
