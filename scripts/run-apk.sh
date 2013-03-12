@@ -31,6 +31,7 @@ if [ "$1" = "--clear" ]; then
     $ADB shell pm clear org.qgis.qgis
 fi
 
+$ADB shell am force-stop org.qgis.qgis
 $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QgisActivity
 $ADB logcat | tee /tmp/logcat.log
 

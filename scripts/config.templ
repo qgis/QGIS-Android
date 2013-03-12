@@ -27,7 +27,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export QGIS_DIR=$HOME/dev/Quantum-GIS
   
   #WARNING: armeabi-v7a builds don't work on android emulators pre api 14
-  DEFAULT_ANDROID_ABI=armeabi #or armeabi-v7a
+  DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
   #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
   #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
   #   ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
@@ -48,7 +48,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export SPATIALITE_NAME=libspatialite-amalgamation-3.0.1
   export EXPAT_NAME=expat-2.0.1
   export EXPAT_VERSION=2.0.1
-  export GEOS_NAME=geos-3.3.7
+  export GEOS_NAME=geos-3.3.8
   export GSL_NAME=gsl-1.14
   export GDAL_NAME=gdal-1.9.2
   export PROJ_NAME=proj-4.7.0

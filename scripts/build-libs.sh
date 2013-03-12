@@ -239,20 +239,14 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END PROJ4########
 
-
-if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
-    #include is needed to fix http://hub.qgis.org/issues/4202
-    armV7aHackInclude="-I$ANDROID_STANDALONE_TOOLCHAIN/arm-linux-androideabi/include/c++/4.4.3/arm-linux-androideabi/armv7-a"
-fi
-
   #########GEOS########
   echo "$GEOS_NAME"
   cd $SRC_DIR/$GEOS_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
-  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
+  CFLAGS="$MY_STD_CFLAGS" \
+  CXXFLAGS="$MY_STD_CXXFLAGS" \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
@@ -279,8 +273,8 @@ fi
   echo "$GDAL_NAME"
   cd $SRC_DIR/$GDAL_NAME-$ANDROID_ABI/
   #configure
-  CFLAGS="$MY_STD_CFLAGS $armV7aHackInclude" \
-  CXXFLAGS="$MY_STD_CXXFLAGS $armV7aHackInclude" \
+  CFLAGS="$MY_STD_CFLAGS" \
+  CXXFLAGS="$MY_STD_CXXFLAGS" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
   ./configure $MY_STD_CONFIGURE_FLAGS
