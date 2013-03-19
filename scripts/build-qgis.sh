@@ -50,6 +50,7 @@ echo "LD:                               " `which $LD`
 echo "AR:                               " `which $AR`
 echo "RANLIB:                           " `which $RANLIB`
 echo "AS:                               " `which $AS`
+echo "INSTAL_DIR:                       " $INSTALL_DIR
 
 
 mkdir -p $QGIS_BUILD_DIR
@@ -156,8 +157,7 @@ if [ $EXPERIMENTAL -eq 1 ] ; then
     make -j$CORES Experimental
 fi
 
-make -j$CORES install 
-
+make -j$CORES install
 
 GIT_REV=$(git rev-parse HEAD)
 #update version file in share

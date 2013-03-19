@@ -28,6 +28,11 @@ if [[ "$ANDROID_ABI" = "armeabi" ]]; then
     rm -vrf $APK_DIR/libs/armeabi-v7a
 fi
 
+if [[ "$ANDROID_ABI" = "armeabi-v7a" ]]; then
+    #remove non v7a optimized libs
+    rm -vrf $APK_DIR/libs/armeabi
+fi
+
 android update project --name qgis --path $APK_DIR
 
 ant `echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]'`

@@ -28,9 +28,10 @@ echo "" > /tmp/logcat.log
 #gnome-system-log /tmp/logcat.log &
 #$ADB logcat -c
 
+$ADB shell am force-stop $PACKAGE
 $ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QgisActivity
 $ADB pull /system/bin/app_process $TMP_DIR/app_process
-#$ADB pull /system/lib/libc.so $TMP_DIR/libc.so
+$ADB pull /system/lib/libc.so $TMP_DIR/libc.so
 
 echo `$ADB shell top -n 1 | grep $PACKAGE` > $TMP_DIR/pid.txt
 PID=`sed 's/ .*//' $TMP_DIR/pid.txt`
@@ -38,8 +39,12 @@ rm -f $TMP_DIR/pid.txt
 
 $ADB forward tcp:5039 localfilesystem:/data/data/$PACKAGE/debug-pipe
 $ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID &
+#$ADB forward tcp:5039 tcp:5039
+#$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver :5039 --attach $PID &
 
-$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb
+COMMANDS="target remote :5039"
+$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb $TMP_DIR/app_process
+
 
 #$ADB logcat | tee /tmp/logcat.log
 
