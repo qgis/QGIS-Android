@@ -15,6 +15,11 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+
+#info at:
+#http://www.kandroid.org/online-pdk/guide/debugging_native.html
+#http://stackoverflow.com/questions/10534367/how-to-get-ndk-gdb-working-on-android
+
 set -e
 
 source `dirname $0`/config.conf
@@ -33,6 +38,7 @@ $ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QgisActivity
 $ADB pull /system/bin/app_process $TMP_DIR/app_process
 $ADB pull /system/lib/libc.so $TMP_DIR/libc.so
 
+#find the PID of the proces
 echo `$ADB shell top -n 1 | grep $PACKAGE` > $TMP_DIR/pid.txt
 PID=`sed 's/ .*//' $TMP_DIR/pid.txt`
 rm -f $TMP_DIR/pid.txt
