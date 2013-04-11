@@ -367,12 +367,12 @@ else
   #######PYTHON#############################
   echo "python"
   cd $SRC_DIR  
-  wget -c http://python-for-android.googlecode.com/files/python_r16.zip
-  wget -c http://python-for-android.googlecode.com/files/python_extras_r13.zip
-
-  unzip python_r16.zip
-  unzip python_extras_r13.zip -d pythonTMP
-  mv pythonTMP/python/* python/lib/python2.6/
+  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
+  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
+  
+  unzip python_27.zip
+  unzip python_extras_27.zip -d pythonTMP
+  mv pythonTMP/python/* python/lib/python2.7/
   rm -rf pythonTMP
   
   #######APK###############################
