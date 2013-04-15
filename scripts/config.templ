@@ -30,7 +30,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
   #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
   #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
-  #ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
+  # Possible values:
+  #   ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
+  #WARNING tested only with "armeabi-v7a", "armeabi"
+  #TODO somehow support ANDROID_ABI with spaces in names since $ANDROID_ABI is used often in mkdir
+  #see ascripts/android.toolchain.cmake for details 
   
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
@@ -50,7 +54,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export EXPAT_VERSION=2.0.1
   export GEOS_NAME=geos-3.3.8
   export GSL_NAME=gsl-1.14
-  export GDAL_NAME=gdal-1.9.2
+  export GDAL_NAME=gdal-1.10.0beta2
   export PROJ_NAME=proj-4.7.0
   export SPATIALINDEX_NAME=spatialindex-src-1.7.1  
   export QWT_NAME=qwt-5.2.0
@@ -114,6 +118,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #MY_FPU=vfpv3-d16
   #for hummingbird and neon supporting processors (galaxy phone) -mfpu=neon
   #MY_FPU=neon
+  if [ "$ANDROID_ABI" = "armeabi-v7a with VFPV3" ]; then
+    MY_FPU=vfpv3
+  elif [ "$ANDROID_ABI" = "armeabi-v7a with NEON" ]; then
+    MY_FPU=neon
+  fi
   ARMV7A_flags=" -march=armv7-a -mfloat-abi=softfp -mfpu=$MY_FPU"
 
   #TODO check ALL_FLAGS if other flags re needed
