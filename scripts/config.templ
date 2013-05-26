@@ -131,22 +131,21 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   
   #build mthumb instructions only in non Debug mode
   if [ "$BUILD_TYPE" == "Debug" ]; then
-    #include is needed to fix   
-    doMthumbFlag=""
+     extraFlags="-g"
     ARM_INSTEAD_OF_THUMB='ON'
   else
-    doMthumbFlag="-mthumb"
+     extraFlags="-mthumb -O2"
     ARM_INSTEAD_OF_THUMB='OFF'
   fi
   
   #-std=gnu99: http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
   #-std=c99: http://stackoverflow.com/questions/9247151/compiling-icu-for-android-uint64-t-does-not-name-a-type
   #http://stackoverflow.com/questions/5135734/whats-the-difference-in-gcc-between-std-gnu0x-and-std-c0x-and-which-one-s
-  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=c99"
+  export MY_STD_CFLAGS="-DANDROID=ON -Wno-psabi -std=c99 $extraFlags"
   if [ "$ANDROID_ABI" = "armeabi-v7a" ]; then
     export MY_STD_CFLAGS=$MY_STD_CFLAGS$ARMV7A_flags
   fi
-  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -O2 $doMthumbFlag -std=gnu++0x"
+  export MY_STD_CXXFLAGS="-DANDROID=ON -Wno-psabi -std=gnu++0x $extraFlags"
   export MY_STD_LDFLAGS="-Wl,--fix-cortex-a8"
 
   #############################
