@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #   ***************************************************************************
-#     build-apk.sh - builds the and installs the needed libraries for android QGIS
+#     build-all.sh - builds android QGIS
 #      --------------------------------------
-#      Date                 : 01-Aug-2011
+#      Date                 : 01-Jun-2011
 #      Copyright            : (C) 2011 by Marco Bernasocchi
 #      Email                : marco at bernawebdesign.ch
 #   ***************************************************************************
@@ -15,11 +15,11 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+
 set -e
-
+#######Load config#######
 source `dirname $0`/config.conf
-ADB=$ANDROID_SDK_ROOT/platform-tools/adb
-$ADB kill-server
+$SCRIPT_DIR/build-qgis-and-apk.sh
+$SCRIPT_DIR/install-apk.sh
+$SCRIPT_DIR/run-apk.sh
 
-echo "Installing $APK_DIR/bin/qgis-debug.apk"
-$ADB -d install -r $APK_DIR/bin/qgis-debug.apk

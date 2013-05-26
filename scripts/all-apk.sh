@@ -18,7 +18,7 @@
 set -e
 
 source `dirname $0`/config.conf
-sudo echo "Building and installing new APK" #using sudo to ask passw at the beginning and not later when needed.
+#sudo echo "Building and installing new APK" #using sudo to ask passw at the beginning and not later when needed.
 $SCRIPT_DIR/update-apk-env.sh
 $SCRIPT_DIR/build-apk.sh
 $SCRIPT_DIR/install-apk.sh

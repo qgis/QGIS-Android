@@ -20,7 +20,7 @@ set -e
 source `dirname $0`/config.conf
 ADB=$ANDROID_SDK_ROOT/platform-tools/adb
 $ADB kill-server
-sudo $ADB devices
+$ADB devices
 
 echo "" > /tmp/logcat.log
 gnome-system-log /tmp/logcat.log &
