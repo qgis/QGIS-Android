@@ -781,8 +781,8 @@ set( CMAKE_COMPILER_IS_GNUASM 1)
 # NDK flags
 if( ARMEABI OR ARMEABI_V7A )
  # NDK also defines -ffunction-sections -funwind-tables but they result in worse OpenCV performance
- set( _CMAKE_CXX_FLAGS "-fPIC -Wno-psabi" )
- set( _CMAKE_C_FLAGS "-fPIC -Wno-psabi" )
+ set( _CMAKE_CXX_FLAGS "-fPIC -Wno-psabi $ENV{CXXFLAGS}" )
+ set( _CMAKE_C_FLAGS "-fPIC -Wno-psabi $ENV{CFLAGS}" )
  remove_definitions( -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ )
  add_definitions( -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ )
  # extra arm-specific flags
@@ -836,10 +836,10 @@ elseif( MIPS )
  set( _CMAKE_CXX_FLAGS_DEBUG "-O0 -g" )
  set( _CMAKE_C_FLAGS_DEBUG   "-O0 -g" )
 endif()
-set( _CMAKE_CXX_FLAGS_RELEASE "${_CMAKE_CXX_FLAGS_RELEASE} -fomit-frame-pointer -DNDEBUG" )
-set( _CMAKE_C_FLAGS_RELEASE   "${_CMAKE_C_FLAGS_RELEASE}   -fomit-frame-pointer -DNDEBUG" )
-set( _CMAKE_CXX_FLAGS_DEBUG "${_CMAKE_CXX_FLAGS_DEBUG} -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG -D_DEBUG" )
-set( _CMAKE_C_FLAGS_DEBUG   "${_CMAKE_C_FLAGS_DEBUG}   -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG -D_DEBUG" )
+set( _CMAKE_CXX_FLAGS_RELEASE "${_CMAKE_CXX_FLAGS_RELEASE} -fomit-frame-pointer -DNDEBUG $ENV{CXXFLAGS_RELEASE}" )
+set( _CMAKE_C_FLAGS_RELEASE   "${_CMAKE_C_FLAGS_RELEASE}   -fomit-frame-pointer -DNDEBUG $ENV{CFLAGS_RELEASE}" )
+set( _CMAKE_CXX_FLAGS_DEBUG "${_CMAKE_CXX_FLAGS_DEBUG} -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG -D_DEBUG $ENV{CXXFLAGS_DEBUG}" )
+set( _CMAKE_C_FLAGS_DEBUG   "${_CMAKE_C_FLAGS_DEBUG}   -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG -D_DEBUG $ENV{CFLAGS_DEBUG}" )
 
 # ABI-specific flags
 if( ARMEABI_V7A )
@@ -977,9 +977,9 @@ set( CMAKE_FIND_ROOT_PATH_CUSTOM_APPEND CACHE STRING "Add custom path to the end
 set( CMAKE_FIND_ROOT_PATH "${ANDROID_TOOLCHAIN_ROOT}/bin" "${ANDROID_TOOLCHAIN_ROOT}/${ANDROID_TOOLCHAIN_MACHINE_NAME}" "${ANDROID_SYSROOT}" "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/share" "${CMAKE_FIND_ROOT_PATH_CUSTOM_APPEND}" )
 
 # only search for libraries and includes in the ndk toolchain
-set( CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY )
+#set( CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY )
 set( CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY )
-set( CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY )
+#set( CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY )
 
 
 # macro to find packages on the host OS
@@ -1125,5 +1125,5 @@ endif()
 #   ANDROID_NDK_SEARCH_PATHS
 #   ANDROID_STANDALONE_TOOLCHAIN_SEARCH_PATH
 #   ANDROID_SUPPORTED_ABIS_${ARCH}
-#   ANDROID_SUPPORTED_NDK_VERSIONS
+#   ANDROID_SUPPORTED_NDK_VERSIONSzz
 

@@ -57,7 +57,6 @@ mkdir -p $QGIS_BUILD_DIR
 cd $QGIS_BUILD_DIR
 
 # Reported unused by CMAKE, maybe to be removed
-#     CFLAGS
 #     GDAL_CONFIG_PREFER_FWTOOLS_PAT
 #     GDAL_CONFIG_PREFER_PATH
 #     GEOS_CONFIG_PREFER_PATH
@@ -72,13 +71,10 @@ cd $QGIS_BUILD_DIR
 #     SQLITE3_LIBRARY
 #     WITH_MOBILE
 
-
+# LDFLAGS, CFLAGS and CXXFLAGS are taken care of by the toolchain file
 MY_CMAKE_FLAGS=" \
 -DANDROID_ABI=$ANDROID_ABI \
--DANDROID_FORCE_ARM_BUILD=$ARM_INSTEAD_OF_THUMB \
 -DBISON_EXECUTABLE=/usr/bin/bison \
--DCFLAGS='$MY_STD_CFLAGS' \
--DCXXFLAGS='$MY_STD_CXXFLAGS' \
 -DCHARSET_LIBRARY=$INSTALL_DIR/lib/libcharset.so \
 -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 -DCMAKE_VERBOSE_MAKEFILE=OFF \
@@ -109,7 +105,6 @@ MY_CMAKE_FLAGS=" \
 -DICONV_INCLUDE_DIR=$INSTALL_DIR/include \
 -DICONV_LIBRARY=$INSTALL_DIR/lib/libiconv.so \
 -DINCLUDE_DIRECTORIES=$INSTALL_DIR \
--DLDFLAGS=$MY_STD_LDFLAGS \
 -DLIBRARY_OUTPUT_PATH_ROOT=$INSTALL_DIR \
 -DNO_SWIG=true \
 -DPEDANTIC=OFF \
@@ -124,7 +119,7 @@ MY_CMAKE_FLAGS=" \
 -DSPATIALINDEX_LIBRARY=$INSTALL_DIR/lib/libspatialindex.so
 -DWITH_APIDOC=OFF \
 -DWITH_ASTYLE=OFF \
--DWITH_BINDINGS=OFF \
+-DWITH_BINDINGS=ON \
 -DWITH_DESKTOP=$WITH_DESKTOP \
 -DWITH_GLOBE=OFF \
 -DWITH_GRASS=OFF \
@@ -138,7 +133,14 @@ MY_CMAKE_FLAGS=" \
 -DGITCOMMAND=`which git` \
 -DGIT_MARKER=$QGIS_DIR/.git/index \
 -DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
--DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so "
+-DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so \
+-DPYTHON_EXECUTABLE=/usr/bin/python \
+-DPYTHON_LIBRARY=/home/marco/dev/android-python27/python-build-with-qt/build/lib/libpython2.7.so \
+-DPYTHON_INCLUDE_PATH=/home/marco/dev/android-python27/python-build-with-qt/build/include/python2.7"
+#-DPYTHON_EXECUTABLE=$SRC_DIR/python/bin/python2.7 \
+#-DPYTHON_LIBRARY=$SRC_DIR/python/lib/libpython2.7.so"
+
+
 #uncomment the next 2 lines to only get the needed cmake flags echoed
 #echo $MY_CMAKE_FLAGS
 #exit 0
@@ -149,14 +151,31 @@ else
   MY_CMAKE=ccmake
 fi
 
+
 if [ ! -f CMakeCache.txt ] || [ $CONFIGURE -eq 1 ] ; then
+  if [ "$BUILD_TYPE" == "Debug" ]; then
+    CFLAGS_DEBUG=$MY_STD_CFLAGS \
+    CXXFLAGS_DEBUG=$MY_STD_CXXFLAGS \
+    LDFLAGS=$MY_STD_LDFLAGS \
     $MY_CMAKE $MY_CMAKE_FLAGS ..
+  else
+    CFLAGS=$MY_STD_CFLAGS \
+    CXXFLAGS=$MY_STD_CXXFLAGS \
+    LDFLAGS=$MY_STD_LDFLAGS \
+    $MY_CMAKE $MY_CMAKE_FLAGS ..
+  fi
 fi
 
 if [ $EXPERIMENTAL -eq 1 ] ; then
     make -j$CORES Experimental
 fi
 
+
+#echo $CMAKE_CXX_FLAGS
+#echo $CXXFLAGS
+#echo $CMAKE_C_FLAGS
+#echo $CFLAGS
+#exit 0
 make -j$CORES install
 
 GIT_REV=$(git rev-parse HEAD)

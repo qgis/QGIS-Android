@@ -125,17 +125,11 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   fi
   ARMV7A_flags=" -march=armv7-a -mfloat-abi=softfp -mfpu=$MY_FPU"
 
-  #TODO check ALL_FLAGS if other flags re needed
-  #ALL_FLAGS="-c -Wno-psabi -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -DANDROID -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -Wa,--noexecstack -DQT_NO_QWS_TRANSFORMED -O2 -Os -g -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -D_REENTRANT -Wall -Wno-psabi -W -fPIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/mkspecs/default -I../../$QWT_NAME/src -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtCore -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include/QtGui -I/opt/necessitas/Android/Qt/4762/armeabi-v7a/include -Imoc -I. -I/opt/necessitas/android-ndk-r5c/platforms/android-8/arch-arm/usr/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/include -I/opt/necessitas/android-ndk-r5c/sources/cxx-stl/gnu-libstdc++/libs/armeabi/include -I."
-  #export MY_STD_CFLAGS="$MY_STD_CFLAGS" #-D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -D__ARM_ARCH_7-A__"
-  
   #build mthumb instructions only in non Debug mode
   if [ "$BUILD_TYPE" == "Debug" ]; then
-     extraFlags="-g"
-    ARM_INSTEAD_OF_THUMB='ON'
+     extraFlags="-g -O0 -marm -finline-limit=300 -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG=ON -D_DEBUG=ON "
   else
      extraFlags="-mthumb -O2"
-    ARM_INSTEAD_OF_THUMB='OFF'
   fi
   
   #-std=gnu99: http://comments.gmane.org/gmane.comp.handhelds.android.ndk/8732
