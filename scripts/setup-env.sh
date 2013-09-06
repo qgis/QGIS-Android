@@ -174,8 +174,8 @@ else
   #######PROJ4#######
   echo "$PROJ_NAME"
   cd $SRC_DIR
-  wget -c http://download.osgeo.org/proj/$PROJ_NAME.tar.gz
-  tar xf $PROJ_NAME.tar.gz
+  wget -c http://download.osgeo.org/proj/$PROJ_DOWNLOAD_NAME.tar.gz
+  tar xf $PROJ_DOWNLOAD_NAME.tar.gz
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $PROJ_NAME.tar.gz; fi
   cd $PROJ_NAME/
   patch -p1 -i $PATCH_DIR/proj4.patch
@@ -192,13 +192,6 @@ else
   cd $GEOS_NAME/
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
-  #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
-#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
-#  patch -i int64_crosscomp.patch -p1
-#  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
-#  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/$GEOS_NAME0-ARM.patch -O $GEOS_NAME0-ARM.bug222.patch
-#  patch -i $GEOS_NAME0-ARM.bug222.patch -p0
-#  ./autogen.sh
   patch -i $PATCH_DIR/geos.patch -p1
   #######END GEOS#######
 
@@ -231,36 +224,17 @@ else
   #######GDAL#######
   echo "$GDAL_NAME"
   cd $SRC_DIR
-  wget -c http://download.osgeo.org/gdal/$GDAL_NAME.tar.gz
+  wget -c http://download.osgeo.org/gdal/$GDAL_DOWNLOAD_FOLDER/$GDAL_NAME.tar.gz
   tar xf $GDAL_NAME.tar.gz
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $GDAL_NAME.tar.gz; fi
   cd $GDAL_NAME/
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
-#  wget -c http://trac.osgeo.org/gdal/raw-attachment/ticket/3952/android.diff -O $GDAL_NAME-ANDROID.bug3952.patch
-#  patch -i $GDAL_NAME-ANDROID.bug3952.patch -p0
   patch -p1 -i $PATCH_DIR/gdal.patch
   #GDAL does not seem to support building in subdirs
   cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi/
   mv -vf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi-v7a/
   #####END GDAL#######
-
-#  ######GDAL#######
-#  echo "GDAL-trunk"
-#  cd $SRC_DIR
-#  if [ -d 'gdal-trunk' ]; then
-#    svn revert --recursive gdal-trunk
-#    svn up gdal-trunk
-#  else 
-#    svn checkout https://svn.osgeo.org/gdal/trunk/gdal gdal-trunk
-#  fi
-#  cd gdal-trunk/
-#  cp -vf $TMP_DIR/config.sub ./config.sub
-#  cp -vf $TMP_DIR/config.guess ./config.guess
-#  patch -i $PATCH_DIR/gdal.patch 
-##  GDAL does not seem to support building in subdirs
-#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi/
-#  cp -vrf $SRC_DIR/gdal-trunk/ $SRC_DIR/gdal-trunk-armeabi-v7a/
 
   #######LIBICONV1.13.1#######
   echo "LIBICONV"
@@ -288,7 +262,7 @@ else
   cp -vf $TMP_DIR/config.guess ./config.guess
   #######END $FREEXL_NAME#######
   
-  #######SPATIALINDEX1.7.1#######
+  #######SPATIALINDEX#######
   echo "SPATIALINDEX"
   cd $SRC_DIR
   wget -c http://download.osgeo.org/libspatialindex/$SPATIALINDEX_NAME.tar.gz
@@ -313,16 +287,16 @@ else
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
 
-#  #######SQLITE3.7.4#######
-#  echo "SQLITE"
-#  cd $SRC_DIR
-#  wget -c http://www.sqlite.org/sqlite-autoconf-3070400.tar.gz
-#  tar xf sqlite-autoconf-3070400.tar.gz
-#  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm sqlite-autoconf-3070400.tar.gz; fi
-#  cd sqlite-autoconf-3070400/
-#  cp -vf $TMP_DIR/config.sub ./config.sub
-#  cp -vf $TMP_DIR/config.guess ./config.guess
-#  #######END SQLITE3.7.4#######
+  #######SQLITE#######
+  echo "SQLITE"
+  cd $SRC_DIR
+  wget -c http://www.sqlite.org/2013/$SQLITE_NAME.tar.gz
+  tar xf $SQLITE_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SQLITE_NAME.tar.gz; fi
+  cd $SQLITE_NAME/
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
+  #######END SQLITE#######
   
   #######QWT5.2.0#######
   echo "QWT"

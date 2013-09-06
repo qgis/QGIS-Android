@@ -30,16 +30,12 @@ if [ "$BUILD_TYPE" == "Debug" ]; then
     BUILD_WITH_DEBUG=0
   fi
 #use to just make clean
-$QT_SRC/android/androidconfigbuild.sh -n $ANDROID_NDK_ROOT -c 1 -q 0 -b 0 -k 0
+#$QT_SRC/android/androidconfigbuild.sh -n $ANDROID_NDK_ROOT -c 1 -q 0 -b 0 -k 0
+#exit
 
-$QT_SRC/android/androidconfigbuild.sh \
--n $ANDROID_NDK_ROOT \
--o $ANDROID_NDK_HOST \
--f $ANDROID_NDK_TOOLCHAIN_PREFIX \
--v $ANDROID_NDK_TOOLCHAIN_VERSION \
--a $ANDROID_ABI \
--l $ANDROID_LEVEL \
--i $INSTALL_DIR \
--d $BUILD_WITH_DEBUG \
--D"-DQT_COORD_TYPE=double" \
--q 1
+#CMD=$QT_SRC'/android/androidconfigbuild.sh -n '$ANDROID_NDK_ROOT' -o '$ANDROID_NDK_HOST' -f '$ANDROID_NDK_TOOLCHAIN_PREFIX' -v '$ANDROID_NDK_TOOLCHAIN_VERSION' -a '$ANDROID_ABI' -l '$ANDROID_LEVEL' -i '$INSTALL_DIR' -d '$BUILD_WITH_DEBUG' -D-DQT_COORD_TYPE=double -q 1'
+
+CMD=$QT_SRC'/android/androidconfigbuild.sh -n '$ANDROID_NDK_ROOT' -d 1 -q 1'
+
+echo $CMD
+$CMD

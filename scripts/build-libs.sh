@@ -195,23 +195,23 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END freexl########
 
-#  #########SQLITE3.7.4########
-#  echo "SQLITE"
-#  cd $SRC_DIR/sqlite-autoconf-3070400/
-#  mkdir -p build-$ANDROID_ABI
-#  cd build-$ANDROID_ABI
-#  #configure
-#  CFLAGS=$MY_STD_CFLAGS \
-#  CXXFLAGS=$MY_STD_CXXFLAGS \
-#  LDFLAGS=$MY_STD_LDFLAGS \
-#  ../configure $MY_STD_CONFIGURE_FLAGS
-#  #compile
-#  make -j$CORES 2>&1 | tee make.out
-#  make -j$CORES 2>&1 install | tee makeInstall.out
-#  #########END SQLITE3.7.4########
+  #########SQLITE########
+  echo "SQLITE"
+  cd $SRC_DIR/$SQLITE_NAME/
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
+  #configure
+  CFLAGS=$MY_STD_CFLAGS \
+  CXXFLAGS=$MY_STD_CXXFLAGS \
+  LDFLAGS=$MY_STD_LDFLAGS \
+  ../configure $MY_STD_CONFIGURE_FLAGS
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END SQLITE########
 
 
-  #########SPATIALINDEX1.7.1########
+  #########SPATIALINDEX########
   echo "SPATIALINDEX"
   cd $SRC_DIR/$SPATIALINDEX_NAME-$ANDROID_ABI/
   #configure
@@ -222,7 +222,7 @@ else
   ./configure $MY_STD_CONFIGURE_FLAGS
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
-  #########END SPATIALINDEX1.7.1########
+  #########END SPATIALINDEX########
 
   ##########PROJ4########
   echo "$PROJ_NAME"
@@ -260,10 +260,10 @@ else
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
-  CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include" \
+  echo CFLAGS="-lgnustl_shared -lm $MY_STD_CFLAGS -I$INSTALL_DIR/include" \
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
-  LDFLAGS="$MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
-  ../configure $MY_STD_CONFIGURE_FLAGS
+  LDFLAGS="-llog $MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
+  ../configure $MY_STD_CONFIGURE_FLAGS --with-geosconfig=$SRC_DIR/$GEOS_NAME/build-$ANDROID_ABI/tools/geos-config
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -277,7 +277,8 @@ else
   CXXFLAGS="$MY_STD_CXXFLAGS" \
   LDFLAGS=$MY_STD_LDFLAGS \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS
+  ./configure $MY_STD_CONFIGURE_FLAGS --with-png=internal --with-jpeg=internal --with-sqlite3=yes --target=android
+  #png, jpg, sqlite are needed for mbtiles
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out

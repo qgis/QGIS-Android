@@ -19,44 +19,57 @@ set -e
 
 source `dirname $0`/config.conf
 
-#$ANDROID_NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=$ANDROID_NDK_PLATFORM --install-dir=$ANDROID_STANDALONE_TOOLCHAIN --toolchain=arm-linux-androideabi-$ANDROID_NDK_TOOLCHAIN_VERSION
 
- ########GEOS#######
-#  echo "$GEOS_NAME"
+
+########SQLITE#######
+#  echo "SQLITE"
 #  cd $SRC_DIR
-#  svn checkout http://svn.osgeo.org/geos/tags/$GEOS_VERSION/  $GEOS_NAME
-#  wget -c http://download.osgeo.org/geos/$GEOS_NAME.tar.bz2
-#  tar xjf $GEOS_NAME.tar.bz2
-#  cd libgeos/
+#  wget -c http://www.sqlite.org/2013/$SQLITE_NAME.tar.gz
+#  tar xf $SQLITE_NAME.tar.gz
+#  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SQLITE_NAME.tar.gz; fi
+#  cd $SQLITE_NAME/   
 #  cp -vf $TMP_DIR/config.sub ./config.sub
 #  cp -vf $TMP_DIR/config.guess ./config.guess
-#  #GET and apply patch for http://trac.osgeo.org/geos/ticket/534
-##  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/534/int64_crosscomp.patch
-##  patch -i int64_crosscomp.patch -p1
-##  #GET and apply patch for http://trac.osgeo.org/geos/ticket/222
-##  wget -c http://trac.osgeo.org/geos/raw-attachment/ticket/222/$GEOS_NAME-ARM.patch -O $GEOS_NAME-ARM.bug222.patch
-##  patch -i $GEOS_NAME-ARM.bug222.patch -p0
-##  ./autogen.sh
-##  patch -i $PATCH_DIR/geos.patch -p1
-#  #######END GEOS#######
-#  exit
+#  #######END SQLITE#######
+# 
+# 
+# #########SQLITE########
+#  echo "SQLITE"
+#  cd $SRC_DIR/$SQLITE_NAME/
+#  mkdir -p build-$ANDROID_ABI
+#  cd build-$ANDROID_ABI
+#  #configure
+#  CFLAGS=$MY_STD_CFLAGS \
+#  CXXFLAGS=$MY_STD_CXXFLAGS \
+#  LDFLAGS=$MY_STD_LDFLAGS \
+#  ../configure $MY_STD_CONFIGURE_FLAGS
+#  #compile
+#  make -j$CORES 2>&1 | tee make.out
+#  make -j$CORES 2>&1 install | tee makeInstall.out
+#  #########END SQLITE########
+ 
+###########SPATIALITE########
+  echo "SPATIALITE"
+  cd $SRC_DIR
+  wget -c http://www.gaia-gis.it/gaia-sins/libspatialite-sources/$SPATIALITE_NAME.tar.gz
+  tar xf $SPATIALITE_NAME.tar.gz
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SPATIALITE_NAME.tar.gz; fi
+  cd $SRC_DIR/$SPATIALITE_NAME/
+  patch -p1 -i $PATCH_DIR/spatialite.patch
+  cp -vf $TMP_DIR/config.sub ./config.sub
+  cp -vf $TMP_DIR/config.guess ./config.guess
   
-#########GEO####
-#echo "$GEOS_NAME"
-#cd $SRC_DIR/
-#wget -c http://download.osgeo.org/geos/$GEOS_NAME.tar.bz2
-#tar xjf $GEOS_NAME.tar.bz2
-#cd $GEOS_NAME/
-#cp -vf $TMP_DIR/config.sub ./config.sub
-#cp -vf $TMP_DIR/config.guess ./config.guess
-#patch -i $PATCH_DIR/geos.patch
-#mkdir -p build-$ANDROID_ABI
-#cd build-$ANDROID_ABI
-##configure
-#CFLAGS="$MY_STD_CFLAGS" \
-#CXXFLAGS="$MY_STD_CXXFLAGS" \
-#LDFLAGS=$MY_STD_LDFLAGS \
-#../configure $MY_STD_CONFIGURE_FLAGS
-##compile
-#make -j$CORES 2>&1 | tee make.out
-#make -j$CORES 2>&1 install | tee makeInstall.out
+  #########SPATIALITE########
+  echo "$SPATIALITE_NAME"
+  cd $SRC_DIR/$SPATIALITE_NAME/
+  mkdir -p build-$ANDROID_ABI
+  cd build-$ANDROID_ABI
+  #configure
+  CFLAGS="-lgnustl_shared -lm $MY_STD_CFLAGS -I$INSTALL_DIR/include" \
+  CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
+  LDFLAGS="-llog $MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
+  ../configure $MY_STD_CONFIGURE_FLAGS --with-geosconfig=$SRC_DIR/$GEOS_NAME/build-$ANDROID_ABI/tools/geos-config
+  #compile
+  make -j$CORES 2>&1 | tee make.out
+  make -j$CORES 2>&1 install | tee makeInstall.out
+  #########END SPATIALITE########

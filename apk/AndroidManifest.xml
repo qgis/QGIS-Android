@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="7b05793b5433250b51bfe534e5d3b4bc08a92a6e"/>
+            <meta-data android:name="android.app.git_rev" android:value="b807e95d00ab508da144074474568d0c0f0d01ca"/>
             <!-- Git Revision -->
         </activity>
         
