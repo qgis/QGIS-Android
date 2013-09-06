@@ -23,7 +23,7 @@ QGIS android dev setup:
     OR
     - run scripts/setup-env.sh
     - run scripts/build-libs.sh
-    - run scripts/build-qgis.sh --configure
+    - run scripts/build-qgis.sh -c
     - run scripts/update-apk-env.sh
     - run scripts/build-apk.sh
     - setup the device or emulator (see http://developer.android.com/guide/developing/index.html)
