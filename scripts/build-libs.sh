@@ -259,11 +259,13 @@ else
   cd $SRC_DIR/$SPATIALITE_NAME/
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
+  GEOSCONFIG=$SRC_DIR/$GEOS_NAME/build-$ANDROID_ABI/tools/geos-config
+  chmod u+x $GEOSCONFIG
   #configure
   CFLAGS="-lgnustl_shared -lm $MY_STD_CFLAGS -I$INSTALL_DIR/include" \
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include" \
   LDFLAGS="-llog $MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
-  ../configure $MY_STD_CONFIGURE_FLAGS --with-geosconfig=$SRC_DIR/$GEOS_NAME/build-$ANDROID_ABI/tools/geos-config
+  ../configure $MY_STD_CONFIGURE_FLAGS --with-geosconfig=$GEOSCONFIG
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
