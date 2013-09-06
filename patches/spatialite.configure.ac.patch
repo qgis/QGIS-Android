@@ -1,0 +1,10 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -364,6 +364,6 @@
+ # Checking for Mac OsX
+ AM_CONDITIONAL([MACOSX], [test "$target_alias" = "macosx"])
+ # Checking for Android
+-AM_CONDITIONAL([ANDROID], [test "$target_alias" = "android"])
++AM_CONDITIONAL([ANDROID], [test "$target_host" = "arm-linux-androideabi"])
+ 
+ AC_OUTPUT

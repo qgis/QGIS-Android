@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/armeabi-v7a
+directory /home/marco/dev/necessitas/android-9-standalonetoolchain/sysroot/usr/include
