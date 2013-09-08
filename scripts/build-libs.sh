@@ -189,6 +189,7 @@ else
   CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include"\
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include"\
   LDFLAGS="$MY_STD_LDFLAGS -L$INSTALL_DIR/lib" \
+  LIBS="-lm" \
   ../configure $MY_STD_CONFIGURE_FLAGS
   #compile
   make -j$CORES 2>&1 | tee make.out

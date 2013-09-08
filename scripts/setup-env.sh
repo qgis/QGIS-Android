@@ -294,6 +294,7 @@ else
   tar xf $SQLITE_NAME.tar.gz
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $SQLITE_NAME.tar.gz; fi
   cd $SQLITE_NAME/
+  patch -p1 -i $PATCH_DIR/sqlite.patch
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   #######END SQLITE#######

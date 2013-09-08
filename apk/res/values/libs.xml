@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <array name="bundled_libs">
+      <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>
@@ -17,8 +18,9 @@
 <!--      <item>crypto</item>-->
 <!--      <item>ssl</item>-->
       <item>pq</item>
-<!--      <item>sqlite</item>-->
-<!--      <item>spatialite</item>-->
+      <item>sqlite3</item>
+      <item>freexl</item>
+      <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
@@ -26,8 +28,8 @@
       <item>qgis_networkanalysis</item>
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
-      <item>python2.7</item>
-      <item>qgispython</item>
+<!--      <item>python2.7</item>-->
+<!--      <item>qgispython</item>-->
     </array>
     <array name="bundled_libs_mobile">
       <item>expat</item>
