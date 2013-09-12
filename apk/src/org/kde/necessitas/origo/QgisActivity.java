@@ -272,8 +272,8 @@ public class QgisActivity extends Activity {
 					makeSymlink(path, pathAlias);
 					
 					// put .qgis to externalFilesDir
-					pathAlias = filesDir + "/.qgis";
-					path = externalFilesDir + "/.qgis";
+					pathAlias = filesDir + "/.qgis2";
+					path = externalFilesDir + "/.qgis2";
 					new File(path).mkdir();
 					makeSymlink(path, pathAlias);
 					

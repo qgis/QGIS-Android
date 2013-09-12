@@ -16,13 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="d43ae4f80ebec9f8f8fc0d50461528af727b042c"/>
+            <meta-data android:name="android.app.git_rev" android:value="c78fc910c19e9396097883a40c384bb1dfca3539"/>
             <!-- Git Revision -->
         </activity>
         
         <activity android:name="org.kde.necessitas.origo.QtActivity" 
             android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden"
             android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"
+            android:launchMode="singleInstance"
             >
 <!--        android:screenOrientation="landscape" see http://developer.android.com/reference/android/app/Activity.html#setRequestedOrientation(int) for more-->
 <!--             <intent-filter> -->

@@ -28,8 +28,8 @@
       <item>qgis_networkanalysis</item>
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
-<!--      <item>python2.7</item>-->
-<!--      <item>qgispython</item>-->
+      <item>python2.7</item>
+      <item>qgispython</item>
     </array>
     <array name="bundled_libs_mobile">
       <item>expat</item>

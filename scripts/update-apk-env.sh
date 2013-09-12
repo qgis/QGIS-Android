@@ -28,6 +28,8 @@ GNUSTL_LIB_PATH=$ANDROID_STANDALONE_TOOLCHAIN/$ANDROID_NDK_TOOLCHAIN_PREFIX/lib
 if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi/
   cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
+  #add libpython to apk libs
+  cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
   if [ "$BUILD_TYPE" == "Debug" ]; then
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
@@ -42,6 +44,8 @@ fi
 if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi-v7a/
   cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
+  #add libpython to apk libs
+  cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
   if [ "$BUILD_TYPE" == "Debug" ]; then
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
