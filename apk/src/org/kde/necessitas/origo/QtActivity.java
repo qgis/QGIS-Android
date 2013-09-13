@@ -1,28 +1,27 @@
 /*
-    Copyright (c) 2009-2011, BogDan Vatra <bog_dan_ro@yahoo.com>
-    All rights reserved.
+    Copyright (c) 2012-2013, BogDan Vatra <bogdan@kde.org>
+    Contact: http://www.qt-project.org/legal
 
     Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-        * Redistributions of source code must retain the above copyright
-        notice, this list of conditions and the following disclaimer.
-        * Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
-        * Neither the name of the  BogDan Vatra <bog_dan_ro@yahoo.com> nor the
-        names of its contributors may be used to endorse or promote products
-        derived from this software without specific prior written permission.
+    modification, are permitted provided that the following conditions
+    are met:
 
-    THIS SOFTWARE IS PROVIDED BY BogDan Vatra <bog_dan_ro@yahoo.com> ''AS IS'' AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL BogDan Vatra <bog_dan_ro@yahoo.com> BE LIABLE FOR ANY
-    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+    IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+    NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+    THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 package org.kde.necessitas.origo;
@@ -69,70 +68,80 @@ import android.view.accessibility.AccessibilityEvent;
 import dalvik.system.DexClassLoader;
 
 //@ANDROID-11
-//QtCreator import android.app.Fragment;
-//QtCreator import android.view.ActionMode;
-//QtCreator import android.view.ActionMode.Callback;
+import android.app.Fragment;
+import android.view.ActionMode;
+import android.view.ActionMode.Callback;
 //@ANDROID-11
 
 public class QtActivity extends Activity
 {
     private final static int MINISTRO_INSTALL_REQUEST_CODE = 0xf3ee; // request code used to know when Ministro instalation is finished
-    private static final int MINISTRO_API_LEVEL=2; // Ministro api level (check IMinistro.aidl file)
-    private static final int NECESSITAS_API_LEVEL=2; // Necessitas api level used by platform plugin
-    private static final String QT_PROVIDER="necessitas";
-    private static final int QT_VERSION=0x040801; // Qt version 4.8.00 check http://qt-project.org/doc/qt-4.8/qtglobal.html#QT_VERSION
+    private static final int MINISTRO_API_LEVEL = 3; // Ministro api level (check IMinistro.aidl file)
+    private static final int NECESSITAS_API_LEVEL = 2; // Necessitas api level used by platform plugin
+    private static final int QT_VERSION = 0x040700; // This app requires at least Qt version 5.1.0
 
-    private static final String ERROR_CODE_KEY="error.code";
-    private static final String ERROR_MESSAGE_KEY="error.message";
-    private static final String DEX_PATH_KEY="dex.path";
-    private static final String LIB_PATH_KEY="lib.path";
-    private static final String LOADER_CLASS_NAME_KEY="loader.class.name";
-    private static final String NATIVE_LIBRARIES_KEY="native.libraries";
-    private static final String ENVIRONMENT_VARIABLES_KEY="environment.variables";
-    private static final String APPLICATION_PARAMETERS_KEY="application.parameters";
-    private static final String BUNDLED_LIBRARIES_KEY="bundled.libraries";
-    private static final String MAIN_LIBRARY_KEY="main.library";
-    private static final String NECESSITAS_API_LEVEL_KEY="necessitas.api.level";
+    private static final String ERROR_CODE_KEY = "error.code";
+    private static final String ERROR_MESSAGE_KEY = "error.message";
+    private static final String DEX_PATH_KEY = "dex.path";
+    private static final String LIB_PATH_KEY = "lib.path";
+    private static final String LOADER_CLASS_NAME_KEY = "loader.class.name";
+    private static final String NATIVE_LIBRARIES_KEY = "native.libraries";
+    private static final String ENVIRONMENT_VARIABLES_KEY = "environment.variables";
+    private static final String APPLICATION_PARAMETERS_KEY = "application.parameters";
+    private static final String BUNDLED_LIBRARIES_KEY = "bundled.libraries";
+    private static final String MAIN_LIBRARY_KEY = "main.library";
+    private static final String STATIC_INIT_CLASSES_KEY = "static.init.classes";
+    private static final String NECESSITAS_API_LEVEL_KEY = "necessitas.api.level";
 
     /// Ministro server parameter keys
-    private static final String REQUIRED_MODULES_KEY="required.modules";
-    private static final String APPLICATION_TITLE_KEY="application.title";
-    private static final String QT_PROVIDER_KEY="qt.provider";
-    private static final String MINIMUM_MINISTRO_API_KEY="minimum.ministro.api";
-    private static final String MINIMUM_QT_VERSION_KEY="minimum.qt.version";
-//    private static final String REPOSITORIES="3rd.party.repositories"; // needs MINISTRO_API_LEVEL >=2 !!!
-                                                                       // Use this key to specify any 3rd party repositories urls
-                                                                       // Ministro will download these repositories into thier
+    private static final String REQUIRED_MODULES_KEY = "required.modules";
+    private static final String APPLICATION_TITLE_KEY = "application.title";
+    private static final String MINIMUM_MINISTRO_API_KEY = "minimum.ministro.api";
+    private static final String MINIMUM_QT_VERSION_KEY = "minimum.qt.version";
+    private static final String SOURCES_KEY = "sources";               // needs MINISTRO_API_LEVEL >=3 !!!
+                                                                       // Use this key to specify any 3rd party sources urls
+                                                                       // Ministro will download these repositories into their
                                                                        // own folders, check http://community.kde.org/Necessitas/Ministro
                                                                        // for more details.
 
-    private static final String APPLICATION_PARAMETERS=null; // use this variable to pass any parameters to your application,
-                                                             // the parameters must not contain any white spaces
-                                                             // and must be separated with "\t"
-                                                             // e.g "-param1\t-param2=value2\t-param3\tvalue3"
+    private static final String REPOSITORY_KEY = "repository";         // use this key to overwrite the default ministro repsitory
 
-    private static final String ENVIRONMENT_VARIABLES="QT_USE_ANDROID_NATIVE_STYLE=0\t";
-                                                             // use this variable to add any environment variables to your application.
-                                                             // the env vars must be separated with "\t"
-                                                             // e.g. "ENV_VAR1=1\tENV_VAR2=2\t"
-                                                             // Currently the following vars are used by the android plugin:
-                                                             // * QT_USE_ANDROID_NATIVE_STYLE - 0 if you don't want to use android style plugin, it will save a few ms at startup.
+    private static final String APPLICATION_PARAMETERS = null; // use this variable to pass any parameters to your application,
+                                                               // the parameters must not contain any white spaces
+                                                               // and must be separated with "\t"
+                                                               // e.g "-param1\t-param2=value2\t-param3\tvalue3"
 
-    private static final int INCOMPATIBLE_MINISTRO_VERSION=1; // Incompatible Ministro version. Ministro needs to be upgraded.
+    private static final String ENVIRONMENT_VARIABLES = "QT_USE_ANDROID_NATIVE_STYLE=0\t";
+                                                               // use this variable to add any environment variables to your application.
+                                                               // the env vars must be separated with "\t"
+                                                               // e.g. "ENV_VAR1=1\tENV_VAR2=2\t"
+                                                               // Currently the following vars are used by the android plugin:
+                                                               // * QT_USE_ANDROID_NATIVE_STYLE - 0 if you don't want to use android style plugin, it will save a few ms at startup.
+
+    private static final int INCOMPATIBLE_MINISTRO_VERSION = 1; // Incompatible Ministro version. Ministro needs to be upgraded.
     private ActivityInfo m_activityInfo = null; // activity info object, used to access the libs and the strings
     private DexClassLoader m_classLoader = null; // loader object
+    private String[] m_sources = {"https://files.kde.org/necessitas/ministro/android/necessitas/qt5/latest"}; // Make sure you are using ONLY secure locations
+    private String m_repository = "default"; // Overwrites the default Ministro repository
+                                                        // Possible values:
+                                                        // * default - Ministro default repository set with "Ministro configuration tool".
+                                                        // By default the stable version is used. Only this or stable repositories should
+                                                        // be used in production.
+                                                        // * stable - stable repository, only this and default repositories should be used
+                                                        // in production.
+                                                        // * testing - testing repository, DO NOT use this repository in production,
+                                                        // this repository is used to push a new release, and should be used to test your application.
+                                                        // * unstable - unstable repository, DO NOT use this repository in production,
+                                                        // this repository is used to push Qt snapshots.
     private String[] m_qtLibs = null; // required qt libs
 
     // this function is used to load and start the loader
     private void loadApplication(Bundle loaderParams)
     {
-        try
-        {
+        try {
             final int errorCode = loaderParams.getInt(ERROR_CODE_KEY);
-            if (errorCode != 0)
-            {
-                if (errorCode == INCOMPATIBLE_MINISTRO_VERSION)
-                {
+            if (errorCode != 0) {
+                if (errorCode == INCOMPATIBLE_MINISTRO_VERSION) {
                     downloadUpgradeMinistro(loaderParams.getString(ERROR_MESSAGE_KEY));
                     return;
                 }
@@ -165,15 +174,18 @@ public class QtActivity extends Activity
             loaderParams.putInt(NECESSITAS_API_LEVEL_KEY, NECESSITAS_API_LEVEL);
 
             // load and start QtLoader class
-            m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY) // .jar/.apk files
-                                            , getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath() // directory where optimized DEX files should be written.
-                                            , loaderParams.containsKey(LIB_PATH_KEY)?loaderParams.getString(LIB_PATH_KEY):null // libs folder (if exists)
-                                            , getClassLoader()); // parent loader
+            m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY), // .jar/.apk files
+                                               getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath(), // directory where optimized DEX files should be written.
+                                               loaderParams.containsKey(LIB_PATH_KEY) ? loaderParams.getString(LIB_PATH_KEY) : null, // libs folder (if exists)
+                                               getClassLoader()); // parent loader
 
             @SuppressWarnings("rawtypes")
             Class loaderClass = m_classLoader.loadClass(loaderParams.getString(LOADER_CLASS_NAME_KEY)); // load QtLoader class
             Object qtLoader = loaderClass.newInstance(); // create an instance
-            Method perpareAppMethod=qtLoader.getClass().getMethod("loadApplication", Activity.class, ClassLoader.class, Bundle.class);
+            Method perpareAppMethod = qtLoader.getClass().getMethod("loadApplication",
+                                                                    Activity.class,
+                                                                    ClassLoader.class,
+                                                                    Bundle.class);
             if (!(Boolean)perpareAppMethod.invoke(qtLoader, this, m_classLoader, loaderParams))
                 throw new Exception("");
 
@@ -190,10 +202,11 @@ public class QtActivity extends Activity
         } catch (Exception e) {
             e.printStackTrace();
             AlertDialog errorDialog = new AlertDialog.Builder(QtActivity.this).create();
-            if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.fatal_error_msg"))
+            if (m_activityInfo.metaData.containsKey("android.app.fatal_error_msg"))
                 errorDialog.setMessage(m_activityInfo.metaData.getString("android.app.fatal_error_msg"));
             else
                 errorDialog.setMessage("Fatal error, your application can't be started.");
+
             errorDialog.setButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -211,18 +224,17 @@ public class QtActivity extends Activity
         {
             m_service = IMinistro.Stub.asInterface(service);
             try {
-                if (m_service!=null)
-                {
+                if (m_service!=null) {
                     Bundle parameters= new Bundle();
                     parameters.putStringArray(REQUIRED_MODULES_KEY, m_qtLibs);
                     parameters.putString(APPLICATION_TITLE_KEY, (String)QtActivity.this.getTitle());
                     parameters.putInt(MINIMUM_MINISTRO_API_KEY, MINISTRO_API_LEVEL);
-                    parameters.putString(QT_PROVIDER_KEY, QT_PROVIDER);
                     parameters.putInt(MINIMUM_QT_VERSION_KEY, QT_VERSION);
                     parameters.putString(ENVIRONMENT_VARIABLES_KEY, ENVIRONMENT_VARIABLES);
                     if (null!=APPLICATION_PARAMETERS)
                         parameters.putString(APPLICATION_PARAMETERS_KEY, APPLICATION_PARAMETERS);
-                    // parameters.putStringArray(REPOSITORIES, null);
+                    parameters.putStringArray(SOURCES_KEY, m_sources);
+                    parameters.putString(REPOSITORY_KEY, m_repository);
                     m_service.requestLoader(m_ministroCallback, parameters);
                 }
             } catch (RemoteException e) {
@@ -233,9 +245,8 @@ public class QtActivity extends Activity
     private IMinistroCallback m_ministroCallback = new IMinistroCallback.Stub() {
         // this function is called back by Ministro.
         @Override
-        public void loaderReady(final Bundle loaderParams) throws RemoteException
-        {
-            runOnUiThread( new Runnable() {
+        public void loaderReady(final Bundle loaderParams) throws RemoteException {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     unbindService(m_ministroConnection);
@@ -246,8 +257,7 @@ public class QtActivity extends Activity
     };
 
         @Override
-        public void onServiceDisconnected(ComponentName name)
-        {
+        public void onServiceDisconnected(ComponentName name) {
             m_service = null;
         }
     };
@@ -259,13 +269,11 @@ public class QtActivity extends Activity
         downloadDialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                try
-                {
+                try {
                     Uri uri = Uri.parse("market://search?q=pname:org.kde.necessitas.ministro");
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivityForResult(intent, MINISTRO_INSTALL_REQUEST_CODE);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     ministroNotFound();
                 }
@@ -285,7 +293,7 @@ public class QtActivity extends Activity
     {
         AlertDialog errorDialog = new AlertDialog.Builder(QtActivity.this).create();
 
-        if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.ministro_not_found_msg"))
+        if (m_activityInfo.metaData.containsKey("android.app.ministro_not_found_msg"))
             errorDialog.setMessage(m_activityInfo.metaData.getString("android.app.ministro_not_found_msg"));
         else
             errorDialog.setMessage("Can't find Ministro service.\nThe application can't start.");
@@ -301,83 +309,89 @@ public class QtActivity extends Activity
 
     private void startApp(final boolean firstStart)
     {
-        try
-        {
-            ActivityInfo ai=getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            if (ai.metaData.containsKey("android.app.qt_libs_resource_id"))
-            {
-                int resourceId = ai.metaData.getInt("android.app.qt_libs_resource_id");
-                m_qtLibs=getResources().getStringArray(resourceId);
+        try {
+            if (m_activityInfo.metaData.containsKey("android.app.qt_sources_resource_id")) {
+                int resourceId = m_activityInfo.metaData.getInt("android.app.qt_sources_resource_id");
+                m_sources = getResources().getStringArray(resourceId);
             }
-            if (getIntent().getExtras()!= null && getIntent().getExtras().containsKey("use_local_qt_libs")
-                    && getIntent().getExtras().getString("use_local_qt_libs").equals("true"))
-            {
-                ArrayList<String> libraryList= new ArrayList<String>();
 
-                String localPrefix="/data/local/qt/";
-                if (getIntent().getExtras().containsKey("libs_prefix"))
-                    localPrefix=getIntent().getExtras().getString("libs_prefix");
+            if (m_activityInfo.metaData.containsKey("android.app.repository"))
+                m_repository = m_activityInfo.metaData.getString("android.app.repository");
 
-                if (m_qtLibs != null)
-                    for(int i=0;i<m_qtLibs.length;i++)
-                    {
+            if (m_activityInfo.metaData.containsKey("android.app.qt_libs_resource_id")) {
+                int resourceId = m_activityInfo.metaData.getInt("android.app.qt_libs_resource_id");
+                m_qtLibs = getResources().getStringArray(resourceId);
+            }
+
+            if (m_activityInfo.metaData.containsKey("android.app.use_local_qt_libs")
+                    && m_activityInfo.metaData.getInt("android.app.use_local_qt_libs") == 1) {
+                ArrayList<String> libraryList = new ArrayList<String>();
+
+                String localPrefix = "/data/local/tmp/qt/";
+                if (m_activityInfo.metaData.containsKey("android.app.libs_prefix"))
+                    localPrefix = m_activityInfo.metaData.getString("android.app.libs_prefix");
+
+                if (m_qtLibs != null) {
+                    for (int i=0;i<m_qtLibs.length;i++)
                         libraryList.add(localPrefix+"lib/lib"+m_qtLibs[i]+".so");
-                    }
+                }
 
-                if (getIntent().getExtras().containsKey("load_local_libs"))
-                {
-                    String []extraLibs=getIntent().getExtras().getString("load_local_libs").split(":");
-                    for (String lib:extraLibs)
-                        if (lib.length()>0)
-                            libraryList.add(localPrefix+lib);
+                if (m_activityInfo.metaData.containsKey("android.app.load_local_libs")) {
+                    String[] extraLibs = m_activityInfo.metaData.getString("android.app.load_local_libs").split(":");
+                    for (String lib : extraLibs) {
+                        if (lib.length() > 0)
+                            libraryList.add(localPrefix + lib);
+                    }
                 }
 
                 String dexPaths = new String();
                 String pathSeparator = System.getProperty("path.separator", ":");
-                if (getIntent().getExtras().containsKey("load_local_jars"))
-                {
-                    String []jarFiles=getIntent().getExtras().getString("load_local_jars").split(":");
-                    for (String jar:jarFiles)
-                        if (jar.length()>0)
-                        {
-                            if (dexPaths.length()>0)
-                                dexPaths+=pathSeparator;
-                            dexPaths+=localPrefix+jar;
+                if (m_activityInfo.metaData.containsKey("android.app.load_local_jars")) {
+                    String[] jarFiles = m_activityInfo.metaData.getString("android.app.load_local_jars").split(":");
+                    for (String jar:jarFiles) {
+                        if (jar.length() > 0) {
+                            if (dexPaths.length() > 0)
+                                dexPaths += pathSeparator;
+                            dexPaths += localPrefix + jar;
                         }
+                    }
                 }
 
                 Bundle loaderParams = new Bundle();
                 loaderParams.putInt(ERROR_CODE_KEY, 0);
                 loaderParams.putString(DEX_PATH_KEY, dexPaths);
-                loaderParams.putString(LOADER_CLASS_NAME_KEY, getIntent().getExtras().containsKey("loader_class_name")
-                                                            ?getIntent().getExtras().getString("loader_class_name")
-                                                            :"org.kde.necessitas.industrius.QtActivityDelegate");
+                loaderParams.putString(LOADER_CLASS_NAME_KEY, "org.qtproject.qt5.android.QtActivityDelegate");
+                if (m_activityInfo.metaData.containsKey("android.app.static_init_classes")) {
+                    loaderParams.putStringArray(STATIC_INIT_CLASSES_KEY,
+                                                m_activityInfo.metaData.getString("android.app.static_init_classes").split(":"));
+                }
                 loaderParams.putStringArrayList(NATIVE_LIBRARIES_KEY, libraryList);
-                loaderParams.putString(ENVIRONMENT_VARIABLES_KEY,"QML_IMPORT_PATH="+localPrefix+"/imports\tQT_PLUGIN_PATH="+localPrefix+"/plugins");
-                loaderParams.putString(APPLICATION_PARAMETERS_KEY,"-platform\tandroid");
+                loaderParams.putString(ENVIRONMENT_VARIABLES_KEY, ENVIRONMENT_VARIABLES
+                                                                  + "QT_QPA_EGLFS_HIDECURSOR=1"
+                                                                  + "\tQML2_IMPORT_PATH=" + localPrefix + "/qml"
+                                                                  + "\tQML_IMPORT_PATH=" + localPrefix + "/imports"
+                                                                  + "\tQT_PLUGIN_PATH=" + localPrefix + "/plugins");
                 loadApplication(loaderParams);
                 return;
             }
 
             try {
-                if (!bindService(new Intent(org.kde.necessitas.ministro.IMinistro.class.getCanonicalName()), m_ministroConnection, Context.BIND_AUTO_CREATE))
+                if (!bindService(new Intent(org.kde.necessitas.ministro.IMinistro.class.getCanonicalName()),
+                                 m_ministroConnection,
+                                 Context.BIND_AUTO_CREATE)) {
                     throw new SecurityException("");
-            } catch (Exception e) {
-                if (firstStart)
-                {
-                    String msg="This application requires Ministro service. Would you like to install it?";
-                    if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.ministro_needed_msg"))
-                        msg=m_activityInfo.metaData.getString("android.app.ministro_needed_msg");
-                    downloadUpgradeMinistro(msg);
                 }
-                else
-                {
+            } catch (Exception e) {
+                if (firstStart) {
+                    String msg = "This application requires Ministro service. Would you like to install it?";
+                    if (m_activityInfo.metaData.containsKey("android.app.ministro_needed_msg"))
+                        msg = m_activityInfo.metaData.getString("android.app.ministro_needed_msg");
+                    downloadUpgradeMinistro(msg);
+                } else {
                     ministroNotFound();
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(QtApplication.QtTAG, "Can't create main activity", e);
         }
     }
@@ -449,13 +463,12 @@ public class QtActivity extends Activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 
-        if (QtApplication.m_delegateObject != null && QtApplication.onActivityResult != null)
-        {
+        if (QtApplication.m_delegateObject != null && QtApplication.onActivityResult != null) {
             QtApplication.invokeDelegateMethod(QtApplication.onActivityResult, requestCode, resultCode, data);
             return;
         }
         if (requestCode == MINISTRO_INSTALL_REQUEST_CODE)
-                startApp(false);
+            startApp(false);
         super.onActivityResult(requestCode, resultCode, data);
     }
     public void super_onActivityResult(int requestCode, int resultCode, Intent data)
@@ -544,11 +557,11 @@ public class QtActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (QtApplication.m_delegateObject != null && QtApplication.onCreate != null)
-        {
+        if (QtApplication.m_delegateObject != null && QtApplication.onCreate != null) {
             QtApplication.invokeDelegateMethod(QtApplication.onCreate, savedInstanceState);
             return;
         }
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         try {
             m_activityInfo = getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
@@ -557,10 +570,10 @@ public class QtActivity extends Activity
             finish();
             return;
         }
-        if (null == getLastNonConfigurationInstance())
-        {
+
+        if (null == getLastNonConfigurationInstance()) {
             // if splash screen is defined, then show it
-            if ( m_activityInfo.metaData.containsKey("android.app.splash_screen") )
+            if (m_activityInfo.metaData.containsKey("android.app.splash_screen") )
                 setContentView(m_activityInfo.metaData.getInt("android.app.splash_screen"));
             startApp(true);
         }
@@ -713,7 +726,7 @@ public class QtActivity extends Activity
     public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event)
     {
         if (QtApplication.m_delegateObject != null && QtApplication.onKeyMultiple != null)
-            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyMultiple ,keyCode, repeatCount, event);
+            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyMultiple, keyCode, repeatCount, event);
         else
             return super.onKeyMultiple(keyCode, repeatCount, event);
     }
@@ -1152,130 +1165,130 @@ public class QtActivity extends Activity
     //////////////// Activity API 11 /////////////
 
 //@ANDROID-11
-//QtCreator     @Override
-//QtCreator     public boolean dispatchKeyShortcutEvent(KeyEvent event)
-//QtCreator     {
-//QtCreator         if (QtApplication.m_delegateObject != null  && QtApplication.dispatchKeyShortcutEvent != null)
-//QtCreator             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.dispatchKeyShortcutEvent, event);
-//QtCreator         else
-//QtCreator             return super.dispatchKeyShortcutEvent(event);
-//QtCreator     }
-//QtCreator     public boolean super_dispatchKeyShortcutEvent(KeyEvent event)
-//QtCreator     {
-//QtCreator         return super.dispatchKeyShortcutEvent(event);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public void onActionModeFinished(ActionMode mode)
-//QtCreator     {
-//QtCreator         if (!QtApplication.invokeDelegate(mode).invoked)
-//QtCreator             super.onActionModeFinished(mode);
-//QtCreator     }
-//QtCreator     public void super_onActionModeFinished(ActionMode mode)
-//QtCreator     {
-//QtCreator         super.onActionModeFinished(mode);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public void onActionModeStarted(ActionMode mode)
-//QtCreator     {
-//QtCreator         if (!QtApplication.invokeDelegate(mode).invoked)
-//QtCreator             super.onActionModeStarted(mode);
-//QtCreator     }
-//QtCreator     public void super_onActionModeStarted(ActionMode mode)
-//QtCreator     {
-//QtCreator         super.onActionModeStarted(mode);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public void onAttachFragment(Fragment fragment)
-//QtCreator     {
-//QtCreator         if (!QtApplication.invokeDelegate(fragment).invoked)
-//QtCreator             super.onAttachFragment(fragment);
-//QtCreator     }
-//QtCreator     public void super_onAttachFragment(Fragment fragment)
-//QtCreator     {
-//QtCreator         super.onAttachFragment(fragment);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
-//QtCreator     {
-//QtCreator         QtApplication.InvokeResult res = QtApplication.invokeDelegate(parent, name, context, attrs);
-//QtCreator         if (res.invoked)
-//QtCreator             return (View)res.methodReturns;
-//QtCreator         else
-//QtCreator             return super.onCreateView(parent, name, context, attrs);
-//QtCreator     }
-//QtCreator     public View super_onCreateView(View parent, String name, Context context,
-//QtCreator             AttributeSet attrs) {
-//QtCreator         return super.onCreateView(parent, name, context, attrs);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public boolean onKeyShortcut(int keyCode, KeyEvent event)
-//QtCreator     {
-//QtCreator         if (QtApplication.m_delegateObject != null  && QtApplication.onKeyShortcut != null)
-//QtCreator             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyShortcut, keyCode,event);
-//QtCreator         else
-//QtCreator             return super.onKeyShortcut(keyCode, event);
-//QtCreator     }
-//QtCreator     public boolean super_onKeyShortcut(int keyCode, KeyEvent event)
-//QtCreator     {
-//QtCreator         return super.onKeyShortcut(keyCode, event);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public ActionMode onWindowStartingActionMode(Callback callback)
-//QtCreator     {
-//QtCreator         QtApplication.InvokeResult res = QtApplication.invokeDelegate(callback);
-//QtCreator         if (res.invoked)
-//QtCreator             return (ActionMode)res.methodReturns;
-//QtCreator         else
-//QtCreator             return super.onWindowStartingActionMode(callback);
-//QtCreator     }
-//QtCreator     public ActionMode super_onWindowStartingActionMode(Callback callback)
-//QtCreator     {
-//QtCreator         return super.onWindowStartingActionMode(callback);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
+    @Override
+    public boolean dispatchKeyShortcutEvent(KeyEvent event)
+    {
+        if (QtApplication.m_delegateObject != null  && QtApplication.dispatchKeyShortcutEvent != null)
+            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.dispatchKeyShortcutEvent, event);
+        else
+            return super.dispatchKeyShortcutEvent(event);
+    }
+    public boolean super_dispatchKeyShortcutEvent(KeyEvent event)
+    {
+        return super.dispatchKeyShortcutEvent(event);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public void onActionModeFinished(ActionMode mode)
+    {
+        if (!QtApplication.invokeDelegate(mode).invoked)
+            super.onActionModeFinished(mode);
+    }
+    public void super_onActionModeFinished(ActionMode mode)
+    {
+        super.onActionModeFinished(mode);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public void onActionModeStarted(ActionMode mode)
+    {
+        if (!QtApplication.invokeDelegate(mode).invoked)
+            super.onActionModeStarted(mode);
+    }
+    public void super_onActionModeStarted(ActionMode mode)
+    {
+        super.onActionModeStarted(mode);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public void onAttachFragment(Fragment fragment)
+    {
+        if (!QtApplication.invokeDelegate(fragment).invoked)
+            super.onAttachFragment(fragment);
+    }
+    public void super_onAttachFragment(Fragment fragment)
+    {
+        super.onAttachFragment(fragment);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
+    {
+        QtApplication.InvokeResult res = QtApplication.invokeDelegate(parent, name, context, attrs);
+        if (res.invoked)
+            return (View)res.methodReturns;
+        else
+            return super.onCreateView(parent, name, context, attrs);
+    }
+    public View super_onCreateView(View parent, String name, Context context,
+            AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public boolean onKeyShortcut(int keyCode, KeyEvent event)
+    {
+        if (QtApplication.m_delegateObject != null  && QtApplication.onKeyShortcut != null)
+            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onKeyShortcut, keyCode,event);
+        else
+            return super.onKeyShortcut(keyCode, event);
+    }
+    public boolean super_onKeyShortcut(int keyCode, KeyEvent event)
+    {
+        return super.onKeyShortcut(keyCode, event);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public ActionMode onWindowStartingActionMode(Callback callback)
+    {
+        QtApplication.InvokeResult res = QtApplication.invokeDelegate(callback);
+        if (res.invoked)
+            return (ActionMode)res.methodReturns;
+        else
+            return super.onWindowStartingActionMode(callback);
+    }
+    public ActionMode super_onWindowStartingActionMode(Callback callback)
+    {
+        return super.onWindowStartingActionMode(callback);
+    }
+    //---------------------------------------------------------------------------
 //@ANDROID-11
     //////////////// Activity API 12 /////////////
 
 //@ANDROID-12
-//QtCreator     @Override
-//QtCreator     public boolean dispatchGenericMotionEvent(MotionEvent ev)
-//QtCreator     {
-//QtCreator         if (QtApplication.m_delegateObject != null  && QtApplication.dispatchGenericMotionEvent != null)
-//QtCreator             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.dispatchGenericMotionEvent, ev);
-//QtCreator         else
-//QtCreator             return super.dispatchGenericMotionEvent(ev);
-//QtCreator     }
-//QtCreator     public boolean super_dispatchGenericMotionEvent(MotionEvent event)
-//QtCreator     {
-//QtCreator         return super.dispatchGenericMotionEvent(event);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
-//QtCreator 
-//QtCreator     @Override
-//QtCreator     public boolean onGenericMotionEvent(MotionEvent event)
-//QtCreator     {
-//QtCreator         if (QtApplication.m_delegateObject != null  && QtApplication.onGenericMotionEvent != null)
-//QtCreator             return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onGenericMotionEvent, event);
-//QtCreator         else
-//QtCreator             return super.onGenericMotionEvent(event);
-//QtCreator     }
-//QtCreator     public boolean super_onGenericMotionEvent(MotionEvent event)
-//QtCreator     {
-//QtCreator         return super.onGenericMotionEvent(event);
-//QtCreator     }
-//QtCreator     //---------------------------------------------------------------------------
+    @Override
+    public boolean dispatchGenericMotionEvent(MotionEvent ev)
+    {
+        if (QtApplication.m_delegateObject != null  && QtApplication.dispatchGenericMotionEvent != null)
+            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.dispatchGenericMotionEvent, ev);
+        else
+            return super.dispatchGenericMotionEvent(ev);
+    }
+    public boolean super_dispatchGenericMotionEvent(MotionEvent event)
+    {
+        return super.dispatchGenericMotionEvent(event);
+    }
+    //---------------------------------------------------------------------------
+
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event)
+    {
+        if (QtApplication.m_delegateObject != null  && QtApplication.onGenericMotionEvent != null)
+            return (Boolean) QtApplication.invokeDelegateMethod(QtApplication.onGenericMotionEvent, event);
+        else
+            return super.onGenericMotionEvent(event);
+    }
+    public boolean super_onGenericMotionEvent(MotionEvent event)
+    {
+        return super.onGenericMotionEvent(event);
+    }
+    //---------------------------------------------------------------------------
 //@ANDROID-12
 
 }

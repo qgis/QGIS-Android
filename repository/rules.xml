@@ -1,0 +1,19 @@
+<root>
+    <platforms>
+        <libs>
+            <version value="9"/>
+            <version value="10" symlink="9"/>
+            <version value="11" symlink="9"/>
+            <version value="12" symlink="9"/>
+            <version value="13" symlink="9"/>
+            <version value="14" symlink="9"/>
+            <version value="15" symlink="9"/>
+            <version value="16" symlink="9"/>
+            <version value="17" symlink="9"/>
+            <version value="18" symlink="9"/>
+        </libs>
+    </platforms>
+
+    <libs excludePaths="bin;doc;files;include;man;share" loaderClassName="org.kde.necessitas.origo.QtActivityDelegate" environmentVariables="MINISTRO_SSL_CERTS_PATH=MINISTRO_PATH/dl/ssl	QT_QPA_EGLFS_HIDECURSOR=1	QML2_IMPORT_PATH=MINISTRO_SOURCE_ROOT_PATH/qml	QML_IMPORT_PATH=MINISTRO_SOURCE_ROOT_PATH/imports	QT_PLUGIN_PATH=MINISTRO_SOURCE_ROOT_PATH/plugins">
+    </libs>
+</root>
