@@ -15,23 +15,31 @@
 #   *                                                                         *
 #   ***************************************************************************/
 
+# This script takes a tombstone file (taken from /data/tombstones/tombstone_XX)
+# or reads from /data/log/dumpstate_app_native.txt.gz
+# and as last resort reads from logcat
+
 set -e
 
 source `dirname $0`/config.conf
-$ADB kill-server
-$ADB devices
 
-echo "" > /tmp/logcat.log
-gnome-system-log /tmp/logcat.log &
-$ADB logcat -c
+LOG_FILE=`mktemp`
 
-if [ "$1" = "--clear" ]; then
-    echo "clearing org.qgis.qgis"
-    $ADB shell pm clear org.qgis.qgis
+if [ -n "$1" ];then
+  echo "#######READING FORM $1"
+  LOG_FILE=$1
+else
+  if $ADB pull /data/log/dumpstate_app_native.txt.gz /tmp; then
+    echo "#######READING FORM dumpstate_app_native"
+    gunzip /tmp/dumpstate_app_native.txt.gz
+    LOG_FILE=/tmp/dumpstate_app_native.txt
+#  elif $ADB pull /data/tombstones/tombstone_05 /tmp; then
+#    LOG_FILE=/tmp/tombstone_05
+  else
+    echo "#######READING FORM LOGCAT"
+    $ADB logcat -d > $LOG_FILE
+  fi
 fi
-
-$ADB shell am force-stop org.qgis.qgis
-$ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QgisActivity
-$ADB logcat | tee /tmp/logcat.log
-
+$ANDROID_NDK_ROOT/ndk-stack -sym $INSTALL_DIR -dump $LOG_FILE
+#$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-addr2line -f -e $INSTALL_DIR/libqgis.so 0017e8c8
 
