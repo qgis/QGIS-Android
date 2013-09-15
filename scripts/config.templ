@@ -41,6 +41,9 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #passing BUILD_TYPE=Release when calling a script will override the default
   #for example BUILD_TYPE=Release ./build-all.sh
 
+  #build python bindings
+  WITH_BINDINGS=FALSE
+  
   #which GUI should be build, both can be true  
   export WITH_MOBILE=FALSE
   export WITH_DESKTOP=TRUE
@@ -80,6 +83,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
     export BUILD_TYPE=$DEFAULT_BUILD_TYPE
   fi
   
+  export ADB=$ANDROID_SDK_ROOT/platform-tools/adb
   export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI  
   export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_ABI
   export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_ABI
@@ -152,7 +156,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
 
   #######detect cpu cores######
   CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
-  export CORES=$(($CORES+1))
+  export CORES=1 #$(($CORES+1))
   #######mark conf as loaded#######
   export QGIS_ANDROID_CONF_LOADED=1
 fi
