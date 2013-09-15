@@ -129,23 +129,28 @@ MY_CMAKE_FLAGS=" \
 -DWITH_INTERNAL_SPATIALITE=OFF \
 -DWITH_MAPSERVER=OFF \
 -DWITH_MOBILE=$WITH_MOBILE \
+-DWITH_BINDINGS=$WITH_BINDINGS \
 -DWITH_POSTGRESQL=ON \
 -DWITH_SPATIALITE=ON \
 -DWITH_TXT2TAGS_PDF=OFF \
 -DGITCOMMAND=`which git` \
 -DGIT_MARKER=$QGIS_DIR/.git/index \
 -DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
--DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so \
--DPYTHON_EXECUTABLE=/usr/bin/python \
--DPYTHON_LIBRARY=/home/marco/dev/android-python27/python-build-with-qt/build/lib/libpython2.7.so \
--DPYTHON_INCLUDE_PATH=/home/marco/dev/android-python27/python-build-with-qt/build/include/python2.7"
-#-DPYTHON_EXECUTABLE=$SRC_DIR/python/bin/python2.7 \
-#-DPYTHON_LIBRARY=$SRC_DIR/python/lib/libpython2.7.so"
-
+-DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so" \
+#-DPYTHON_LIBRARY=$SRC_DIR/python/lib/libpython2.7.so \
+#-DPYTHON_INCLUDE_PATH=$SRC_DIR/python/bin/python2.7"
+if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
+  MY_CMAKE_FLAGS="$MY_CMAKE_FLAGS \
+  -DPYTHON_EXECUTABLE=/usr/bin/python \
+  -DPYTHON_INCLUDE_PATH=/home/marco/dev/android-python27/python-build-with-qt/build/include/python2.7 \
+  -DPYTHON_LIBRARY=/home/marco/dev/android-python27/python-build-with-qt/build/lib/libpython2.7.so"
+fi 
 
 #uncomment the next 2 lines to only get the needed cmake flags echoed
 #echo $MY_CMAKE_FLAGS
 #exit 0
+
+make -j$CORES uninstall
 
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake
@@ -178,6 +183,7 @@ fi
 #echo $CMAKE_C_FLAGS
 #echo $CFLAGS
 #exit 0
+make -j$CORES uninstall
 make -j$CORES install
 
 GIT_REV=$(git rev-parse HEAD)

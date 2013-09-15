@@ -68,7 +68,11 @@ echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
 #copy assets to apk
 rm -vrf $APK_DIR/assets
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
+echo $WITH_BINDINGS
 cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
+  cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+fi
 cd $APK_DIR/assets/
 zip -r9 assets.zip share
 rm -rf $APK_DIR/assets/share/

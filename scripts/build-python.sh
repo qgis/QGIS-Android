@@ -1,12 +1,13 @@
+set -x
 export NDK="/home/marco/dev/necessitas/android-ndk"
 export SDK="/home/marco/dev/necessitas/android-sdk"
 export NDKPLATFORM="$NDK/platforms/android-9/arch-arm"
-export PATH="$NDK/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/:$NDK:$SDK/tools:$PATH"
+export PATH="$NDK/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/:$NDK:$SDK/tools:$PATH"
 
-cd /home/marco/dev/android-python27/python-build-with-qt
+cd /home/marco/dev/android-python27-play/python-build-with-qt
 bash bootstrap.sh && build_py.sh 
 
-
+exit
 #sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
 replace: /home/tsheasha/GUC/Bachelors/android-python27/python-build/ /home/marco/dev/android-python27/python-build-with-qt/
 replace: /opt/necessitas/android-ndk-r6b/ /home/marco/dev/necessitas/android-ndk/
