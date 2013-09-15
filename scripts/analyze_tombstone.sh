@@ -26,8 +26,13 @@ source `dirname $0`/config.conf
 LOG_FILE=`mktemp`
 
 if [ -n "$1" ];then
-  echo "#######READING FORM $1"
-  LOG_FILE=$1
+  if [ "$1" = "logcat" ];then
+    echo "#######READING FORM LOGCAT"
+    $ADB logcat -d > $LOG_FILE
+  else
+    echo "#######READING FORM $1"
+    LOG_FILE=$1
+  fi
 else
   if $ADB pull /data/log/dumpstate_app_native.txt.gz /tmp; then
     echo "#######READING FORM dumpstate_app_native"
