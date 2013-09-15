@@ -11,14 +11,14 @@ QGIS android APK package:
 - Once ministro is done, QGIS should start.
 
 QGIS android dev setup:
-- git clone https://github.com/qgis/qgis-android.git or fork an clone
+- git clone https://github.com/qgis/QGIS-Android.git or fork an clone
 - Install Necessitas (http://necessitas.kde.org/necessitas/necessitas_sdk_installer.php http://files.kde.org/necessitas/installer/release/linux-online-necessitas-alpha4.1-sdk-installer )and choose at least:
     - NDK r8b (DEFAULT)
     - Qt 4.8-armeabi (DEFAULT)
     - Android api 15
 - get QGIS master from https://github.com/mbernasocchi/Quantum-GIS #or if you only want upstream code git://github.com/qgis/Quantum-GIS.git either by cloning or forking and cloning)
 - git checkout android
-- copy and configure qgis-android/scripts/config.templ to qgis-android/scripts/config.conf
+- copy and configure QGIS-Android/scripts/config.templ to QGIS-Android/scripts/config.conf
 - run scripts/build-all.sh
     OR
     - run scripts/setup-env.sh
@@ -45,12 +45,12 @@ example copy paste code:
  git checkout android
  cd ..
  #fork qqis-android
- curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/qgis/qgis-android/fork
- git clone git@github.com:$GITHUBUSERNAME/qgis-android.git
- cp qgis-android/scripts/config.templ qgis-android/scripts/config.conf
- nano qgis-android/scripts/config.conf #configure to your wishes
- ./qgis-android/scripts/build-all.sh
- ./qgis-android/scripts/run-apk.sh
+ curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/qgis/QGIS-Android/fork
+ git clone git@github.com:$GITHUBUSERNAME/QGIS-Android.git
+ cp QGIS-Android/scripts/config.templ QGIS-Android/scripts/config.conf
+ nano QGIS-Android/scripts/config.conf #configure to your wishes
+ ./QGIS-Android/scripts/build-all.sh
+ ./QGIS-Android/scripts/run-apk.sh
  
 adding a remote
  git remote add qgis git://github.com/qgis/Quantum-GIS.git
