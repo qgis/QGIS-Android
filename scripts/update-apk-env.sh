@@ -30,7 +30,7 @@ if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then
   cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
   #add libpython to apk libs
   cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
-  if [ "$BUILD_TYPE" == "Debug" ]; then
+  if [ "$BUILD_TYPE" = "Debug" ]; then
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
     #copy libgnustl_shared.so
@@ -46,7 +46,7 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
   cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
   #add libpython to apk libs
   cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
-  if [ "$BUILD_TYPE" == "Debug" ]; then
+  if [ "$BUILD_TYPE" = "Debug" ]; then
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
     #copy libgnustl_shared.so
@@ -58,19 +58,20 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
 fi
 
 #create gdb.setup
-echo "file $TMP_DIR/app_process" > $TMP_DIR/gdb.setup
-echo "target remote :5039" >> $TMP_DIR/gdb.setup
-echo "set solib-search-path $APK_DIR/libs/$ANDROID_ABI" >> $TMP_DIR/gdb.setup
+echo "set solib-search-path $APK_DIR/libs/$ANDROID_ABI" > $TMP_DIR/gdb.setup
 INCLUDES="$ANDROID_STANDALONE_TOOLCHAIN/sysroot/usr/include $QGIS_DIR/src $SRC_DIR"
 echo "directory $INCLUDES" >> $TMP_DIR/gdb.setup
+echo "file $TMP_DIR/app_process" >> $TMP_DIR/gdb.setup
+echo set "breakpoint pending on" >> $TMP_DIR/gdb.setup
 echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
+echo "break QgsFeatureRendererV2::_getPolygon" >> $TMP_DIR/gdb.setup
+echo "target remote :5039" >> $TMP_DIR/gdb.setup
 
 #copy assets to apk
 rm -vrf $APK_DIR/assets
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
-echo $WITH_BINDINGS
 cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
+if [ $WITH_BINDINGS = TRUE ]; then
   cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
 fi
 cd $APK_DIR/assets/

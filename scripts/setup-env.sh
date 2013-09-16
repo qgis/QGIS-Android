@@ -87,7 +87,7 @@ done
 
 #confirm settings
 CONTINUE="n"
-if [ "$NO_CONFIRMATION" == 1 ]; then
+if [ "$NO_CONFIRMATION" = 1 ]; then
   CONTINUE="y"
 else
   echo "OK? [y, n*]:"

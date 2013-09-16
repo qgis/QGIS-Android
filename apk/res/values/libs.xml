@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <array name="qt_libs">
+      <item>QtCore</item>
+      <item>QtGui</item>
+      <item>QtSql</item>
+      <item>QtXml</item>
+      <item>QtSvg</item>
+      <item>QtWebKit</item>
+      <item>QtNetwork</item>
+      <item>QtSystemInfo</item>
+      <item>QtSensors</item>
+      <item>QtLocation</item>
+      <item>QtDeclarative</item>
+    </array>
     <array name="bundled_libs">
       <item>gnustl_shared</item>
       <item>expat</item>
@@ -30,53 +43,4 @@
 <!--      <item>bz</item>-->
       <item>python2.7</item>
       <item>qgispython</item>
-    </array>
-    <array name="bundled_libs_mobile">
-      <item>expat</item>
-      <item>geos</item>
-      <item>geos_c</item>
-      <item>gslcblas</item>
-<!--      <item>gsl</item>-->
-<!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
-      <item>gdal</item>
-      <item>proj</item>
-<!--      <item>spatialindex</item>-->
-<!--      <item>spatialindex_c</item>-->
-      <item>qwt</item>
-      <item>iconv</item>
-      <item>charset</item>
-<!--      <item>crypto</item>-->
-<!--      <item>ssl</item>-->
-      <item>pq</item>
-      <item>qgis_core</item>
-      <item>qgissqlanyconnection</item>
-      <item>qgis_analysis</item>
-      <item>qgis_gui</item>
-    </array>
-    <array name="qt_libs">
-      <item>QtCore</item>
-      <item>QtGui</item>
-      <item>QtSql</item>
-      <item>QtXml</item>
-      <item>QtSvg</item>
-      <item>QtWebKit</item>
-      <item>QtNetwork</item>
-      <item>QtSystemInfo</item>
-      <item>QtSensors</item>
-      <item>QtLocation</item>
-      <item>QtDeclarative</item>
-    </array>
-    <array name="qt_libs_mobile">
-      <item>QtCore</item>
-      <item>QtGui</item>
-      <item>QtSql</item>
-      <item>QtXml</item>
-      <item>QtSvg</item>
-      <item>QtWebKit</item>
-      <item>QtNetwork</item>
-      <item>QtSystemInfo</item>
-      <item>QtSensors</item>
-      <item>QtLocation</item>
-      <item>QtDeclarative</item>
-    </array>
-</resources>
+</array></resources>

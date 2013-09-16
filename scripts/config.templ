@@ -134,7 +134,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   ARMV7A_flags=" -march=armv7-a -mfloat-abi=softfp -mfpu=$MY_FPU"
 
   #build mthumb instructions only in non Debug mode
-  if [ "$BUILD_TYPE" == "Debug" ]; then
+  if [ "$BUILD_TYPE" = "Debug" ]; then
      extraFlags="-g -O0 -marm -finline-limit=300 -fno-strict-aliasing -fno-omit-frame-pointer -DDEBUG -D_DEBUG"
   else
      extraFlags="-mthumb -O2"

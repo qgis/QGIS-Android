@@ -24,7 +24,7 @@ QT_SRC=/home/marco/dev/android-qt
 cd $QT_SRC
 echo "BUILDING QT LIBS FOR ANDROID from $QT_SRC"
 
-if [ "$BUILD_TYPE" == "Debug" ]; then
+if [ "$BUILD_TYPE" = "Debug" ]; then
     BUILD_WITH_DEBUG=1
   else
     BUILD_WITH_DEBUG=0

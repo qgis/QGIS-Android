@@ -3,7 +3,6 @@
     <application android:name="org.kde.necessitas.origo.QtApplication" 
         android:icon="@drawable/icon" 
         android:label="@string/app_name"
-        android:debuggable="true"
         >
         <activity android:name="org.kde.necessitas.origo.QgisActivity" 
             android:noHistory="true" 
@@ -16,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!-- Git Revision -->
-            <meta-data android:name="android.app.git_rev" android:value="c78fc910c19e9396097883a40c384bb1dfca3539"/>
+            <meta-data android:name="android.app.git_rev" android:value="3a83cadf40a063f313686d00d3a3317dbdb219ab"/>
             <!-- Git Revision -->
         </activity>
         

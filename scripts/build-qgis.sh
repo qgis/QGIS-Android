@@ -150,7 +150,9 @@ fi
 #echo $MY_CMAKE_FLAGS
 #exit 0
 
-make -j$CORES uninstall
+set +e
+ make -j$CORES uninstall
+set -e
 
 if [ -n "${QGIS_ANDROID_BUILD_ALL+x}" ]; then
   MY_CMAKE=cmake
@@ -160,7 +162,7 @@ fi
 
 
 if [ ! -f CMakeCache.txt ] || [ $CONFIGURE -eq 1 ] ; then
-  if [ "$BUILD_TYPE" == "Debug" ]; then
+  if [ "$BUILD_TYPE" = "Debug" ]; then
     CFLAGS_DEBUG=$MY_STD_CFLAGS \
     CXXFLAGS_DEBUG=$MY_STD_CXXFLAGS \
     LDFLAGS=$MY_STD_LDFLAGS \
@@ -183,7 +185,6 @@ fi
 #echo $CMAKE_C_FLAGS
 #echo $CFLAGS
 #exit 0
-make -j$CORES uninstall
 make -j$CORES install
 
 GIT_REV=$(git rev-parse HEAD)
@@ -192,3 +193,14 @@ mkdir -p $INSTALL_DIR/files
 #echo $GIT_REV > $INSTALL_DIR/files/version.txt
 #update apk manifest
 sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml
+
+sed -i '/python/d' $APK_DIR/res/values/libs.xml 
+sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml 
+    
+if [ "$WITH_BINDINGS" = TRUE ]; then
+  echo "      <item>python2.7</item>
+      <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
+fi
+
+echo "</array></resources>" >> $APK_DIR/res/values/libs.xml
+
