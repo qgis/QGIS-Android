@@ -279,7 +279,7 @@ public class QgisinstallerActivity extends Activity {
 			mVersionName = v.name;
 			mVersion = v.value;
 		}
-		mABI = "armeabi"; // TODO: use android.os.Build.CPU_ABI;
+		mABI = "armeabi-v7a"; // TODO: use android.os.Build.CPU_ABI;
 
 		mApkFileName = prefix + mVersion + "-" + mABI + ".apk";
 		mApkUrl = "http://android.qgis.org/download/apk/" + dir + mApkFileName;
