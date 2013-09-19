@@ -21,5 +21,5 @@ set -e
 source `dirname $0`/config.conf
 $SCRIPT_DIR/build-qgis-and-apk.sh
 $SCRIPT_DIR/install-apk.sh
-$SCRIPT_DIR/debug-apk.sh
+$SCRIPT_DIR/run-apk.sh
 

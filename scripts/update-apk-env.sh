@@ -58,13 +58,14 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
 fi
 
 #create gdb.setup
-echo "set solib-search-path $APK_DIR/libs/$ANDROID_ABI" > $TMP_DIR/gdb.setup
+#echo "set sysroot $TMP_DIR" > $TMP_DIR/gdb.setup
+echo "set solib-search-path $APK_DIR/libs/$ANDROID_ABI" >> $TMP_DIR/gdb.setup
 INCLUDES="$ANDROID_STANDALONE_TOOLCHAIN/sysroot/usr/include $QGIS_DIR/src $SRC_DIR"
 echo "directory $INCLUDES" >> $TMP_DIR/gdb.setup
-echo "file $TMP_DIR/app_process" >> $TMP_DIR/gdb.setup
+echo "file $TMP_DIR/bin/app_process" >> $TMP_DIR/gdb.setup
 echo set "breakpoint pending on" >> $TMP_DIR/gdb.setup
 echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
-echo "break QgsFeatureRendererV2::_getPolygon" >> $TMP_DIR/gdb.setup
+#echo "break QgsFeatureRendererV2::_getPolygon" >> $TMP_DIR/gdb.setup
 echo "target remote :5039" >> $TMP_DIR/gdb.setup
 
 #copy assets to apk

@@ -38,9 +38,10 @@ $ADB shell am force-stop $PACKAGE
 #$ADB shell pm clear $PACKAGE
 $ADB shell am start -n $PACKAGE/org.kde.necessitas.origo.QgisActivity
 
-$ADB pull /system/bin/app_process $TMP_DIR/app_process
-$ADB pull /system/bin/linker $TMP_DIR/linker
-$ADB pull /system/lib/libc.so $TMP_DIR/libc.so
+#$ADB pull /system/bin/ $TMP_DIR/bin/
+#$ADB pull /system/lib/ $TMP_DIR/lib/
+$ADB pull /system/bin/app_process $TMP_DIR/bin/app_process
+$ADB pull /system/bin/linker $TMP_DIR/bin/linker
 
 #find the PID of the proces
 echo `$ADB shell top -n 1 | grep $PACKAGE` > $TMP_DIR/pid.txt
@@ -53,7 +54,7 @@ $ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attac
 #$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver :5039 --attach $PID &
 
 #call the gdb client
-$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb -x $TMP_DIR/gdb.setup
+$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb #-x $TMP_DIR/gdb.setup
 
 #$ADB logcat | tee /tmp/logcat.log
 
