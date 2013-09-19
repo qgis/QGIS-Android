@@ -32,6 +32,6 @@ fi
 
 $ADB shell am force-stop org.qgis.qgis
 $ADB shell am start -n org.qgis.qgis/org.kde.necessitas.origo.QgisActivity
-$ADB logcat | tee /tmp/logcat.log
+$ADB logcat *:s Qt:V | tee /tmp/logcat.log
 
 
