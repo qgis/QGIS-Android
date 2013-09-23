@@ -159,6 +159,7 @@ else
   CXXFLAGS=$MY_STD_CXXFLAGS \
   LDFLAGS=$MY_STD_LDFLAGS \
   ../configure $MY_STD_CONFIGURE_FLAGS
+  #TODO try  -L/usr/lib -lgsl -lgslcblas -lm
   #compile
   make -j$CORES 2>&1 | tee make.out
   make -j$CORES 2>&1 install | tee makeInstall.out
@@ -278,9 +279,9 @@ else
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
-  LDFLAGS=$MY_STD_LDFLAGS \
+  LDFLAGS="$MY_STD_LDFLAGS" \
   LIBS="-lsupc++ -lstdc++" \
-  ./configure $MY_STD_CONFIGURE_FLAGS --with-png=internal --with-jpeg=internal --with-sqlite3=yes --target=android
+  ./configure $MY_STD_CONFIGURE_FLAGS --with-png=internal --with-jpeg=internal --with-sqlite3=$INSTALL_DIR
   #png, jpg, sqlite are needed for mbtiles
   #compile
   make -j$CORES 2>&1 | tee make.out
