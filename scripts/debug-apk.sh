@@ -49,13 +49,37 @@ PID=`sed 's/ .*//' $TMP_DIR/pid.txt`
 rm -f $TMP_DIR/pid.txt
 
 $ADB forward tcp:5039 localfilesystem:/data/data/$PACKAGE/debug-pipe
-$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID &
-#$ADB forward tcp:5039 tcp:5039
-#$ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver :5039 --attach $PID &
 
-#call the gdb client
-$ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb #-x $TMP_DIR/gdb.setup
+echo
+echo "#########VISUAL DEBUG with QtCreator###########"
+echo "Copy the following into options> debugger> GDB:"
+echo "************START COPY/PASTE*******************"
+cat $TMP_DIR/gdb.setup
+echo "************END COPY/PASTE*********************"
+echo
+echo "You can then use QtCreator to connect by going into" 
+echo "Debug> start debugging> attach to remote server"
+echo
+echo "Choose armv7a kit"
+echo "Set remote port to 5039"
+echo "Set the exectutable to $TMP_DIR/bin/app_process"
+echo
+echo "#########CLI DEBUG with GDB###########"
 
-#$ADB logcat | tee /tmp/logcat.log
-
+read -n1 -p "Run comandline GDB? [y,n]" doit 
+case $doit in  
+  y|Y) 
+    echo
+    echo
+    echo "##########to connect to remote GDB_SERVER type:"
+    echo "target remote :5039"
+    echo
+    $ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID &
+    $ANDROID_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-gdb -x $TMP_DIR/gdb.setup ;; 
+  *)
+    echo 
+    echo "Waiting for another GDB client to connect"
+    echo
+    $ADB shell run-as $PACKAGE /data/data/$PACKAGE/lib/gdbserver +debug-pipe --attach $PID & ;; 
+esac
 
