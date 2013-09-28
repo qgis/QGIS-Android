@@ -35,8 +35,8 @@ example copy paste code:
  cd dev
  #get necessitas
  wget http://files.kde.org/necessitas/installer/release/linux-online-necessitas-alpha4.1-sdk-installer
- ./chmod +x linux-online-necessitas-alpha4.1-sdk-installer
- ./linux-online-necessitas-alpha4-sdk-installer
+ chmod +x linux-online-necessitas-alpha4.1-sdk-installer
+ ./linux-online-necessitas-alpha4.1-sdk-installer
  # see below for adding a remote instead of cloning
  #fork QGIS
  curl -u "$GITHUBUSERNAME:$GITHUBPASSWORD" -i -d '' https://api.github.com/repos/mbernasocchi/QGIS/fork
