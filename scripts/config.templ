@@ -86,7 +86,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ADB=$ANDROID_SDK_ROOT/platform-tools/adb
   export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI  
   export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_ABI
-  export INSTALL_DIR=$ROOT_DIR/out/$ANDROID_ABI
+  export INSTALL_DIR=$ROOT_DIR/out/$BUILD_TYPE/$ANDROID_ABI
   export SCRIPT_DIR=$ROOT_DIR/scripts
   export PATCH_DIR=$ROOT_DIR/patches
   export SRC_DIR=$ROOT_DIR/src

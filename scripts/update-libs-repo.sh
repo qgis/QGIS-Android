@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# This script generates a repo to be used with ministro as client.
+# it copies includes all the external QGIS dependencies and the qgis_*.so libraries
+# libqgis.so
+
+
+
 #######Load config#######
 source `dirname $0`/config.conf
 HARDCODED_PATH='http://files.kde.org/necessitas/ministro/android/necessitas/qt5'
@@ -16,6 +23,15 @@ QT_VERSION=$((0x040900))
 READELF=arm-linux-androideabi-readelf
 
 ############END CONFIG########################
+if [ "$1" != "--force" ]; then
+    if [ "$BUILD_TYPE" = "Debug" ]; then
+        echo "################ERROR#############"
+        echo "This should run only if we are building a Release package"
+        echo "the debug packages are supposed to be big packages with all dependencies included"
+        echo "To force call ./update-libs-repo.sh --force"
+        exit 1
+    fi
+fi
 
 TMP_LIB_PATH=$REPO_PATH/tmpRepoLibs
 XML_REPO_FILE=$OUT_PATH/$ANDROID_ABI/android-$ANDROID_LEVEL/libs-$MINISTRO_REPO_VERSION.xml
@@ -29,14 +45,12 @@ rm -rf $OUT_PATH
 
 
 mkdir -p $TMP_LIB_PATH/lib
-mkdir -p $TMP_LIB_PATH/lib-qt
-mkdir -p $TMP_LIB_PATH/jar
-cp -vr $INSTALL_DIR/lib/*.so $TMP_LIB_PATH/lib
-cp -vf $GNUSTL_LIB_PATH/libgnustl_shared.so $TMP_LIB_PATH/lib
-rm -vrf $TMP_LIB_PATH/lib/libqgis*
+cp -vrs $INSTALL_DIR/lib/*.so $TMP_LIB_PATH/lib
+cp -vfs $GNUSTL_LIB_PATH/libgnustl_shared.so $TMP_LIB_PATH/lib
+#libqgis, providers and plugins are bundled
+rm -vrf $TMP_LIB_PATH/lib/libqgis.so
 rm -vrf $TMP_LIB_PATH/lib/*provider*
 rm -vrf $TMP_LIB_PATH/lib/*plugin*
-rm -vrf $TMP_LIB_PATH/lib/libevis.so 
 rm -vrf $TMP_LIB_PATH/lib/preloadable_libiconv.so
 
 

@@ -39,13 +39,14 @@
       <item>pq</item>
       <item>freexl</item>
       <item>spatialite</item>
-      </array>
-    <array name="bundled_libs">
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
       <item>qgis_networkanalysis</item>
+      </array>
+    <array name="bundled_libs">
+      
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
 </array></resources>

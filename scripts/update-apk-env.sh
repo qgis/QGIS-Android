@@ -27,33 +27,36 @@ GNUSTL_LIB_PATH=$ANDROID_STANDALONE_TOOLCHAIN/$ANDROID_NDK_TOOLCHAIN_PREFIX/lib
 
 if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi/
-  cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
-  #add libpython to apk libs
-  cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
   if [ "$BUILD_TYPE" = "Debug" ]; then
+    cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
+    #add libpython to apk libs
+    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
     #copy libgnustl_shared.so
     cp -vfs $GNUSTL_LIB_PATH/libgnustl_shared.so $APK_DIR/libs/armeabi/
   else
-    #copy thumb/libgnustl_shared.so
-    cp -vfs $GNUSTL_LIB_PATH/thumb/libgnustl_shared.so $APK_DIR/libs/armeabi/
+    cp -vrfs $INSTALL_DIR/../armeabi/lib/libqgis.so $APK_DIR/libs/armeabi/
+    cp -vrfs $INSTALL_DIR/../armeabi/lib/lib*plugin.so $APK_DIR/libs/armeabi/
+    cp -vrfs $INSTALL_DIR/../armeabi/lib/lib*provider.so $APK_DIR/libs/armeabi/
   fi
 fi
 
 if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi-v7a/
-  cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
-  #add libpython to apk libs
-  cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
+  
   if [ "$BUILD_TYPE" = "Debug" ]; then
+    cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
+    #add libpython to apk libs
+    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
     #copy libgnustl_shared.so
     cp -vfs $GNUSTL_LIB_PATH/armv7-a/libgnustl_shared.so $APK_DIR/libs/armeabi-v7a/
   else
-    #copy thumb/libgnustl_shared.so
-    cp -vfs $GNUSTL_LIB_PATH/armv7-a/thumb/libgnustl_shared.so $APK_DIR/libs/armeabi-v7a/
+    cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/libqgis.so $APK_DIR/libs/armeabi-v7a/
+    cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/lib*plugin.so $APK_DIR/libs/armeabi-v7a/
+    cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/lib*provider.so $APK_DIR/libs/armeabi-v7a/
   fi
 fi
 
