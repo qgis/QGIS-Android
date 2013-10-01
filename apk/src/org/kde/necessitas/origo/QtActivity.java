@@ -34,6 +34,8 @@ import java.util.Arrays;
 import org.kde.necessitas.ministro.IMinistro;
 import org.kde.necessitas.ministro.IMinistroCallback;
 
+import org.qgis.qgis.BuildConfig;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -220,6 +222,9 @@ public class QtActivity extends Activity
     }
     
     private ArrayList<String> getOverridenNativeLibrariesOrder(Bundle loaderParams){
+           //No hack needed, in debuggable mode al deps are bundled
+            if (BuildConfig.DEBUG) return loaderParams.getStringArrayList(NATIVE_LIBRARIES_KEY);
+        
         //WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490
         Log.w(QtApplication.QtTAG, "using HACK WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490");
         Log.i(QtApplication.QtTAG, loaderParams.toString());
