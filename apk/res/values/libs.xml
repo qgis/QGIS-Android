@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 	<array name="qt_sources">
-    	<item>https://files.kde.org/necessitas/ministro/android/necessitas/</item>
-<!--        <item>http://android.qgis.org/repository/</item>-->
+	    <!-- Qt4 Libs	    -->
+	    <item>https://files.kde.org/necessitas/ministro/android/necessitas/</item>
+        <!-- QGIS dependencies	    -->
+        <item>http://android.qgis.org/repository/</item>
     </array>
-    <array name="qt_libs">
+    <string name="repository">default</string>
+    <array name="ministro_libs">
       <item>QtCore</item>
       <item>QtGui</item>
       <item>QtSql</item>
@@ -16,8 +19,6 @@
       <item>QtSensors</item>
       <item>QtLocation</item>
       <item>QtDeclarative</item>
-    </array>
-    <array name="bundled_libs">
       <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
@@ -38,6 +39,8 @@
       <item>pq</item>
       <item>freexl</item>
       <item>spatialite</item>
+      </array>
+    <array name="bundled_libs">
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>

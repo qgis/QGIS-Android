@@ -14,6 +14,6 @@
         </libs>
     </platforms>
 
-    <libs excludePaths="bin;doc;files;include;man;share" loaderClassName="org.kde.necessitas.origo.QtActivityDelegate" environmentVariables="MINISTRO_SSL_CERTS_PATH=MINISTRO_PATH/dl/ssl	QT_QPA_EGLFS_HIDECURSOR=1	QML2_IMPORT_PATH=MINISTRO_SOURCE_ROOT_PATH/qml	QML_IMPORT_PATH=MINISTRO_SOURCE_ROOT_PATH/imports	QT_PLUGIN_PATH=MINISTRO_SOURCE_ROOT_PATH/plugins">
+    <libs excludePaths="bin;doc;files;include;man;share" loaderClassName="org.kde.necessitas.industrius.QtActivityDelegate" environmentVariables="">
     </libs>
 </root>

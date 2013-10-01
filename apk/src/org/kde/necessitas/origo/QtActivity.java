@@ -121,7 +121,7 @@ public class QtActivity extends Activity
     private static final int INCOMPATIBLE_MINISTRO_VERSION = 1; // Incompatible Ministro version. Ministro needs to be upgraded.
     private ActivityInfo m_activityInfo = null; // activity info object, used to access the libs and the strings
     private DexClassLoader m_classLoader = null; // loader object
-    private String[] m_sources = {"https://files.kde.org/necessitas/ministro/android/necessitas/qt5/latest"}; // Make sure you are using ONLY secure locations
+    private String[] m_sources = {"https://files.kde.org/necessitas/ministro/android/necessitas/"}; // Make sure you are using ONLY secure locations
     private String m_repository = "default"; // Overwrites the default Ministro repository
                                                         // Possible values:
                                                         // * default - Ministro default repository set with "Ministro configuration tool".
@@ -225,6 +225,7 @@ public class QtActivity extends Activity
             m_service = IMinistro.Stub.asInterface(service);
             try {
                 if (m_service!=null) {
+                    Log.i(QtApplication.QtTAG, "CALLING MINISTRO WITH:");
                     Bundle parameters= new Bundle();
                     parameters.putStringArray(REQUIRED_MODULES_KEY, m_qtLibs);
                     parameters.putString(APPLICATION_TITLE_KEY, (String)QtActivity.this.getTitle());
@@ -235,6 +236,7 @@ public class QtActivity extends Activity
                         parameters.putString(APPLICATION_PARAMETERS_KEY, APPLICATION_PARAMETERS);
                     parameters.putStringArray(SOURCES_KEY, m_sources);
                     parameters.putString(REPOSITORY_KEY, m_repository);
+                    Log.i(QtApplication.QtTAG, parameters.toString());
                     m_service.requestLoader(m_ministroCallback, parameters);
                 }
             } catch (RemoteException e) {
@@ -318,8 +320,8 @@ public class QtActivity extends Activity
             if (m_activityInfo.metaData.containsKey("android.app.repository"))
                 m_repository = m_activityInfo.metaData.getString("android.app.repository");
 
-            if (m_activityInfo.metaData.containsKey("android.app.qt_libs_resource_id")) {
-                int resourceId = m_activityInfo.metaData.getInt("android.app.qt_libs_resource_id");
+            if (m_activityInfo.metaData.containsKey("android.app.ministro_libs_resource_id")) {
+                int resourceId = m_activityInfo.metaData.getInt("android.app.ministro_libs_resource_id");
                 m_qtLibs = getResources().getStringArray(resourceId);
             }
 
