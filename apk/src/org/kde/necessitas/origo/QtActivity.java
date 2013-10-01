@@ -158,6 +158,50 @@ public class QtActivity extends Activity
                 errorDialog.show();
                 return;
             }
+            
+            //WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490
+            Log.w(QtApplication.QtTAG, "using HACK WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490");
+            Log.i(QtApplication.QtTAG, loaderParams.toString());
+            ArrayList<String> native_libraries_order_override = new ArrayList<String>(Arrays.asList("/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtCore.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libgnustl_shared.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libexpat.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libgeos.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libgslcblas.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libsqlite3.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libproj.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libspatialindex.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libiconv.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libcharset.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libpq.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtSql.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtXml.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtNetwork.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtSensors.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtScript.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libgeos_c.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libgdal.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libfreexl.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtGui.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//plugins/platforms/android/libandroid-9.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//plugins/sensors/libqtsensors_android.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtXmlPatterns.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libspatialite.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtSvg.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtWebKit.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtSystemInfo.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqwt.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtLocation.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//plugins/landmarks/libqtlandmarks_sqlite.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/0/stable//lib/libQtDeclarative.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqgis_core.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqgis_gui.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqgissqlanyconnection.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqgis_analysis.so",
+                "/data/data/org.kde.necessitas.ministro/files/dl/1/stable//lib/libqgis_networkanalysis.so"
+                ));
+            loaderParams.putStringArrayList(NATIVE_LIBRARIES_KEY, native_libraries_order_override);
+            //Log.i(QtApplication.QtTAG, "loaderParams OVERRIDEN");
+            //Log.i(QtApplication.QtTAG, loaderParams.toString());
 
             // add all bundled Qt libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
