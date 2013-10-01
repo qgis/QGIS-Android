@@ -5,7 +5,7 @@
 /src/
 /tmp/
 /out/
-/apk/res/libs.xml
+/apk/res/values/libs.xml
 /*apk/bin/
 /*apk/libs/
 /*apk/gen/
