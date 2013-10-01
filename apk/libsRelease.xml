@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+	<array name="qt_sources">
+	    <!-- Qt4 Libs	    -->
+	    <item>https://files.kde.org/necessitas/ministro/android/necessitas/</item>
+        <!-- QGIS dependencies	    -->
+        <item>http://android.qgis.org/repository/</item>
+    </array>
+    <string name="repository">default</string>
+    <array name="ministro_libs">
+      <item>QtCore</item>
+      <item>QtGui</item>
+      <item>QtSql</item>
+      <item>QtXml</item>
+      <item>QtSvg</item>
+      <item>QtWebKit</item>
+      <item>QtNetwork</item>
+      <item>QtSystemInfo</item>
+      <item>QtSensors</item>
+      <item>QtLocation</item>
+      <item>QtDeclarative</item>
+      <item>gnustl_shared</item>
+      <item>expat</item>
+      <item>geos</item>
+      <item>geos_c</item>
+      <item>gslcblas</item>
+<!--      <item>gsl</item>-->
+<!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
+      <item>sqlite3</item>
+      <item>gdal</item>
+      <item>proj</item>
+      <item>spatialindex</item>
+      <item>qwt</item>
+      <item>iconv</item>
+      <item>charset</item>
+<!--      <item>crypt</item>-->
+<!--      <item>crypto</item>-->
+<!--      <item>ssl</item>-->
+      <item>pq</item>
+      <item>freexl</item>
+      <item>spatialite</item>
+      <item>qgis_core</item>
+      <item>qgis_gui</item>
+      <item>qgissqlanyconnection</item>
+      <item>qgis_analysis</item>
+      <item>qgis_networkanalysis</item>
+      </array>
+    <array name="bundled_libs">
+      
+<!--      <item>ffi</item>-->
+<!--      <item>bz</item>-->
+</array></resources>

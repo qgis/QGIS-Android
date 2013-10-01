@@ -25,6 +25,8 @@ rm -vrf $APK_DIR/libs/*
 
 GNUSTL_LIB_PATH=$ANDROID_STANDALONE_TOOLCHAIN/$ANDROID_NDK_TOOLCHAIN_PREFIX/lib
 
+cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
+
 if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi/
   if [ "$BUILD_TYPE" = "Debug" ]; then
@@ -44,7 +46,6 @@ fi
 
 if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi-v7a/
-  
   if [ "$BUILD_TYPE" = "Debug" ]; then
     cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
     #add libpython to apk libs
