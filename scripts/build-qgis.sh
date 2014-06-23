@@ -50,7 +50,8 @@ echo "LD:                               " `which $LD`
 echo "AR:                               " `which $AR`
 echo "RANLIB:                           " `which $RANLIB`
 echo "AS:                               " `which $AS`
-echo "INSTAL_DIR:                       " $INSTALL_DIR
+echo "BUILD_DIR:                        " $QGIS_BUILD_DIR
+echo "INSTALL_DIR:                      " $INSTALL_DIR
 
 
 mkdir -p $QGIS_BUILD_DIR
@@ -79,7 +80,7 @@ MY_CMAKE_FLAGS=" \
 -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 -DCMAKE_VERBOSE_MAKEFILE=OFF \
 -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
--DCMAKE_FIND_ROOT_PATH_CUSTOM_APPEND=$QT_ROOT \ 
+-DCMAKE_FIND_ROOT_PATH_CUSTOM_APPEND=$QT_ROOT \
 -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/android.toolchain.cmake \
 -DEXECUTABLE_OUTPUT_PATH=$INSTALL_DIR/bin \
 -DLIBRARY_OUTPUT_DIRECTORY=$INSTALL_DIR/lib \
@@ -110,7 +111,7 @@ MY_CMAKE_FLAGS=" \
 -DPEDANTIC=OFF \
 -DPROJ_INCLUDE_DIR=$INSTALL_DIR/include \
 -DPROJ_LIBRARY=$INSTALL_DIR/lib/libproj.so \
--DPOSTGRES_CONFIG= \                                                                                                                                                                         
+-DPOSTGRES_CONFIG= \
 -DPOSTGRES_CONFIG_PREFER_PATH= \
 -DPOSTGRES_INCLUDE_DIR=$INSTALL_DIR/include \
 -DPOSTGRES_LIBRARY=$INSTALL_DIR/lib/libpq.so \
@@ -144,7 +145,7 @@ if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
   -DPYTHON_EXECUTABLE=/usr/bin/python \
   -DPYTHON_INCLUDE_PATH=/home/marco/dev/android-python27/python-build-with-qt/build/include/python2.7 \
   -DPYTHON_LIBRARY=/home/marco/dev/android-python27/python-build-with-qt/build/lib/libpython2.7.so"
-fi 
+fi
 
 #uncomment the next 2 lines to only get the needed cmake flags echoed
 #echo $MY_CMAKE_FLAGS
@@ -166,12 +167,12 @@ if [ ! -f CMakeCache.txt ] || [ $CONFIGURE -eq 1 ] ; then
     CFLAGS_DEBUG=$MY_STD_CFLAGS \
     CXXFLAGS_DEBUG=$MY_STD_CXXFLAGS \
     LDFLAGS=$MY_STD_LDFLAGS \
-    $MY_CMAKE $MY_CMAKE_FLAGS ..
+    $MY_CMAKE $MY_CMAKE_FLAGS $QGIS_DIR
   else
     CFLAGS=$MY_STD_CFLAGS \
     CXXFLAGS=$MY_STD_CXXFLAGS \
     LDFLAGS=$MY_STD_LDFLAGS \
-    $MY_CMAKE $MY_CMAKE_FLAGS ..
+    $MY_CMAKE $MY_CMAKE_FLAGS $QGIS_DIR
   fi
 fi
 
@@ -187,16 +188,16 @@ fi
 #exit 0
 make -j$CORES install
 
-GIT_REV=$(git rev-parse HEAD)
+GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
 #update version file in share
 mkdir -p $INSTALL_DIR/files
 #echo $GIT_REV > $INSTALL_DIR/files/version.txt
 #update apk manifest
 sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml
 
-sed -i '/python/d' $APK_DIR/res/values/libs.xml 
-sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml 
-    
+sed -i '/python/d' $APK_DIR/res/values/libs.xml
+sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml
+
 if [ "$WITH_BINDINGS" = TRUE ]; then
   echo "      <item>python2.7</item>
       <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
