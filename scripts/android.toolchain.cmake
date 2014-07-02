@@ -464,7 +464,7 @@ if( BUILD_WITH_STANDALONE_TOOLCHAIN )
  else()
   execute_process( COMMAND "${ANDROID_STANDALONE_TOOLCHAIN}/bin/${__availableToolchainMachines}-gcc${TOOL_OS_SUFFIX}" --version
    OUTPUT_VARIABLE __availableToolchainCompilerVersions OUTPUT_STRIP_TRAILING_WHITESPACE )
-  string( REGEX MATCH "[0-9]+.[0-9]+.[0-9]+" __availableToolchainCompilerVersions "${__availableToolchainCompilerVersions}" )
+  string( REGEX MATCH "[0-9]+.[0-9]+.*[0-9]*" __availableToolchainCompilerVersions "${__availableToolchainCompilerVersions}" )
  endif()
 endif()
 
