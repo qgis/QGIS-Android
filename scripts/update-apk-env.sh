@@ -32,7 +32,7 @@ if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then
   if [ "$BUILD_TYPE" = "Debug" ]; then
     cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
     #add libpython to apk libs
-    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
+#    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
     #copy libgnustl_shared.so
@@ -49,7 +49,7 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
   if [ "$BUILD_TYPE" = "Debug" ]; then
     cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
     #add libpython to apk libs
-    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
+#    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
     #copy libgnustl_shared.so
@@ -75,10 +75,10 @@ echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
 #copy assets to apk
 rm -vrf $APK_DIR/assets
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
-cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-if [ $WITH_BINDINGS = TRUE ]; then
-  cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-fi
+#cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+#if [ $WITH_BINDINGS = TRUE ]; then
+#  cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+#fi
 cd $APK_DIR/assets/
 zip -r9 assets.zip share
 rm -rf $APK_DIR/assets/share/
