@@ -117,10 +117,10 @@ else
 #  #########END QTUITOOLS########
   
 
-  #########QWT5.2.0########
-  echo "QWT5.2.0"	
+  #########QWT########
+  echo "QWT $QWT_VERSION"
   cd $SRC_DIR/$QWT_NAME/
-  sed -i "s|    INSTALLBASE    =.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
+  sed -i "s|    QWT_INSTALL_PREFIX    =.*|    QWT_INSTALL_PREFIX    = $INSTALL_DIR|" qwtconfig.pri
   mkdir -p build-$ANDROID_ABI
   cd build-$ANDROID_ABI
   #configure
@@ -134,6 +134,9 @@ else
   make -j$CORES 2>&1 install | tee makeInstall.out
   #########END QWT########
 
+  #########QWTPOLAR########
+  `dirname $0`/build-qwtpolar.sh
+  #########END QWTPOLAR########
 
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"

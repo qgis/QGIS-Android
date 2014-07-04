@@ -300,7 +300,7 @@ else
   cp -vf $TMP_DIR/config.guess ./config.guess
   #######END SQLITE#######
   
-  #######QWT5.2.0#######
+  #######QWT#######
   echo "QWT"
   cd $SRC_DIR
   wget -c http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
@@ -309,10 +309,19 @@ else
   cd $QWT_NAME/
 
   #edit qwtconfig.pri
-  sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
-  sed -i "s|CONFIG           += QwtDll|CONFIG     += QwtDll plugin|" qwtconfig.pri
-  #######END QWT5.2.0#######
+  sed -i "s|QWT_CONFIG     += QwtDesigner|#QWT_CONFIG     += QwtDesigner|" qwtconfig.pri
+  sed -i "s|QWT_CONFIG           += QwtDll|QWT_CONFIG     += QwtDll plugin|" qwtconfig.pri
+  #######END QWT#######
   
+  #######QWTPOLAR#######
+  echo "QWTPOLAR"
+  cd $SRC_DIR
+  wget -c http://downloads.sourceforge.net/project/qwtpolar/qwtpolar/$QWTPOLAR_VERSION/$QWTPOLAR_NAME.tar.bz2
+  tar xjf $QWTPOLAR_NAME.tar.bz2
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWTPOLAR_NAME.tar.bz2; fi
+  cd $QWTPOLAR_NAME/
+  #######END QWT#######
+
 #  #######openssl-android#######
 #  #needed for postgresssql
 #  echo "openssl-android"

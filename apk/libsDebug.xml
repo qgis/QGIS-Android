@@ -31,6 +31,7 @@
       <item>proj</item>
       <item>spatialindex</item>
       <item>qwt</item>
+      <item>qwtpolar</item>
       <item>iconv</item>
       <item>charset</item>
 <!--      <item>crypt</item>-->
