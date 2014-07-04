@@ -6,17 +6,17 @@
     </array>
     <string name="repository">default</string>
     <array name="ministro_libs">
-      <item>QtCore</item>
-      <item>QtGui</item>
-      <item>QtSql</item>
-      <item>QtXml</item>
-      <item>QtSvg</item>
-      <item>QtWebKit</item>
-      <item>QtNetwork</item>
-      <item>QtSystemInfo</item>
-      <item>QtSensors</item>
-      <item>QtLocation</item>
-      <item>QtDeclarative</item>
+      <item>Qt5Core</item>
+      <item>Qt5Gui</item>
+      <item>Qt5Widgets</item>
+      <item>Qt5Sql</item>
+      <item>Qt5Xml</item>
+      <item>Qt5Network</item>
+      <item>Qt5Sensors</item>
+      <item>Qt5OpenGL</item>
+      <item>Qt5Svg</item>
+      <item>Qt5PrintSupport</item>
+      <item>Qt5Concurrent</item>
       </array>
     <array name="bundled_libs">
       <item>gnustl_shared</item>
