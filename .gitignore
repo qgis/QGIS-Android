@@ -13,4 +13,5 @@
 /*apk/assets
 /scripts/config.conf
 /apk/.idea/*
+/apk/AndroidManifest.xml
 /repository/*/
