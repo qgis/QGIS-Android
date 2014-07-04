@@ -19,6 +19,8 @@ set -e
 
 source `dirname $0`/config.conf
 
+SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ########START SCRIPT########
 usage(){
  echo "Usage:"
@@ -135,7 +137,7 @@ else
   #########END QWT########
 
   #########QWTPOLAR########
-  `dirname $0`/build-qwtpolar.sh
+  $SCRIPTPATH/build-qwtpolar.sh
   #########END QWTPOLAR########
 
   #########EXPAT2.0.1########
