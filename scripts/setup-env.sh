@@ -193,6 +193,7 @@ else
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   patch -i $PATCH_DIR/geos.patch -p1
+  patch -i $PATCH_DIR/geos_std_nan.patch -p1
   #######END GEOS#######
 
   #######EXPAT#######
