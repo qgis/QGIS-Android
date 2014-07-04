@@ -25,7 +25,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #############################
   export NECESSITAS_DIR=$HOME/dev/necessitas
   export QGIS_DIR=$HOME/dev/QGIS
-  export QGIS_ANDROID_BRANCH='android-2_0_1'
+  export QT_ROOT=$HOME/Qt5.3.1/5.3/android_armv7
   
   #WARNING: armeabi-v7a builds don't work on android emulators pre api 14
   DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
@@ -36,6 +36,10 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   #WARNING tested only with "armeabi-v7a", "armeabi"
   #TODO somehow support ANDROID_ABI with spaces in names since $ANDROID_ABI is used often in mkdir
   #see ascripts/android.toolchain.cmake for details 
+
+  # Qt root
+  # export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI
+  export QGIS_ANDROID_BRANCH='qt5'
   
   DEFAULT_BUILD_TYPE=Debug #or Release
   #passing BUILD_TYPE=Release when calling a script will override the default
@@ -84,19 +88,18 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   fi
   
   export ADB=$ANDROID_SDK_ROOT/platform-tools/adb
-  export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI  
   export QGIS_BUILD_DIR=$QGIS_DIR/build-$BUILD_TYPE-$ANDROID_ABI
   export INSTALL_DIR=$ROOT_DIR/out/$BUILD_TYPE/$ANDROID_ABI
   export SCRIPT_DIR=$ROOT_DIR/scripts
   export PATCH_DIR=$ROOT_DIR/patches
   export SRC_DIR=$ROOT_DIR/src
   export TMP_DIR=$ROOT_DIR/tmp
-  export ANDROID_LEVEL=9
+  export ANDROID_LEVEL=14
   export ANDROID_NDK_PLATFORM=android-$ANDROID_LEVEL
   export ANDROID_NDK_HOST=linux-x86
   export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
   if [ ! -n "${ANDROID_NDK_TOOLCHAIN_VERSION+x}" ]; then
-    export ANDROID_NDK_TOOLCHAIN_VERSION=4.6
+    export ANDROID_NDK_TOOLCHAIN_VERSION=4.8
   fi
   export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
