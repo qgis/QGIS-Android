@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<array name="qt_sources">
-	    <!-- Qt4 Libs	    -->
-	    <item>https://files.kde.org/necessitas/ministro/android/necessitas/</item>
+    <array name="qt_sources">
+      <!-- Qt5.3 Libs     -->
+      <item>https://download.qt-project.org/ministro/android/qt5/qt-5.3</item>
     </array>
     <string name="repository">default</string>
     <array name="ministro_libs">
