@@ -25,6 +25,7 @@ rm -vrf $APK_DIR/libs/*
 
 GNUSTL_LIB_PATH=$ANDROID_STANDALONE_TOOLCHAIN/$ANDROID_NDK_TOOLCHAIN_PREFIX/lib
 
+cp -f $QGIS_DIR/images/splash/splash.png $APK_DIR/res/drawable/logo.png
 cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
 
 if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
