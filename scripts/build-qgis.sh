@@ -197,6 +197,7 @@ mkdir -p $INSTALL_DIR/files
 #update apk manifest
 sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
 
+cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
 sed -i '/python/d' $APK_DIR/res/values/libs.xml
 sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml
 
