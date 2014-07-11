@@ -18,7 +18,7 @@
 
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
                   android:name="org.qtproject.qt5.android.bindings.QtActivity"
-                  android:screenOrientation="unspecified"
+                  android:screenOrientation="landscape"
                   android:launchMode="singleTop">
 <!--           <intent-filter> -->
 <!--                <action android:name="android.intent.action.MAIN"/> -->
