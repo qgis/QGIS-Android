@@ -2,6 +2,16 @@
     Copyright (c) 2012-2013, BogDan Vatra <bogdan@kde.org>
     Contact: http://www.qt-project.org/legal
 
+    Commercial License Usage
+    Licensees holding valid commercial Qt licenses may use this file in
+    accordance with the commercial license agreement provided with the
+    Software or, alternatively, in accordance with the terms contained in
+    a written agreement between you and Digia.  For licensing terms and
+    conditions see http://qt.digia.com/licensing.  For further information
+    use the contact form at http://qt.digia.com/contact-us.
+
+    BSD License Usage
+    Alternatively, this file may be used under the BSD license as follows:
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions
     are met:
@@ -24,17 +34,23 @@
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.kde.necessitas.origo;
+package org.qtproject.qt5.android.bindings;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.kde.necessitas.ministro.IMinistro;
 import org.kde.necessitas.ministro.IMinistroCallback;
-
-import org.qgis.qgis.BuildConfig;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,11 +63,15 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources.Theme;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -75,12 +95,13 @@ import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 //@ANDROID-11
 
+
 public class QtActivity extends Activity
 {
     private final static int MINISTRO_INSTALL_REQUEST_CODE = 0xf3ee; // request code used to know when Ministro instalation is finished
-    private static final int MINISTRO_API_LEVEL = 3; // Ministro api level (check IMinistro.aidl file)
+    private static final int MINISTRO_API_LEVEL = 4; // Ministro api level (check IMinistro.aidl file)
     private static final int NECESSITAS_API_LEVEL = 2; // Necessitas api level used by platform plugin
-    private static final int QT_VERSION = 0x040700; // This app requires at least Qt version 5.1.0
+    private static final int QT_VERSION = 0x050100; // This app requires at least Qt version 5.1.0
 
     private static final String ERROR_CODE_KEY = "error.code";
     private static final String ERROR_MESSAGE_KEY = "error.message";
@@ -91,6 +112,8 @@ public class QtActivity extends Activity
     private static final String ENVIRONMENT_VARIABLES_KEY = "environment.variables";
     private static final String APPLICATION_PARAMETERS_KEY = "application.parameters";
     private static final String BUNDLED_LIBRARIES_KEY = "bundled.libraries";
+    private static final String BUNDLED_IN_LIB_RESOURCE_ID_KEY = "android.app.bundled_in_lib_resource_id";
+    private static final String BUNDLED_IN_ASSETS_RESOURCE_ID_KEY = "android.app.bundled_in_assets_resource_id";
     private static final String MAIN_LIBRARY_KEY = "main.library";
     private static final String STATIC_INIT_CLASSES_KEY = "static.init.classes";
     private static final String NECESSITAS_API_LEVEL_KEY = "necessitas.api.level";
@@ -107,23 +130,42 @@ public class QtActivity extends Activity
                                                                        // for more details.
 
     private static final String REPOSITORY_KEY = "repository";         // use this key to overwrite the default ministro repsitory
+    private static final String ANDROID_THEMES_KEY = "android.themes"; // themes that your application uses
 
-    private static final String APPLICATION_PARAMETERS = null; // use this variable to pass any parameters to your application,
+
+    public String APPLICATION_PARAMETERS = null; // use this variable to pass any parameters to your application,
                                                                // the parameters must not contain any white spaces
                                                                // and must be separated with "\t"
                                                                // e.g "-param1\t-param2=value2\t-param3\tvalue3"
 
-    private static final String ENVIRONMENT_VARIABLES = "QT_USE_ANDROID_NATIVE_STYLE=0\tQT_USE_ANDROID_NATIVE_DIALOGS=1";
+    public String ENVIRONMENT_VARIABLES = "QT_USE_ANDROID_NATIVE_STYLE=1\tQT_USE_ANDROID_NATIVE_DIALOGS=1\t";
                                                                // use this variable to add any environment variables to your application.
                                                                // the env vars must be separated with "\t"
                                                                // e.g. "ENV_VAR1=1\tENV_VAR2=2\t"
                                                                // Currently the following vars are used by the android plugin:
-                                                               // * QT_USE_ANDROID_NATIVE_STYLE - 0 if you don't want to use android style plugin, it will save a few ms at startup.
+                                                               // * QT_USE_ANDROID_NATIVE_STYLE - 1 to use the android widget style if available.
+                                                               // * QT_USE_ANDROID_NATIVE_DIALOGS -1 to use the android native dialogs.
+
+    public String[] QT_ANDROID_THEMES = null;     // A list with all themes that your application want to use.
+                                                  // The name of the theme must be the same with any theme from
+                                                  // http://developer.android.com/reference/android/R.style.html
+                                                  // The most used themes are:
+                                                  //  * "Theme" - (fallback) check http://developer.android.com/reference/android/R.style.html#Theme
+                                                  //  * "Theme_Black" - check http://developer.android.com/reference/android/R.style.html#Theme_Black
+                                                  //  * "Theme_Light" - (default for API <=10) check http://developer.android.com/reference/android/R.style.html#Theme_Light
+                                                  //  * "Theme_Holo" - check http://developer.android.com/reference/android/R.style.html#Theme_Holo
+                                                  //  * "Theme_Holo_Light" - (default for API 11-13) check http://developer.android.com/reference/android/R.style.html#Theme_Holo_Light
+                                                  //  * "Theme_DeviceDefault" - check http://developer.android.com/reference/android/R.style.html#Theme_DeviceDefault
+                                                  //  * "Theme_DeviceDefault_Light" - (default for API 14+) check http://developer.android.com/reference/android/R.style.html#Theme_DeviceDefault_Light
+
+    public String QT_ANDROID_DEFAULT_THEME = null; // sets the default theme.
 
     private static final int INCOMPATIBLE_MINISTRO_VERSION = 1; // Incompatible Ministro version. Ministro needs to be upgraded.
+    private static final int BUFFER_SIZE = 1024;
+
     private ActivityInfo m_activityInfo = null; // activity info object, used to access the libs and the strings
     private DexClassLoader m_classLoader = null; // loader object
-    private String[] m_sources = {"https://files.kde.org/necessitas/ministro/android/necessitas/"}; // Make sure you are using ONLY secure locations
+    private String[] m_sources = {"https://download.qt-project.org/ministro/android/qt5/qt-5.2"}; // Make sure you are using ONLY secure locations
     private String m_repository = "default"; // Overwrites the default Ministro repository
                                                         // Possible values:
                                                         // * default - Ministro default repository set with "Ministro configuration tool".
@@ -136,6 +178,21 @@ public class QtActivity extends Activity
                                                         // * unstable - unstable repository, DO NOT use this repository in production,
                                                         // this repository is used to push Qt snapshots.
     private String[] m_qtLibs = null; // required qt libs
+
+    public QtActivity()
+    {
+        if (Build.VERSION.SDK_INT <= 10) {
+            QT_ANDROID_THEMES = new String[] {"Theme_Light"};
+            QT_ANDROID_DEFAULT_THEME = "Theme_Light";
+        }
+        else if (Build.VERSION.SDK_INT >= 11 && Build.VERSION.SDK_INT <= 13) {
+            QT_ANDROID_THEMES = new String[] {"Theme_Holo_Light"};
+            QT_ANDROID_DEFAULT_THEME = "Theme_Holo_Light";
+        } else {
+            QT_ANDROID_THEMES = new String[] {"Theme_DeviceDefault_Light"};
+            QT_ANDROID_DEFAULT_THEME = "Theme_DeviceDefault_Light";
+        }
+    }
 
     // this function is used to load and start the loader
     private void loadApplication(Bundle loaderParams)
@@ -160,9 +217,7 @@ public class QtActivity extends Activity
                 errorDialog.show();
                 return;
             }
-            
-            loaderParams.putStringArrayList(NATIVE_LIBRARIES_KEY, getOverridenNativeLibrariesOrder(loaderParams));
-            
+
             // add all bundled Qt libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
             if ( m_activityInfo.metaData.containsKey("android.app.bundled_libs_resource_id") )
@@ -220,83 +275,27 @@ public class QtActivity extends Activity
             errorDialog.show();
         }
     }
-    
-    private ArrayList<String> getOverridenNativeLibrariesOrder(Bundle loaderParams){
-           //No hack needed, in debuggable mode al deps are bundled
-            if (BuildConfig.DEBUG) return loaderParams.getStringArrayList(NATIVE_LIBRARIES_KEY);
-        
-        //WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490
-        Log.w(QtApplication.QtTAG, "using HACK WORKAROUND to https://bugs.kde.org/show_bug.cgi?id=325490");
-        Log.i(QtApplication.QtTAG, loaderParams.toString());
-        
-        ArrayList<String> repoSources = loaderParams.getStringArrayList("libs.path");
-        String qtRepo = repoSources.get(0);
-        String qgisRepo = repoSources.get(1);
-        
-        ArrayList<String> native_libraries_order_override = new ArrayList<String>(
-            Arrays.asList(qtRepo + "lib/libQtCore.so",
-                qgisRepo + "lib/libgnustl_shared.so",
-                qgisRepo + "lib/libexpat.so",
-                qgisRepo + "lib/libgeos.so",
-                qgisRepo + "lib/libgslcblas.so",
-                qgisRepo + "lib/libsqlite3.so",
-                qgisRepo + "lib/libproj.so",
-                qgisRepo + "lib/libspatialindex.so",
-                qgisRepo + "lib/libiconv.so",
-                qgisRepo + "lib/libcharset.so",
-                qgisRepo + "lib/libpq.so",
-                qtRepo + "lib/libQtSql.so",
-                qtRepo + "lib/libQtXml.so",
-                qtRepo + "lib/libQtNetwork.so",
-                qtRepo + "lib/libQtSensors.so",
-                qtRepo + "lib/libQtScript.so",
-                qgisRepo + "lib/libgeos_c.so",
-                qgisRepo + "lib/libgdal.so",
-                qgisRepo + "lib/libfreexl.so",
-                qtRepo + "lib/libQtGui.so",
-                qtRepo + "plugins/platforms/android/libandroid-9.so",
-                qtRepo + "plugins/sensors/libqtsensors_android.so",
-                qtRepo + "lib/libQtXmlPatterns.so",
-                qgisRepo + "lib/libspatialite.so",
-                qtRepo + "lib/libQtSvg.so",
-                qtRepo + "lib/libQtWebKit.so",
-                qtRepo + "lib/libQtSystemInfo.so",
-                qgisRepo + "lib/libqwt.so",
-                qtRepo + "lib/libQtLocation.so",
-                qtRepo + "plugins/landmarks/libqtlandmarks_sqlite.so",
-                qtRepo + "lib/libQtDeclarative.so",
-                qgisRepo + "lib/libqgis_core.so",
-                qgisRepo + "lib/libqgis_gui.so",
-                qgisRepo + "lib/libqgissqlanyconnection.so",
-                qgisRepo + "lib/libqgis_analysis.so",
-                qgisRepo + "lib/libqgis_networkanalysis.so"));
-        
-        Log.i(QtApplication.QtTAG, "loaderParams OVERRIDEN");
-        Log.i(QtApplication.QtTAG, loaderParams.toString());
-        
-        return native_libraries_order_override;
-    }
 
     private ServiceConnection m_ministroConnection=new ServiceConnection() {
         private IMinistro m_service = null;
-    @Override
+        @Override
         public void onServiceConnected(ComponentName name, IBinder service)
         {
             m_service = IMinistro.Stub.asInterface(service);
             try {
-                if (m_service!=null) {
-                    Log.i(QtApplication.QtTAG, "CALLING MINISTRO WITH:");
-                    Bundle parameters= new Bundle();
+                if (m_service != null) {
+                    Bundle parameters = new Bundle();
                     parameters.putStringArray(REQUIRED_MODULES_KEY, m_qtLibs);
                     parameters.putString(APPLICATION_TITLE_KEY, (String)QtActivity.this.getTitle());
                     parameters.putInt(MINIMUM_MINISTRO_API_KEY, MINISTRO_API_LEVEL);
                     parameters.putInt(MINIMUM_QT_VERSION_KEY, QT_VERSION);
                     parameters.putString(ENVIRONMENT_VARIABLES_KEY, ENVIRONMENT_VARIABLES);
-                    if (null!=APPLICATION_PARAMETERS)
+                    if (APPLICATION_PARAMETERS != null)
                         parameters.putString(APPLICATION_PARAMETERS_KEY, APPLICATION_PARAMETERS);
                     parameters.putStringArray(SOURCES_KEY, m_sources);
                     parameters.putString(REPOSITORY_KEY, m_repository);
-                    Log.i(QtApplication.QtTAG, parameters.toString());
+                    if (QT_ANDROID_THEMES != null)
+                        parameters.putStringArray(ANDROID_THEMES_KEY, QT_ANDROID_THEMES);
                     m_service.requestLoader(m_ministroCallback, parameters);
                 }
             } catch (RemoteException e) {
@@ -304,19 +303,19 @@ public class QtActivity extends Activity
             }
         }
 
-    private IMinistroCallback m_ministroCallback = new IMinistroCallback.Stub() {
-        // this function is called back by Ministro.
-        @Override
-        public void loaderReady(final Bundle loaderParams) throws RemoteException {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    unbindService(m_ministroConnection);
-                    loadApplication(loaderParams);
-                }
-            });
-        }
-    };
+        private IMinistroCallback m_ministroCallback = new IMinistroCallback.Stub() {
+            // this function is called back by Ministro.
+            @Override
+            public void loaderReady(final Bundle loaderParams) throws RemoteException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        unbindService(m_ministroConnection);
+                        loadApplication(loaderParams);
+                    }
+                });
+            }
+        };
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -369,6 +368,187 @@ public class QtActivity extends Activity
         errorDialog.show();
     }
 
+    static private void copyFile(InputStream inputStream, OutputStream outputStream)
+        throws IOException
+    {
+        byte[] buffer = new byte[BUFFER_SIZE];
+
+        int count;
+        while ((count = inputStream.read(buffer)) > 0)
+            outputStream.write(buffer, 0, count);
+    }
+
+
+    private void copyAsset(String source, String destination)
+        throws IOException
+    {
+        // Already exists, we don't have to do anything
+        File destinationFile = new File(destination);
+        if (destinationFile.exists())
+            return;
+
+        File parentDirectory = destinationFile.getParentFile();
+        if (!parentDirectory.exists())
+            parentDirectory.mkdirs();
+
+        destinationFile.createNewFile();
+
+        AssetManager assetsManager = getAssets();
+        InputStream inputStream = assetsManager.open(source);
+        OutputStream outputStream = new FileOutputStream(destinationFile);
+        copyFile(inputStream, outputStream);
+
+        inputStream.close();
+        outputStream.close();
+    }
+
+    private static void createBundledBinary(String source, String destination)
+        throws IOException
+    {
+        // Already exists, we don't have to do anything
+        File destinationFile = new File(destination);
+        if (destinationFile.exists())
+            return;
+
+        File parentDirectory = destinationFile.getParentFile();
+        if (!parentDirectory.exists())
+            parentDirectory.mkdirs();
+
+        destinationFile.createNewFile();
+
+        InputStream inputStream = new FileInputStream(source);
+        OutputStream outputStream = new FileOutputStream(destinationFile);
+        copyFile(inputStream, outputStream);
+
+        inputStream.close();
+        outputStream.close();
+    }
+
+    private boolean cleanCacheIfNecessary(String pluginsPrefix, long packageVersion)
+    {
+        File versionFile = new File(pluginsPrefix + "cache.version");
+
+        long cacheVersion = 0;
+        if (versionFile.exists() && versionFile.canRead()) {
+            try {
+                DataInputStream inputStream = new DataInputStream(new FileInputStream(versionFile));
+                cacheVersion = inputStream.readLong();
+                inputStream.close();
+             } catch (Exception e) {
+                e.printStackTrace();
+             }
+        }
+
+        if (cacheVersion != packageVersion) {
+            deleteRecursively(new File(pluginsPrefix));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void extractBundledPluginsAndImports(String pluginsPrefix)
+        throws IOException
+    {
+        ArrayList<String> libs = new ArrayList<String>();
+
+        String dataDir = getApplicationInfo().dataDir + "/";
+
+        long packageVersion = -1;
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            packageVersion = packageInfo.lastUpdateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!cleanCacheIfNecessary(pluginsPrefix, packageVersion))
+            return;
+
+        {
+            File versionFile = new File(pluginsPrefix + "cache.version");
+
+            File parentDirectory = versionFile.getParentFile();
+            if (!parentDirectory.exists())
+                parentDirectory.mkdirs();
+
+            versionFile.createNewFile();
+
+            DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(versionFile));
+            outputStream.writeLong(packageVersion);
+            outputStream.close();
+        }
+
+        {
+            String key = BUNDLED_IN_LIB_RESOURCE_ID_KEY;
+            java.util.Set<String> keys = m_activityInfo.metaData.keySet();
+            if (m_activityInfo.metaData.containsKey(key)) {
+                String[] list = getResources().getStringArray(m_activityInfo.metaData.getInt(key));
+
+                for (String bundledImportBinary : list) {
+                    String[] split = bundledImportBinary.split(":");
+                    String sourceFileName = dataDir + "lib/" + split[0];
+                    String destinationFileName = pluginsPrefix + split[1];
+                    createBundledBinary(sourceFileName, destinationFileName);
+                }
+            }
+        }
+
+        {
+            String key = BUNDLED_IN_ASSETS_RESOURCE_ID_KEY;
+            if (m_activityInfo.metaData.containsKey(key)) {
+                String[] list = getResources().getStringArray(m_activityInfo.metaData.getInt(key));
+
+                for (String fileName : list) {
+                    String[] split = fileName.split(":");
+                    String sourceFileName = split[0];
+                    String destinationFileName = pluginsPrefix + split[1];
+                    copyAsset(sourceFileName, destinationFileName);
+                }
+            }
+
+        }
+    }
+
+    private void deleteRecursively(File directory)
+    {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory())
+                    deleteRecursively(file);
+                else
+                    file.delete();
+            }
+
+            directory.delete();
+        }
+    }
+
+    private void cleanOldCacheIfNecessary(String oldLocalPrefix, String localPrefix)
+    {
+        File newCache = new File(localPrefix);
+        if (!newCache.exists()) {
+            {
+                File oldPluginsCache = new File(oldLocalPrefix + "plugins/");
+                if (oldPluginsCache.exists() && oldPluginsCache.isDirectory())
+                    deleteRecursively(oldPluginsCache);
+            }
+
+            {
+                File oldImportsCache = new File(oldLocalPrefix + "imports/");
+                if (oldImportsCache.exists() && oldImportsCache.isDirectory())
+                    deleteRecursively(oldImportsCache);
+            }
+
+            {
+                File oldQmlCache = new File(oldLocalPrefix + "qml/");
+                if (oldQmlCache.exists() && oldQmlCache.isDirectory())
+                    deleteRecursively(oldQmlCache);
+            }
+        }
+    }
+
     private void startApp(final boolean firstStart)
     {
         try {
@@ -380,8 +560,8 @@ public class QtActivity extends Activity
             if (m_activityInfo.metaData.containsKey("android.app.repository"))
                 m_repository = m_activityInfo.metaData.getString("android.app.repository");
 
-            if (m_activityInfo.metaData.containsKey("android.app.ministro_libs_resource_id")) {
-                int resourceId = m_activityInfo.metaData.getInt("android.app.ministro_libs_resource_id");
+            if (m_activityInfo.metaData.containsKey("android.app.qt_libs_resource_id")) {
+                int resourceId = m_activityInfo.metaData.getInt("android.app.qt_libs_resource_id");
                 m_qtLibs = getResources().getStringArray(resourceId);
             }
 
@@ -389,26 +569,48 @@ public class QtActivity extends Activity
                     && m_activityInfo.metaData.getInt("android.app.use_local_qt_libs") == 1) {
                 ArrayList<String> libraryList = new ArrayList<String>();
 
+
                 String localPrefix = "/data/local/tmp/qt/";
                 if (m_activityInfo.metaData.containsKey("android.app.libs_prefix"))
                     localPrefix = m_activityInfo.metaData.getString("android.app.libs_prefix");
 
+                String pluginsPrefix = localPrefix;
+
+                boolean bundlingQtLibs = false;
+                if (m_activityInfo.metaData.containsKey("android.app.bundle_local_qt_libs")
+                    && m_activityInfo.metaData.getInt("android.app.bundle_local_qt_libs") == 1) {
+                    localPrefix = getApplicationInfo().dataDir + "/";
+                    pluginsPrefix = localPrefix + "qt-reserved-files/";
+                    cleanOldCacheIfNecessary(localPrefix, pluginsPrefix);
+                    extractBundledPluginsAndImports(pluginsPrefix);
+                    bundlingQtLibs = true;
+                }
+
                 if (m_qtLibs != null) {
-                    for (int i=0;i<m_qtLibs.length;i++)
-                        libraryList.add(localPrefix+"lib/lib"+m_qtLibs[i]+".so");
+                    for (int i=0;i<m_qtLibs.length;i++) {
+                        libraryList.add(localPrefix
+                                        + "lib/lib"
+                                        + m_qtLibs[i]
+                                        + ".so");
+                    }
                 }
 
                 if (m_activityInfo.metaData.containsKey("android.app.load_local_libs")) {
                     String[] extraLibs = m_activityInfo.metaData.getString("android.app.load_local_libs").split(":");
                     for (String lib : extraLibs) {
-                        if (lib.length() > 0)
-                            libraryList.add(localPrefix + lib);
+                        if (lib.length() > 0) {
+                            if (lib.startsWith("lib/"))
+                                libraryList.add(localPrefix + lib);
+                            else
+                                libraryList.add(pluginsPrefix + lib);
+                        }
                     }
                 }
 
+
                 String dexPaths = new String();
                 String pathSeparator = System.getProperty("path.separator", ":");
-                if (m_activityInfo.metaData.containsKey("android.app.load_local_jars")) {
+                if (!bundlingQtLibs && m_activityInfo.metaData.containsKey("android.app.load_local_jars")) {
                     String[] jarFiles = m_activityInfo.metaData.getString("android.app.load_local_jars").split(":");
                     for (String jar:jarFiles) {
                         if (jar.length() > 0) {
@@ -429,10 +631,21 @@ public class QtActivity extends Activity
                 }
                 loaderParams.putStringArrayList(NATIVE_LIBRARIES_KEY, libraryList);
                 loaderParams.putString(ENVIRONMENT_VARIABLES_KEY, ENVIRONMENT_VARIABLES
-                                                                  + "QT_QPA_EGLFS_HIDECURSOR=1"
-                                                                  + "\tQML2_IMPORT_PATH=" + localPrefix + "/qml"
-                                                                  + "\tQML_IMPORT_PATH=" + localPrefix + "/imports"
-                                                                  + "\tQT_PLUGIN_PATH=" + localPrefix + "/plugins");
+                                                                  + "\tQML2_IMPORT_PATH=" + pluginsPrefix + "/qml"
+                                                                  + "\tQML_IMPORT_PATH=" + pluginsPrefix + "/imports"
+                                                                  + "\tQT_PLUGIN_PATH=" + pluginsPrefix + "/plugins");
+
+                if (APPLICATION_PARAMETERS != null) {
+                    loaderParams.putString(APPLICATION_PARAMETERS_KEY, APPLICATION_PARAMETERS);
+                } else {
+                    Intent intent = getIntent();
+                    if (intent != null) {
+                        String parameters = intent.getStringExtra("applicationArguments");
+                        if (parameters != null)
+                            loaderParams.putString(APPLICATION_PARAMETERS_KEY, parameters.replace(' ', '\t'));
+                    }
+                }
+
                 loadApplication(loaderParams);
                 return;
             }
@@ -619,24 +832,51 @@ public class QtActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (QtApplication.m_delegateObject != null && QtApplication.onCreate != null) {
-            QtApplication.invokeDelegateMethod(QtApplication.onCreate, savedInstanceState);
-            return;
-        }
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         try {
             m_activityInfo = getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-        } catch (NameNotFoundException e) {
+            for (Field f : Class.forName("android.R$style").getDeclaredFields()) {
+                if (f.getInt(null) == m_activityInfo.getThemeResource()) {
+                    QT_ANDROID_THEMES = new String[] {f.getName()};
+                    QT_ANDROID_DEFAULT_THEME = f.getName();
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             finish();
             return;
         }
 
+        try {
+            setTheme(Class.forName("android.R$style").getDeclaredField(QT_ANDROID_DEFAULT_THEME).getInt(null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (Build.VERSION.SDK_INT > 10) {
+            try {
+                requestWindowFeature(Window.class.getField("FEATURE_ACTION_BAR").getInt(null));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
+        if (QtApplication.m_delegateObject != null && QtApplication.onCreate != null) {
+            QtApplication.invokeDelegateMethod(QtApplication.onCreate, savedInstanceState);
+            return;
+        }
+
+        ENVIRONMENT_VARIABLES += "\tQT_ANDROID_THEME=" + QT_ANDROID_DEFAULT_THEME
+                              + "/\tQT_ANDROID_THEME_DISPLAY_DPI=" + getResources().getDisplayMetrics().densityDpi + "\t";
+
         if (null == getLastNonConfigurationInstance()) {
             // if splash screen is defined, then show it
-            if (m_activityInfo.metaData.containsKey("android.app.splash_screen") )
-                setContentView(m_activityInfo.metaData.getInt("android.app.splash_screen"));
+            if (m_activityInfo.metaData.containsKey("android.app.splash_screen_drawable"))
+                getWindow().setBackgroundDrawableResource(m_activityInfo.metaData.getInt("android.app.splash_screen_drawable"));
+            else
+                getWindow().setBackgroundDrawable(new ColorDrawable(0xff000000));
             startApp(true);
         }
     }

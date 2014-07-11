@@ -31,7 +31,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.kde.necessitas.origo;
+package org.qgis;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -60,6 +60,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
+import org.qtproject.qt5.android.bindings.QtActivity;
 public class QgisActivity extends Activity {
 	private static final String QtTAG = "FirstRun JAVA"; // string used for
 	private static final int PROGRESS_DIALOG = 0;
