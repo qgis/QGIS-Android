@@ -206,5 +206,3 @@ if [ "$WITH_BINDINGS" = TRUE ]; then
       <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
 fi
 
-echo "</array></resources>" >> $APK_DIR/res/values/libs.xml
-
