@@ -303,7 +303,7 @@ else
   #######QWT#######
   echo "QWT"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
+  curl -L -O http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
   tar xjf $QWT_NAME.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWT_NAME.tar.bz2; fi
   cd $QWT_NAME/
@@ -316,7 +316,7 @@ else
   #######QWTPOLAR#######
   echo "QWTPOLAR"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwtpolar/qwtpolar/$QWTPOLAR_VERSION/$QWTPOLAR_NAME.tar.bz2
+  curl -L -O http://downloads.sourceforge.net/project/qwtpolar/qwtpolar/$QWTPOLAR_VERSION/$QWTPOLAR_NAME.tar.bz2
   tar xjf $QWTPOLAR_NAME.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWTPOLAR_NAME.tar.bz2; fi
   cd $QWTPOLAR_NAME/
