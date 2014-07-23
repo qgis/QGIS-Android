@@ -139,17 +139,17 @@ else
   cd $QGIS_DIR
   
   #check if an android branch of qgis is present
-  set +e
-    git checkout $QGIS_ANDROID_BRANCH
-  set -e
-  BRANCH="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
-  
-  if [ "$BRANCH" != "$QGIS_ANDROID_BRANCH" ]; then
-    echo "Aborting, the qgis branch checkedout is not '$QGIS_ANDROID_BRANCH', please clone or fork this repo: git://github.com/mbernasocchi/Quantum-GIS.git"
-    exit 1
-  else
-    echo "Environement looks good, lets start"
-  fi
+  #set +e
+  #  git checkout $QGIS_ANDROID_BRANCH
+  #set -e
+  #BRANCH="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
+  #
+  #if [ "$BRANCH" != "$QGIS_ANDROID_BRANCH" ]; then
+  #  echo "Aborting, the qgis branch checkedout is not '$QGIS_ANDROID_BRANCH', please clone or fork this repo: git://github.com/mbernasocchi/Quantum-GIS.git"
+  #  exit 1
+  #else
+  #  echo "Environement looks good, lets start"
+  #fi
   
   
   ########CREATE STANDALONE TOOLCHAIN########
