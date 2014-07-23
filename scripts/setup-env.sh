@@ -357,8 +357,8 @@ else
   #######PYTHON#############################
   echo "python"
   cd $SRC_DIR  
-  wget -c https://github.com/devpack/android-python27/blob/master/python-build-with-qt/binaries/python_27.zip?raw=true
-  wget -c https://github.com/devpack/android-python27/blob/master/python-build-with-qt/binaries/python_extras_27.zip?raw=true
+  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
+  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
   
   unzip python_27.zip
   unzip python_extras_27.zip -d pythonTMP
