@@ -130,7 +130,8 @@ else
   #update apk manifest
   sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
 
-  android update project --name Qgis --path $APK_DIR
+  android update project --name Qgis --path $APK_DIR --target android-$ANDROID_LEVEL
+
   mkdir -p $TMP_DIR
   mkdir -p $INSTALL_DIR/lib
   mkdir -p $QGIS_BUILD_DIR
