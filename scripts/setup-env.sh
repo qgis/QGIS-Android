@@ -366,8 +366,6 @@ else
   rm -rf pythonTMP
   
   #######APK###############################
-  cd $APK_DIR
-  android update project -p . -n qgis
   
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0
