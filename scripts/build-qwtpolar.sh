@@ -26,9 +26,10 @@ cd $SRC_DIR/$QWTPOLAR_NAME/
 sed -i "s|    QWT_POLAR_INSTALL_PREFIX    =.*|    QWT_POLAR_INSTALL_PREFIX    = $INSTALL_DIR|" qwtpolarconfig.pri
 sed -i "s|QWT_POLAR_CONFIG     += QwtPolarDesigner.*|#QWT_POLAR_CONFIG     += QwtPolarDesigner|" qwtpolarconfig.pri
 sed -i "s|QWT_POLAR_CONFIG     += QwtPolarExamples.*|#QWT_POLAR_CONFIG     += QwtPolarExamples|" qwtpolarconfig.pri
-sed -i -e '$a\
-INCLUDEPATH += $INSTALL_DIR/include\
-LIBS += $INSTALL_DIR/lib/libqwt.so' qwtpolarconfig.pri
+grep -q "^INCLUDEPATH +=.*" qwtpolarconfig.pri && sed "s|^INCLUDEPATH +=.*|INCLUDEPATH += $INSTALL_DIR/include|" -i qwtpolarconfig.pri ||
+    sed "$ a\INCLUDEPATH += $INSTALL_DIR/include" -i qwtpolarconfig.pri
+grep -q "^LIBS +=.*" qwtpolarconfig.pri && sed "s|^LIBS +=.*|LIBS += $INSTALL_DIR/lib/libqwt.so|" -i qwtpolarconfig.pri ||
+    sed "$ a\LIBS += $INSTALL_DIR/lib/libqwt.so" -i qwtpolarconfig.pri
 mkdir -p build-$ANDROID_ABI
 cd build-$ANDROID_ABI
 # configure
