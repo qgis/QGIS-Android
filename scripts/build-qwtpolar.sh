@@ -40,8 +40,6 @@ QMAKEFEATURES=$SRC_DIR/$QWT_NAME \
 $QMAKE ../qwtpolar.pro
 # compile
 make -j$CORES 2>&1 | tee make.out
-sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_ABI/|$INSTALL_DIR/lib/|" src/Makefile
-INSTALL_ROOT=$INSTALL_DIR \
 make -j$CORES 2>&1 install | tee makeInstall.out
 #########END QWTPOLAR########
 
