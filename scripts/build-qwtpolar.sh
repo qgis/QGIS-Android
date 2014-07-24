@@ -24,17 +24,22 @@ source `dirname $0`/config.conf
 echo "QWTPOLAR $QWTPOLAR_VERSION"
 cd $SRC_DIR/$QWTPOLAR_NAME/
 sed -i "s|    QWT_POLAR_INSTALL_PREFIX    =.*|    QWT_POLAR_INSTALL_PREFIX    = $INSTALL_DIR|" qwtpolarconfig.pri
+sed -i "s|QWT_POLAR_CONFIG     += QwtPolarDesigner.*|#QWT_POLAR_CONFIG     += QwtPolarDesigner|" qwtpolarconfig.pri
+sed -i "s|QWT_POLAR_CONFIG     += QwtPolarExamples.*|#QWT_POLAR_CONFIG     += QwtPolarExamples|" qwtpolarconfig.pri
+sed -i -e '$a\
+INCLUDEPATH += $INSTALL_DIR/include\
+LIBS += $INSTALL_DIR/lib/libqwt.so' qwtpolarconfig.pri
 mkdir -p build-$ANDROID_ABI
 cd build-$ANDROID_ABI
-#configure
+# configure
 CFLAGS=$MY_STD_CFLAGS \
 CXXFLAGS=$MY_STD_CXXFLAGS \
 LDFLAGS=$MY_STD_LDFLAGS \
 QMAKEFEATURES=$SRC_DIR/$QWT_NAME \
 $QMAKE ../qwtpolar.pro
-#compile
+# compile
 make -j$CORES 2>&1 | tee make.out
-sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_ABI/|\$(INSTALL_ROOT)$INSTALL_DIR/lib/|" src/Makefile
+sed -i "s|\$(INSTALL_ROOT)/libs/$ANDROID_ABI/|$INSTALL_DIR/lib/|" src/Makefile
 INSTALL_ROOT=$INSTALL_DIR \
 make -j$CORES 2>&1 install | tee makeInstall.out
 #########END QWTPOLAR########
