@@ -125,10 +125,8 @@ else
   ########CHECK IF flex EXISTS################
   hash flex 2>&- || { echo >&2 "flex required to build QGIS. Aborting."; exit 1; }
   
-  #preparing environnement
-  GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
-  #update apk manifest
-  sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
+  # Preparing environnement
+  cp $APK_DIR/AndroidManifest.xml.template $APK_DIR/AndroidManifest.xml
 
   android update project --name Qgis --path $APK_DIR
 
@@ -357,8 +355,8 @@ else
   #######PYTHON#############################
   echo "python"
   cd $SRC_DIR  
-  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
-  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
+#  wget -U "Mozilla" -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
+#  wget -U "Mozilla" -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
   
   unzip python_27.zip
   unzip python_extras_27.zip -d pythonTMP
