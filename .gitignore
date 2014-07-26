@@ -15,4 +15,6 @@
 /apk/.idea/*
 /apk/AndroidManifest.xml
 /apk/res/drawable/logo.png
+/apk/project.properties
+/apk/build.xml
 /repository/*/
