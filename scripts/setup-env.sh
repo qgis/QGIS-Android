@@ -353,6 +353,7 @@ else
   #######END $PQ_NAME#######
   
   #######PYTHON#############################
+if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
   echo "python"
   cd $SRC_DIR  
 #  wget -U "Mozilla" -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
@@ -362,6 +363,7 @@ else
   unzip python_extras_27.zip -d pythonTMP
   mv pythonTMP/python/* python/lib/python2.7/
   rm -rf pythonTMP
+fi
   
   #######APK###############################
   
