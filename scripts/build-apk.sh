@@ -33,6 +33,6 @@ if [[ "$ANDROID_ABI" = "armeabi-v7a" ]]; then
     rm -vrf $APK_DIR/libs/armeabi
 fi
 
-android update project --name qgis --path $APK_DIR
+android update project --name qgis --path $APK_DIR --target android-$ANDROID_LEVEL
 
 ant `echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]'`

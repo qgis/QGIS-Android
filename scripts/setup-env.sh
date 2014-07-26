@@ -128,7 +128,7 @@ else
   # Preparing environnement
   cp $APK_DIR/AndroidManifest.xml.template $APK_DIR/AndroidManifest.xml
 
-  android update project --name Qgis --path $APK_DIR
+  android update project --name Qgis --path $APK_DIR --target android-$ANDROID_LEVEL
 
   mkdir -p $TMP_DIR
   mkdir -p $INSTALL_DIR/lib
