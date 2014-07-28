@@ -21,41 +21,43 @@ set -e
 if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
 
   #############################
-  #######CONFIGURE HERE########
+  ###### CONFIGURE HERE #######
   #############################
-  export NECESSITAS_DIR=$HOME/dev/necessitas
-  export QGIS_DIR=$HOME/dev/QGIS
-  export QT_ROOT=$HOME/Qt5.3.1/5.3/android_armv7
   
-  #WARNING: armeabi-v7a builds don't work on android emulators pre api 14
-  DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
-  #passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
-  #for example ANDROID_ABI=armeabi-v7a ./build-all.sh
-  # Possible values:
-  #   ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
-  #WARNING tested only with "armeabi-v7a", "armeabi"
-  #TODO somehow support ANDROID_ABI with spaces in names since $ANDROID_ABI is used often in mkdir
-  #see ascripts/android.toolchain.cmake for details 
+  ############################
+  # PATHS
+  export QGIS_DIR=$HOME/dev/QGIS  # cloned QGIS repo
+  export QT_ROOT=$HOME/dev/Qt5.3.1/5.3/android_armv7 # downloaded Qt
+  export ANDROID_SDK_ROOT=$HOME/dev/android-sdk-linux # downloaded SDK
+  export ANDROID_NDK_ROOT=$HOME/dev/android-ndk-r10 # downloaded NDK
+  export ANDROID_STANDALONE_TOOLCHAIN=$HOME/dev/android-ndk-r10-standalonetoolchain # path where the toolchain will be created
 
-  # Qt root
-  # export QT_ROOT=$NECESSITAS_DIR/Android/Qt/482/$ANDROID_ABI
+  # WARNING: armeabi-v7a builds don't work on android emulators pre api 14
+  DEFAULT_ANDROID_ABI=armeabi-v7a #or armeabi
+  # passing ANDROID_ABI=armeabi-v7a when calling a script will override the default
+  # for example ANDROID_ABI=armeabi-v7a ./build-all.sh
+  #  Possible values:
+  #    ANDROID_ABI : "armeabi-v7a", "armeabi", "armeabi-v7a with NEON", "armeabi-v7a with VFPV3", "armeabi-v6 with VFP", "x86", "mips"
+  # WARNING tested only with "armeabi-v7a", "armeabi"
+  # TODO somehow support ANDROID_ABI with spaces in names since $ANDROID_ABI is used often in mkdir
+  # see ascripts/android.toolchain.cmake for details 
+
+  ############################
+  # GIT
   export QGIS_ANDROID_BRANCH='qt5'
   
-  DEFAULT_BUILD_TYPE=Debug #or Release
-  #passing BUILD_TYPE=Release when calling a script will override the default
-  #for example BUILD_TYPE=Release ./build-all.sh
-
+  ############################
+  # COMPILE
+  # passing BUILD_TYPE=Release when calling a script overrides the default (e.g. BUILD_TYPE=Release ./build-all.sh)
+  DEFAULT_BUILD_TYPE=Debug # or Release
   #build python bindings
   WITH_BINDINGS=FALSE
-  
   #which GUI should be build, both can be true  
   export WITH_MOBILE=FALSE
   export WITH_DESKTOP=TRUE
   
-  export ANDROID_SDK_ROOT=$NECESSITAS_DIR/android-sdk
-  export ANDROID_NDK_ROOT=$NECESSITAS_DIR/android-ndk
-
-  ######LIBS VERSIONS########
+  ############################
+  # LIBS VERSIONS
   export FREEXL_NAME=freexl-1.0.0e
   export SPATIALITE_NAME=libspatialite-4.1.1
   export EXPAT_NAME=expat-2.0.1
@@ -75,6 +77,7 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   export ICONV_NAME=libiconv-1.13.1
   export PQ_NAME=postgresql-9.0.4
   export PQ_VERSION=9.0.4
+
   
   ################################################
   ######LIKELY UNNEEDED TO CONFIGURE FURTHER######
@@ -103,7 +106,6 @@ if [ ! -n "${QGIS_ANDROID_CONF_LOADED+x}" ]; then
   if [ ! -n "${ANDROID_NDK_TOOLCHAIN_VERSION+x}" ]; then
     export ANDROID_NDK_TOOLCHAIN_VERSION=4.8
   fi
-  export ANDROID_STANDALONE_TOOLCHAIN=$NECESSITAS_DIR/$ANDROID_NDK_PLATFORM-standalonetoolchain
 #  export QT_SRC=$NECESSITAS_DIR/Android/Qt/480/qt-src
   export QT_INCLUDE=$QT_ROOT/include
   export QMAKE=$QT_ROOT/bin/qmake
