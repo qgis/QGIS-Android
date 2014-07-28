@@ -1,0 +1,19 @@
+This creates a docker container for building QGIS for android
+
+Usage:
+======
+From the current directory run
+  docker build .
+
+
+Development:
+===========
+The Qt SDK installer is a piece of software that only works with a GUI dialog
+and that is not what we want it to do here. So you have to do some work in order
+to get the SDK into the docker image.
+
+ * Download the latest Qt SDK. Host arch: 64 bit, Target arch: 32 bit
+ * Install it locally
+   * to /usr/src/qt
+   * cd /usr/src/qt
+   * tar -zcvf qt5.3.1.tar.bz2 Qt5.3.1
