@@ -192,9 +192,3 @@ fi
 #echo $CFLAGS
 #exit 0
 make -j$CORES install
-
-GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
-#update version file in share
-mkdir -p $INSTALL_DIR/files
-#echo $GIT_REV > $INSTALL_DIR/files/version.txt
-

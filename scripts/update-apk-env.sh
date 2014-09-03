@@ -19,6 +19,7 @@ set -e
 
 source `dirname $0`/config.conf
 
+GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
 #update apk manifest
 sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
 
@@ -86,6 +87,7 @@ echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
 
 #copy assets to apk
 rm -vrf $APK_DIR/assets
+mkdir -p $INSTALL_DIR/files
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
 #cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
 #if [ $WITH_BINDINGS = TRUE ]; then
