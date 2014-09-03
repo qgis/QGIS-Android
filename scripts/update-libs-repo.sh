@@ -9,7 +9,7 @@
 #######Load config#######
 source `dirname $0`/config.conf
 HARDCODED_PATH='http://files.kde.org/necessitas/ministro/android/necessitas/qt5'
-CORRECT_PATH='http://android.qgis.org/repository'
+CORRECT_PATH='http://www.qgis.org/downloads/android/repository'
 
 QT_LIBS_URI=files.kde.org/necessitas/ministro/android/necessitas/objects/0.411-armeabi-v7a
 
@@ -19,7 +19,7 @@ RULES=rules.xml
 OUT_PATH=$REPO_PATH/testing
 OBJECTS_REPO=$MINISTRO_REPO_VERSION-$ANDROID_ABI
 OBJECTS_PATH=$REPO_PATH/objects
-QT_VERSION=$((0x040900))
+QT_VERSION=$((0x050301))
 READELF=arm-linux-androideabi-readelf
 
 ############END CONFIG########################

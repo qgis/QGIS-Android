@@ -19,6 +19,18 @@ set -e
 
 source `dirname $0`/config.conf
 
+#update apk manifest
+sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
+
+cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
+sed -i '/python/d' $APK_DIR/res/values/libs.xml
+sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml
+
+if [ "$WITH_BINDINGS" = TRUE ]; then
+  echo "      <item>python2.7</item>
+      <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
+fi
+
 #copy libs to apk
 mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
