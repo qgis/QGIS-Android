@@ -2,6 +2,7 @@
 <resources>
 	<array name="qt_sources">
       <!-- Qt5.3 Libs     -->
+      <!-- Dear Bogdan, this is a repo with no cyclic dependencies -->
       <item>http://www.qgis.org/downloads/android/qt-repo/</item>
       <!--   <item>https://download.qt-project.org/ministro/android/qt5/qt-5.3</item> -->
       <!-- QGIS dependencies	    -->
