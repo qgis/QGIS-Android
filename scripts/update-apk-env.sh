@@ -19,20 +19,33 @@ set -e
 
 source `dirname $0`/config.conf
 
+GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
+#update apk manifest
+sed "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml.template > $APK_DIR/AndroidManifest.xml
+
+cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
+sed -i '/python/d' $APK_DIR/res/values/libs.xml
+sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml
+
+if [ "$WITH_BINDINGS" = TRUE ]; then
+  echo "      <item>python2.7</item>
+      <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
+fi
+
 #copy libs to apk
 mkdir -p $APK_DIR/libs/
 rm -vrf $APK_DIR/libs/*
 
 GNUSTL_LIB_PATH=$ANDROID_STANDALONE_TOOLCHAIN/$ANDROID_NDK_TOOLCHAIN_PREFIX/lib
 
-cp -f $APK_DIR/libs${BUILD_TYPE}.xml $APK_DIR/res/values/libs.xml
+cp -f $QGIS_DIR/images/splash/splash.png $APK_DIR/res/drawable/logo.png
 
 if [ -d $INSTALL_DIR/../armeabi/lib/ ]; then 
   mkdir -p $APK_DIR/libs/armeabi/
   if [ "$BUILD_TYPE" = "Debug" ]; then
     cp -vrfs $INSTALL_DIR/../armeabi/lib/*.so $APK_DIR/libs/armeabi/
     #add libpython to apk libs
-    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
+#    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi/
     #copy libgnustl_shared.so
@@ -49,7 +62,7 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
   if [ "$BUILD_TYPE" = "Debug" ]; then
     cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/*.so $APK_DIR/libs/armeabi-v7a/
     #add libpython to apk libs
-    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
+#    cp -vfs $SRC_DIR/python/lib/libpython2.7.so $APK_DIR/libs/armeabi-v7a/
     #add gdb server if in Debug mode
     cp -vrfs $GDB_SERVER $APK_DIR/libs/armeabi-v7a/
     #copy libgnustl_shared.so
@@ -74,11 +87,12 @@ echo "break QgisApp::QgisApp" >> $TMP_DIR/gdb.setup
 
 #copy assets to apk
 rm -vrf $APK_DIR/assets
+mkdir -p $INSTALL_DIR/files
 cp -vrfs $INSTALL_DIR/files $APK_DIR/assets
-cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-if [ $WITH_BINDINGS = TRUE ]; then
-  cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
-fi
+#cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+#if [ $WITH_BINDINGS = TRUE ]; then
+#  cp -vrfs $SRC_DIR/python $APK_DIR/assets/share/
+#fi
 cd $APK_DIR/assets/
 zip -r9 assets.zip share
 rm -rf $APK_DIR/assets/share/

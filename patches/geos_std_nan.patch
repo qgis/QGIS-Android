@@ -1,0 +1,12 @@
+diff -Naur a/include/geos/platform.h.in b/include/geos/platform.h.in
+--- a/include/geos/platform.h.in	2013-08-25 17:10:32.000000000 +0200
++++ b/include/geos/platform.h.in	2014-07-04 10:37:15.555416138 +0200
+@@ -84,7 +84,7 @@
+ #endif
+ 
+ #if defined(HAVE_ISNAN)
+-# define ISNAN(x) (isnan(x))
++# define ISNAN(x) (std::isnan(x))
+ #else
+ # if defined(_MSC_VER)
+ #  define ISNAN(x) _isnan(x)

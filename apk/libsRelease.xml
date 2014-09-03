@@ -1,24 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 	<array name="qt_sources">
-	    <!-- Qt4 Libs	    -->
-	    <item>https://files.kde.org/necessitas/ministro/android/necessitas/</item>
-        <!-- QGIS dependencies	    -->
-        <item>http://android.qgis.org/repository/</item>
+      <!-- Qt5.3 Libs     -->
+      <!-- Dear Bogdan, this is a repo with no cyclic dependencies -->
+      <item>http://www.qgis.org/downloads/android/qt-repo/</item>
+      <!--   <item>https://download.qt-project.org/ministro/android/qt5/qt-5.3</item> -->
+      <!-- QGIS dependencies	    -->
+      <item>http://www.qgis.org/downloads/android/repository/</item>
     </array>
     <string name="repository">default</string>
-    <array name="ministro_libs">
-      <item>QtCore</item>
-      <item>QtGui</item>
-      <item>QtSql</item>
-      <item>QtXml</item>
-      <item>QtSvg</item>
-      <item>QtWebKit</item>
-      <item>QtNetwork</item>
-      <item>QtSystemInfo</item>
-      <item>QtSensors</item>
-      <item>QtLocation</item>
-      <item>QtDeclarative</item>
+    <array name="qt_libs">
+      <item>Qt5Core</item>
+      <item>Qt5Gui</item>
+      <item>Qt5Widgets</item>
+      <item>Qt5Sql</item>
+      <item>Qt5Xml</item>
+      <item>Qt5Network</item>
+      <item>Qt5Sensors</item>
+      <item>Qt5OpenGL</item>
+      <item>Qt5Svg</item>
+      <item>Qt5PrintSupport</item>
+      <item>Qt5Concurrent</item>
+      <item>Qt5Positioning</item>
+      <item>qtforandroid</item>
       <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
@@ -31,6 +35,7 @@
       <item>proj</item>
       <item>spatialindex</item>
       <item>qwt</item>
+      <item>qwtpolar</item>
       <item>iconv</item>
       <item>charset</item>
 <!--      <item>crypt</item>-->
@@ -41,12 +46,12 @@
       <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
-      <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
       <item>qgis_networkanalysis</item>
       </array>
     <array name="bundled_libs">
-      
-<!--      <item>ffi</item>-->
-<!--      <item>bz</item>-->
-</array></resources>
+
+        <!--      <item>ffi</item>-->
+        <!--      <item>bz</item>-->
+    </array>
+  </resources>

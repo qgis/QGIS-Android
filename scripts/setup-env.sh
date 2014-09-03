@@ -125,8 +125,11 @@ else
   ########CHECK IF flex EXISTS################
   hash flex 2>&- || { echo >&2 "flex required to build QGIS. Aborting."; exit 1; }
   
-  #preparing environnement
-  android update project --name Qgis --path $APK_DIR
+  # Preparing environnement
+  cp $APK_DIR/AndroidManifest.xml.template $APK_DIR/AndroidManifest.xml
+
+  android update project --name Qgis --path $APK_DIR --target android-$ANDROID_LEVEL
+
   mkdir -p $TMP_DIR
   mkdir -p $INSTALL_DIR/lib
   mkdir -p $QGIS_BUILD_DIR
@@ -134,17 +137,17 @@ else
   cd $QGIS_DIR
   
   #check if an android branch of qgis is present
-  set +e
-    git checkout $QGIS_ANDROID_BRANCH
-  set -e
-  BRANCH="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
-  
-  if [ "$BRANCH" != "$QGIS_ANDROID_BRANCH" ]; then
-    echo "Aborting, the qgis branch checkedout is not '$QGIS_ANDROID_BRANCH', please clone or fork this repo: git://github.com/mbernasocchi/Quantum-GIS.git"
-    exit 1
-  else
-    echo "Environement looks good, lets start"
-  fi
+  #set +e
+  #  git checkout $QGIS_ANDROID_BRANCH
+  #set -e
+  #BRANCH="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
+  #
+  #if [ "$BRANCH" != "$QGIS_ANDROID_BRANCH" ]; then
+  #  echo "Aborting, the qgis branch checkedout is not '$QGIS_ANDROID_BRANCH', please clone or fork this repo: git://github.com/mbernasocchi/Quantum-GIS.git"
+  #  exit 1
+  #else
+  #  echo "Environement looks good, lets start"
+  #fi
   
   
   ########CREATE STANDALONE TOOLCHAIN########
@@ -193,6 +196,7 @@ else
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   patch -i $PATCH_DIR/geos.patch -p1
+  patch -i $PATCH_DIR/geos_std_nan.patch -p1
   #######END GEOS#######
 
   #######EXPAT#######
@@ -304,19 +308,28 @@ else
   cp -vf $TMP_DIR/config.guess ./config.guess
   #######END SQLITE#######
   
-  #######QWT5.2.0#######
+  #######QWT#######
   echo "QWT"
   cd $SRC_DIR
-  wget -c http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
+  curl -L -O http://downloads.sourceforge.net/project/qwt/qwt/$QWT_VERSION/$QWT_NAME.tar.bz2
   tar xjf $QWT_NAME.tar.bz2
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWT_NAME.tar.bz2; fi
   cd $QWT_NAME/
 
   #edit qwtconfig.pri
-  sed -i "s|CONFIG     += QwtDesigner|#CONFIG     += QwtDesigner|" qwtconfig.pri
-  sed -i "s|CONFIG           += QwtDll|CONFIG     += QwtDll plugin|" qwtconfig.pri
-  #######END QWT5.2.0#######
+  sed -i "s|QWT_CONFIG     += QwtDesigner|#QWT_CONFIG     += QwtDesigner|" qwtconfig.pri
+  sed -i "s|QWT_CONFIG           += QwtDll|QWT_CONFIG     += QwtDll plugin|" qwtconfig.pri
+  #######END QWT#######
   
+  #######QWTPOLAR#######
+  echo "QWTPOLAR"
+  cd $SRC_DIR
+  curl -L -O http://downloads.sourceforge.net/project/qwtpolar/qwtpolar/$QWTPOLAR_VERSION/$QWTPOLAR_NAME.tar.bz2
+  tar xjf $QWTPOLAR_NAME.tar.bz2
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm $QWTPOLAR_NAME.tar.bz2; fi
+  cd $QWTPOLAR_NAME/
+  #######END QWT#######
+
 #  #######openssl-android#######
 #  #needed for postgresssql
 #  echo "openssl-android"
@@ -345,19 +358,19 @@ else
   #######END $PQ_NAME#######
   
   #######PYTHON#############################
+if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
   echo "python"
   cd $SRC_DIR  
-  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
-  wget -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
+#  wget -U "Mozilla" -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_27.zip
+#  wget -U "Mozilla" -c https://android-python27.googlecode.com/hg/python-build-with-qt/binaries/python_extras_27.zip
   
   unzip python_27.zip
   unzip python_extras_27.zip -d pythonTMP
   mv pythonTMP/python/* python/lib/python2.7/
   rm -rf pythonTMP
+fi
   
   #######APK###############################
-  cd $APK_DIR
-  android update project -p . -n qgis
   
   if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm -rf $TMP_DIR; fi
   exit 0

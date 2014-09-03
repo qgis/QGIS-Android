@@ -117,8 +117,11 @@ MY_CMAKE_FLAGS=" \
 -DPOSTGRES_LIBRARY=$INSTALL_DIR/lib/libpq.so \
 -DQT_MKSPECS_DIR=$QT_ROOT/mkspecs \
 -DQT_QMAKE_EXECUTABLE=$QMAKE \
+-DQT_LRELEASE_EXECUTABLE=$QT_ROOT/bin/lrelease \
 -DQWT_INCLUDE_DIR=$INSTALL_DIR/include \
 -DQWT_LIBRARY=$INSTALL_DIR/lib/libqwt.so \
+-DQWTPOLAR_INCLUDE_DIR=$INSTALL_DIR/include \
+-DQWTPOLAR_LIBRARY=$INSTALL_DIR/lib/libqwtpolar.so \
 -DSPATIALINDEX_LIBRARY=$INSTALL_DIR/lib/libspatialindex.so \
 -DWITH_APIDOC=OFF \
 -DWITH_ASTYLE=OFF \
@@ -126,7 +129,7 @@ MY_CMAKE_FLAGS=" \
 -DWITH_DESKTOP=$WITH_DESKTOP \
 -DWITH_GLOBE=OFF \
 -DWITH_GRASS=OFF \
--DWITH_INTERNAL_QWTPOLAR=ON \
+-DWITH_INTERNAL_QWTPOLAR=OFF \
 -DWITH_INTERNAL_SPATIALITE=OFF \
 -DWITH_MAPSERVER=OFF \
 -DWITH_MOBILE=$WITH_MOBILE \
@@ -137,7 +140,9 @@ MY_CMAKE_FLAGS=" \
 -DGITCOMMAND=`which git` \
 -DGIT_MARKER=$QGIS_DIR/.git/index \
 -DSQLITE3_INCLUDE_DIR=$INSTALL_DIR/include \
--DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so" \
+-DSQLITE3_LIBRARY=$INSTALL_DIR/lib/libsqlite3.so \
+-DWITH_QTWEBKIT=OFF \
+-DENABLE_QT5=ON" \
 #-DPYTHON_LIBRARY=$SRC_DIR/python/lib/libpython2.7.so \
 #-DPYTHON_INCLUDE_PATH=$SRC_DIR/python/bin/python2.7"
 if [[ "$WITH_BINDINGS" = "TRUE" ]]; then
@@ -187,21 +192,3 @@ fi
 #echo $CFLAGS
 #exit 0
 make -j$CORES install
-
-GIT_REV=$(git -C $QGIS_DIR rev-parse HEAD)
-#update version file in share
-mkdir -p $INSTALL_DIR/files
-#echo $GIT_REV > $INSTALL_DIR/files/version.txt
-#update apk manifest
-sed -i "s|<meta-data android:name=\"android.app.git_rev\" android:value=\".*\"/>|<meta-data android:name=\"android.app.git_rev\" android:value=\"$GIT_REV\"/>|" $APK_DIR/AndroidManifest.xml
-
-sed -i '/python/d' $APK_DIR/res/values/libs.xml
-sed -i '/<\/array><\/resources>/d' $APK_DIR/res/values/libs.xml
-
-if [ "$WITH_BINDINGS" = TRUE ]; then
-  echo "      <item>python2.7</item>
-      <item>qgispython</item>" >> $APK_DIR/res/values/libs.xml
-fi
-
-echo "</array></resources>" >> $APK_DIR/res/values/libs.xml
-
