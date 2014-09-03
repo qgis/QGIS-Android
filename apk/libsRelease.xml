@@ -20,6 +20,7 @@
       <item>Qt5PrintSupport</item>
       <item>Qt5Concurrent</item>
       <item>Qt5Positioning</item>
+      <item>qtforandroid</item>
       <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
@@ -32,6 +33,7 @@
       <item>proj</item>
       <item>spatialindex</item>
       <item>qwt</item>
+      <item>qwtpolar</item>
       <item>iconv</item>
       <item>charset</item>
 <!--      <item>crypt</item>-->
@@ -42,7 +44,6 @@
       <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
-      <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
       <item>qgis_networkanalysis</item>
       </array>
