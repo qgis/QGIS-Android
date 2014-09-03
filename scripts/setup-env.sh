@@ -232,8 +232,10 @@ else
   cp -vf $TMP_DIR/config.guess ./config.guess
   patch -p1 -i $PATCH_DIR/gdal.patch
   #GDAL does not seem to support building in subdirs
-  cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi/
-  mv -vf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-armeabi-v7a/
+  cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-build-Debug-armeabi/
+  cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-build-Release-armeabi/
+  cp -vrf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-build-Debug-armeabi-v7a/
+  mv -vf $SRC_DIR/$GDAL_NAME/ $SRC_DIR/$GDAL_NAME-build-Release-armeabi-v7a/
   #####END GDAL#######
 
   #######LIBICONV1.13.1#######
@@ -272,8 +274,11 @@ else
   cp -vf $TMP_DIR/config.sub ./config.sub
   cp -vf $TMP_DIR/config.guess ./config.guess
   patch -p1 -i $PATCH_DIR/spatialindex.patch
-  cp -vrf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-armeabi/
-  mv -vf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-armeabi-v7a/
+  cp -vrf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-build-Debug-armeabi/
+  cp -vrf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-build-Release-armeabi/
+  cp -vrf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-build-Debug-armeabi-v7a/
+  mv -vf $SRC_DIR/$SPATIALINDEX_NAME/ $SRC_DIR/$SPATIALINDEX_NAME-build-Release-armeabi-v7a/
+
   #######END SPATIALINDEX1.7.1#######
 
   #########SPATIALITE########
