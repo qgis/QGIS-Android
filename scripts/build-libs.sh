@@ -82,6 +82,8 @@ while test "$1" != "" ; do
         shift
 done
 
+BUILD_DIR=build-$BUILD_TYPE-$ANDROID_ABI
+
 #confirm settings if not running build_all.sh
 if [ ! -n "${QGIS_ANDROID_BUILD_ALL+x}" || $FORCE_CONTINUE != 1 ]; then
   CONTINUE="n"
@@ -107,8 +109,8 @@ else
 #  #########QTUITOOLS########
 #  echo "QTUITOOLS"	
 #  cd $QT_SRC/tools/designer/src/uitools
-#  mkdir -p build-$ANDROID_ABI
-#  cd build-$ANDROID_ABI
+#  mkdir -p $BUILD_DIR
+#  cd $BUILD_DIR
 #  CFLAGS=$MY_STD_CFLAGS \
 #  CXXFLAGS=$MY_STD_CXXFLAGS \
 #  LDFLAGS=$MY_STD_LDFLAGS \
@@ -119,12 +121,12 @@ else
 #  #########END QTUITOOLS########
   
 
-  #########QWT########
-  echo "QWT $QWT_VERSION"
+  #########QWT5.2.0########
+  echo "QWT5.2.0"	
   cd $SRC_DIR/$QWT_NAME/
-  sed -i "s|    QWT_INSTALL_PREFIX    =.*|    QWT_INSTALL_PREFIX    = $INSTALL_DIR|" qwtconfig.pri
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  sed -i "s|    INSTALLBASE    =.*|    INSTALLBASE    = $INSTALL_DIR|" qwtconfig.pri
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -143,8 +145,8 @@ else
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
   cd $SRC_DIR/$EXPAT_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -157,8 +159,8 @@ else
   #########GSL1.14########
   echo "GSL1.14"
   cd $SRC_DIR/$GSL_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -173,8 +175,8 @@ else
   #########LIBICONV1.13.1########
   echo "LIBICONV"
   cd $SRC_DIR/$ICONV_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -189,8 +191,8 @@ else
   #########freexl########
   echo "$FREEXL_NAME"
   cd $SRC_DIR/$FREEXL_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS="$MY_STD_CFLAGS -I$INSTALL_DIR/include"\
   CXXFLAGS="$MY_STD_CXXFLAGS -I$INSTALL_DIR/include"\
@@ -205,8 +207,8 @@ else
   #########SQLITE########
   echo "SQLITE"
   cd $SRC_DIR/$SQLITE_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -220,7 +222,7 @@ else
 
   #########SPATIALINDEX########
   echo "SPATIALINDEX"
-  cd $SRC_DIR/$SPATIALINDEX_NAME-$ANDROID_ABI/
+  cd $SRC_DIR/$SPATIALINDEX_NAME-$BUILD_DIR/
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
@@ -234,8 +236,8 @@ else
   ##########PROJ4########
   echo "$PROJ_NAME"
   cd $SRC_DIR/$PROJ_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS=$MY_STD_CFLAGS \
   CXXFLAGS=$MY_STD_CXXFLAGS \
@@ -249,8 +251,8 @@ else
   #########GEOS########
   echo "$GEOS_NAME"
   cd $SRC_DIR/$GEOS_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
@@ -264,9 +266,9 @@ else
   #########SPATIALITE########
   echo "$SPATIALITE_NAME"
   cd $SRC_DIR/$SPATIALITE_NAME/
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
-  GEOSCONFIG=$SRC_DIR/$GEOS_NAME/build-$ANDROID_ABI/tools/geos-config
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
+  GEOSCONFIG=$SRC_DIR/$GEOS_NAME/$BUILD_DIR/tools/geos-config
   chmod u+x $GEOSCONFIG
   #configure
   CFLAGS="-lgnustl_shared -lm $MY_STD_CFLAGS -I$INSTALL_DIR/include" \
@@ -280,7 +282,7 @@ else
 
   #########GDAL########
   echo "$GDAL_NAME"
-  cd $SRC_DIR/$GDAL_NAME-$ANDROID_ABI/
+  cd $SRC_DIR/$GDAL_NAME-$BUILD_DIR/
   #configure
   CFLAGS="$MY_STD_CFLAGS" \
   CXXFLAGS="$MY_STD_CXXFLAGS" \
@@ -308,8 +310,8 @@ else
   ########$PQ_NAME########
   echo "postgresql"
   cd $SRC_DIR/$PQ_NAME
-  mkdir -p build-$ANDROID_ABI
-  cd build-$ANDROID_ABI
+  mkdir -p $BUILD_DIR
+  cd $BUILD_DIR
   #no ssl  
   CPPFLAGS="-I$INSTALL_DIR/include" \
   CFLAGS="$MY_STD_CFLAGS" \
@@ -332,7 +334,7 @@ else
   cd $SRC_DIR/$PQ_NAME
   cp -fv src/include/postgres_ext.h $INSTALL_DIR/include
   cp -fv src/interfaces/libpq/libpq-fe.h $INSTALL_DIR/include
-  cp -fv build-$ANDROID_ABI/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
+  cp -fv $BUILD_DIR/src/interfaces/libpq/libpq.so $INSTALL_DIR/lib/
   ######END $PQ_NAME#######
   
   exit 0
