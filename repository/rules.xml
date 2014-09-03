@@ -11,6 +11,8 @@
             <version value="16" symlink="9"/>
             <version value="17" symlink="9"/>
             <version value="18" symlink="9"/>
+            <version value="19" symlink="9"/>
+            <version value="20" symlink="9"/>
         </libs>
     </platforms>
 
