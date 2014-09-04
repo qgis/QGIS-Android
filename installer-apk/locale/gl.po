@@ -1,0 +1,137 @@
+# Translations template for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013, 2014.
+# adf <ade>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-01-24 19:59+0100\n"
+"PO-Revision-Date: 2014-02-16 19:10+0200\n"
+"Last-Translator: adf <ade>\n"
+"Language-Team: dsf\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+"Generated-By: Babel 1.0dev\n"
+
+msgctxt "app_name"
+msgid "QGIS installer"
+msgstr "Instalador QGIS"
+
+msgctxt "quit"
+msgid "Quit"
+msgstr "Saír"
+
+msgctxt "downloading_dialog_message"
+msgid "Downloading"
+msgstr "Descargando"
+
+msgctxt "install_dialog_title"
+msgid "Download QGIS package?"
+msgstr "¿Quere descarga-lo paquete QGIS?"
+
+#, c-format
+msgctxt "install_dialog_message"
+msgid ""
+"This will download and install QGIS %1$s (build %2$s). The download is "
+"%3$s MB big, do you want to continue?"
+msgstr ""
+"Isto descargará e instalará QGIS %1$s (compilación %2$s). O tamaño da "
+"descarga é de %3$s MB, ¿Quere continuar?"
+
+msgctxt "no_connectivity_dialog_title"
+msgid "No data connectivity detected"
+msgstr "Non se detectou conexión de datos"
+
+msgctxt "no_connectivity_dialog_message"
+msgid "Check your connectivity settings and try again"
+msgstr "Comprobe a configuración da conexión e ténteo de novo"
+
+msgctxt "retry"
+msgid "Retry"
+msgstr "Reintentar"
+
+msgctxt "about"
+msgid "About"
+msgstr "Acerca de"
+
+msgctxt "wifi_settings"
+msgid "Wi-Fi settings"
+msgstr "Configuración Wi-Fi"
+
+msgctxt "donate"
+msgid "Donate to QGIS"
+msgstr "Doar a QGIS"
+
+msgctxt "install"
+msgid "Download and install QGIS (recommended)"
+msgstr "Descargar e intalar QGIS (recomendado)"
+
+msgctxt "about_dialog_message"
+msgid ""
+"Android QGIS installer allows you to easily install and update Quantum "
+"GIS. It was developped By Marco Bernasocchi (opengis.ch)"
+msgstr ""
+"O instalador Android de QGIS permítelle facilmente instalar e actualizar "
+"QGIS. Foi desenvolvido por Marco Bernasocchi (opengis.ch)"
+
+msgctxt "visit_dev"
+msgid "Visit opengis.ch"
+msgstr "Visite opengis.ch"
+
+msgctxt "latest_is_already_installed_dialog_message"
+msgid "You already have the latest QGIS version installed."
+msgstr "Xa ten a última versión de QGIS instalada."
+
+msgctxt "start_qgis"
+msgid "Start QGIS"
+msgstr "Comezar QGIS"
+
+msgctxt "md5_error"
+msgid "The package didn't download correctly (md5 hash mismatch)"
+msgstr "O paquete non se descargou correctamente (non coincide o hash md5)"
+
+msgctxt "loading_info_dialog_message"
+msgid ""
+"QGIS installer is downloading informations about the latest available "
+"release"
+msgstr ""
+"O instalador de QGIS está descargando informacións acerca da última versión "
+"dispoñible"
+
+msgctxt "please_wait"
+msgid "Please wait"
+msgstr "Agarde"
+
+msgctxt "install_nightly"
+msgid "Download and install QGIS nightly"
+msgstr "Descargar e instalar versión de desenvolvemento de QGIS"
+
+msgctxt "logo"
+msgid "QGIS Logo"
+msgstr "Logo de QGIS"
+
+msgctxt "clear_downloads"
+msgid "Clear download cache"
+msgstr "Limpa-la caché de descargas"
+
+msgctxt "clear_downloads_dialog_message"
+msgid ""
+"This will remove all previously downloaded QGIS packages. It will NOT "
+"remove QGIS nor the installer. Removing the packages will free space on "
+"your device, but to reinstall QGIS you will have to redownload the "
+"packages."
+msgstr ""
+"Isto eliminará tódolos paquetes de QGIS descargados previamente. NON "
+"eliminará nin QGIS nin o instalador. Elimina-los paquetes liberará espazo no "
+"seu equipo, pero para reinstalar QGIS terá que descargar novamente os "
+"paquetes."
+
+msgctxt "clear_downloads_dialog_title"
+msgid "Clear QGIS download cache"
+msgstr "Limpa-la caché de descargas de QGIS"
