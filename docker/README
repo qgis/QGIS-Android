@@ -2,18 +2,25 @@ This creates a docker container for building QGIS for android
 
 Usage:
 ======
-From the current directory run
+For setting up a developer environement from the current directory run
+  docker build .
+
+For setting up a build server do 
+  mv Dockerfile Dockerfile-developer
+  mv Dockerfile-buildserver Dockerfile
   docker build .
 
 
 Development:
 ===========
 The Qt SDK installer is a piece of software that only works with a GUI dialog
-and that is not what we want it to do here. So you have to do some work in order
-to get the SDK into the docker image.
+and that is not what we want it to do here. So we had to do some work in order
+to get the SDK into the docker image. now all should build automatically. 
+but if you want to reproduce the steps, here they are:
 
  * Download the latest Qt SDK. Host arch: 64 bit, Target arch: 32 bit
  * Install it locally
    * to /usr/src/qt
    * cd /usr/src/qt
    * tar -zcvf qt5.3.1.tar.bz2 Qt5.3.1
+   * mv qt5.3.1.tar.bz2 THIS-FOLDER/files

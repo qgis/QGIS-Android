@@ -36,17 +36,18 @@ RUN tar -xvjf android-ndk32-r10-linux-x86_64.tar.bz2 -C /opt
 # ADD files/qt5.3.1.tar.bz2 /usr/src/qt
 # using a remote file
 RUN mkdir -p /usr/src/qt
-RUN wget http://qgis.org/downloads/android/qt5.3.1.tar.bz2
-RUN tar -xvjf qt5.3.1.tar.bz2 -C /usr/src/qt
-
+WORKDIR /usr/src/qt
+RUN wget -c http://qgis.org/downloads/android/qt5.3.1.tar.bz2
+RUN tar -jxf qt5.3.1.tar.bz2
+RUN rm -f qt5.3.1.tar.bz2
 
 # Get QGIS build scripts and source code
 RUN git clone -b qt5 https://github.com/qgis/QGIS-Android.git /usr/src/QGIS-Android
 
 # Either add QGIS source code in a volume
-#VOLUME ["/usr/src/QGIS"]
+VOLUME ["/usr/src/QGIS"]
 # Or clone it from server to container
- RUN git clone -b final-2_4_0-qt5 https://github.com/m-kuhn/QGIS.git /usr/src/QGIS
+# RUN git clone -b final-2_4_0-qt5 https://github.com/m-kuhn/QGIS.git /usr/src/QGIS
 
 # Start building
 ADD config.conf /usr/src/QGIS-Android/scripts/config.conf
@@ -65,16 +66,30 @@ ENV SCRIPT_DIR /usr/src/QGIS-Android/scripts
 
 # Run build scripts
 RUN $SCRIPT_DIR/setup-env.sh -n
-#RUN $SCRIPT_DIR/build-libs.sh
+RUN $SCRIPT_DIR/build-libs.sh
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN rm -f qt5.3.1.tar.bz2
-#RUN rm android-sdk_r23-linux.tgz
-#RUN rm android-ndk32-r10-linux-x86_64.tar.bz2
+RUN rm android-sdk_r23-linux.tgz
+RUN rm android-ndk32-r10-linux-x86_64.tar.bz2
+
+# Install build/sync data
+ADD files/package-update.sh /root/package-update.sh
+ADD files/package-update-and-sync.sh /root/package-update-and-sync.sh
+
+VOLUME ["/root/packages"]
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-
+# For cronjobs
+ADD files/crontab /etc/crontab
+RUN chmod 600 /etc/crontab
+RUN chown root.root  /etc/crontab
+ADD ssh_config /root/.ssh/config
+RUN chown root.root /root/.ssh/config
+RUN chmod 600 /root/.ssh/config
+ADD known_hosts /root/.ssh/known_hosts
+ADD id_rsa /root/.ssh/id_rsa
+RUN chmod 755 /root/packages
 
