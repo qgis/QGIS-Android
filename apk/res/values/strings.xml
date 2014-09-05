@@ -10,6 +10,9 @@
     <string name="done_unpacking_msg">Done unpacking, start QGIS.</string>
     <string name="unpacking_msg">Unpacking post install data. This might take some time.</string>
     <string name="use_internal_storage">Use Internal Storage</string>
-    <string name="external_storage_unavailable">Unpacking post install data. This might take a some time.</string>
+    <string name="external_storage_unavailable">External storage unavailable</string>
     <string name="noexternalstorage_dialog">Looks like your external storage (/sdcard) is not available. This happens when you connect your device to a PC via USB.\nQGIS can run from the internal storage but this is not recomended as it might be too small.\nIt is suggested to chose CANCEL, disconnect any USB cable and restart QGIS.</string>
+    <string name="nowifi_detected">Download without using WIFI?</string>
+    <string name="nowifi_dialog">Looks like you are not connected to a WIFI. Qgis will download more than 200MB. Do you really want do continue?</string>
+    <string name="enable_wifi">Enable WIFI</string>
 </resources>

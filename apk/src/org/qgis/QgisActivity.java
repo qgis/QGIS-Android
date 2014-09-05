@@ -48,6 +48,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +56,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -65,6 +67,7 @@ public class QgisActivity extends Activity {
 	private static final String QtTAG = "FirstRun JAVA"; // string used for
 	private static final int PROGRESS_DIALOG = 0;
 	private static final int NOEXTERNALSTORAGE_DIALOG = 1;
+	private static final int NOWIFI_DIALOG = 2;
 	private ProgressDialog mProgressDialog = null;
 	private UnzipTask mUnzipTask = new UnzipTask();
 	private ActivityInfo mActivityInfo = null; // activity info object, used to
@@ -72,13 +75,15 @@ public class QgisActivity extends Activity {
 	private String mThisRev = null; // the git_rev of qgis
 	private boolean mExternalStorageAvailable = false;
 	private boolean mExternalStorageWriteable = false;
+    private WifiManager wifiManager = null;
 	
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// get preferences, 0 = mode private. only this app can read these
-		mPrefs = this.getApplicationContext().getSharedPreferences("qgisPrefs",
-				0);
+        Context context = this.getApplicationContext();
+        mPrefs = context.getSharedPreferences("qgisPrefs",
+                0);
 		try {
 			mActivityInfo = getPackageManager().getActivityInfo(
 					getComponentName(), PackageManager.GET_META_DATA);
@@ -87,6 +92,8 @@ public class QgisActivity extends Activity {
 			finish();
 			return;
 		}
+
+        wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -142,6 +149,37 @@ public class QgisActivity extends Activity {
 								}
 							}).create();
 
+        case NOWIFI_DIALOG:
+            return new AlertDialog.Builder(QgisActivity.this)
+                    .setTitle(getString(R.string.nowifi_detected))
+                    .setMessage(getString(R.string.nowifi_dialog))
+                    .setNeutralButton(
+                            getString(R.string.enable_wifi),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    wifiManager.setWifiEnabled(true);
+                                    startFirstRun();
+                                }
+                            })
+                    .setPositiveButton(
+                            getString(android.R.string.yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    dialog.cancel();
+                                    startFirstRun();
+                                }
+                            })
+                    .setNegativeButton(getString(android.R.string.no),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    finish();
+
+                                }
+                            }).create();
+
 		default:
 			return null;
 		}
@@ -158,10 +196,19 @@ public class QgisActivity extends Activity {
 			Log.i(QtTAG, "not first run, forwarding to QGIS");
 			startQtActivity();
 		} else {
-			// this is a first run after install or update
-			mUnzipTask.execute("assets.zip");
+            // this is a first run after install or update
+            if (wifiManager.isWifiEnabled()) {
+                startUnzipping();
+            }
+            else {
+                showDialog(NOWIFI_DIALOG);
+            }
 		}
 	}
+
+	private void startUnzipping() {
+        mUnzipTask.execute("assets.zip");
+    }
 
 	private void startQtActivity() {
 		// forward to startQtActivity and finish QgisActivity
