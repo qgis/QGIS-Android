@@ -68,7 +68,11 @@ if [ -d $INSTALL_DIR/../armeabi-v7a/lib/ ]; then
     #copy libgnustl_shared.so
     cp -vfs $GNUSTL_LIB_PATH/armv7-a/libgnustl_shared.so $APK_DIR/libs/armeabi-v7a/
   else
-    cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/libqgis.so $APK_DIR/libs/armeabi-v7a/
+    if [ "$WITH_MOBILE" ]; then
+      cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/libqgis_mobile.so $APK_DIR/libs/armeabi-v7a/
+    else
+      cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/libqgis.so $APK_DIR/libs/armeabi-v7a/
+    fi
     cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/lib*plugin.so $APK_DIR/libs/armeabi-v7a/
     cp -vrfs $INSTALL_DIR/../armeabi-v7a/lib/lib*provider.so $APK_DIR/libs/armeabi-v7a/
   fi
