@@ -35,6 +35,7 @@
       <item>gdal</item>
       <item>proj</item>
       <item>spatialindex</item>
+      <item>qscintilla2</item>
       <item>qwt</item>
       <item>qwtpolar</item>
       <item>iconv</item>
