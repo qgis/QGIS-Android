@@ -142,6 +142,10 @@ else
   $SCRIPTPATH/build-qwtpolar.sh
   #########END QWTPOLAR########
 
+  #########QSCINTILLA########
+  $SCRIPTPATH/build-qscintilla.sh
+  #########END QSCINTILLA########
+
   #########EXPAT2.0.1########
   echo "EXPAT2.0.1"
   cd $SRC_DIR/$EXPAT_NAME/

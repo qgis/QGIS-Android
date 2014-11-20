@@ -330,6 +330,16 @@ else
   cd $QWTPOLAR_NAME/
   #######END QWT#######
 
+  #######QSCINTILLA#######
+  echo "QSCINTILLA"
+  cd $SRC_DIR
+  curl -L -O http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-${QSCINTILLA_VERSION}/QScintilla-gpl-${QSCINTILLA_VERSION}.tar.gz
+  tar xf QScintilla-gpl-${QSCINTILLA_VERSION}.tar.gz
+  mv QScintilla-gpl-${QSCINTILLA_VERSION} $QSCINTILLA_NAME
+  if [ "$REMOVE_DOWNLOADS" -eq 1 ] ; then rm QScintilla-gpl-${QSCINTILLA_VERSION}.tar.gz; fi
+  cd $QSCINTILLA_NAME/
+  #######END QSCINTILLA#######
+
 #  #######openssl-android#######
 #  #needed for postgresssql
 #  echo "openssl-android"
