@@ -1,5 +1,4 @@
-## For the latest version of all the build scripts, 
-please refere to https://github.com/opengisch/OSGeo4A
+## For the latest version of all the build scripts, please refere to https://github.com/opengisch/OSGeo4A
 
 
 This information is still here for reference:
