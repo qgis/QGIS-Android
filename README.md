@@ -1,7 +1,8 @@
-For the latest version of all the build scripts, 
+## For the latest version of all the build scripts, 
 please refere to https://github.com/opengisch/OSGeo4A
 
-Further infos at http://android.qgis.org
+
+This information is still here for reference:
 
 In case of problem it is usefull to have a look at the adb logcat, to get it instal the android SDK on your pc (http://developer.android.com/guide/developing/tools/logcat.html) 
 an easier alternative might be free application aLogCat on the android market (https://market.android.com/details?id=org.jtb.alogcat).
