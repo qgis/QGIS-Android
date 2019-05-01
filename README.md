@@ -1,4 +1,4 @@
-## For the latest version of all the build scripts, please refere to https://github.com/opengisch/OSGeo4A
+## For the latest version of all the build scripts, please refer to https://github.com/opengisch/OSGeo4A
 
 
 This information is still here for reference:
@@ -14,25 +14,26 @@ QGIS android APK package:
 - Once ministro is done, QGIS should start.
 
 QGIS android dev setup:
-- git clone https://github.com/qgis/QGIS-Android.git or fork an clone
+- `git clone https://github.com/qgis/QGIS-Android.git` or fork an clone
 - Install Necessitas (http://necessitas.kde.org/necessitas/necessitas_sdk_installer.php http://files.kde.org/necessitas/installer/release/linux-online-necessitas-alpha4.1-sdk-installer )and choose at least:
     - NDK r8b (DEFAULT)
     - Qt 4.8-armeabi (DEFAULT)
     - Android api 15
-- get QGIS master from https://github.com/mbernasocchi/QGIS #or if you only want upstream code git://github.com/qgis/QGIS.git either by cloning or forking and cloning)
-- git checkout android-master
-- copy and configure QGIS-Android/scripts/config.templ to QGIS-Android/scripts/config.conf
-- run scripts/build-all.sh
-    OR
-    - run scripts/setup-env.sh
-    - run scripts/build-libs.sh
-    - run scripts/build-qgis.sh -c
-    - run scripts/update-apk-env.sh
-    - run scripts/build-apk.sh
+- get QGIS master from https://github.com/mbernasocchi/QGIS #or if you only want upstream code `git://github.com/qgis/QGIS.git` either by cloning or forking and cloning)
+- `git checkout android-master`
+- copy and configure `QGIS-Android/scripts/config.templ` to `QGIS-Android/scripts/config.conf`
+- `run scripts/build-all.sh`
+      OR
+    - `run scripts/setup-env.sh`
+    - `run scripts/build-libs.sh`
+    - `run scripts/build-qgis.sh -c`
+    - `run scripts/update-apk-env.sh`
+    - `run scripts/build-apk.sh`
     - setup the device or emulator (see http://developer.android.com/guide/developing/index.html)
-    - run scripts/run-apk.sh
+    - `run scripts/run-apk.sh`
 
 example copy paste code:
+ ```
  GITHUBUSERNAME="myNAME"
  GITHUBPASSWORD="myPASS"
  cd dev
@@ -54,11 +55,12 @@ example copy paste code:
  nano QGIS-Android/scripts/config.conf #configure to your wishes
  ./QGIS-Android/scripts/build-all.sh
  ./QGIS-Android/scripts/run-apk.sh
- 
+ ```
 adding a remote
+```
  git remote add qgis git://github.com/qgis/QGIS.git
  git checkout -b android-master
  git pull mbernasochi android-master
-
+```
 
 Enjoy touching QGIS :), marco@bernawebdesign.ch
